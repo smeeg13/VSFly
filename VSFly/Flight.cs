@@ -13,6 +13,8 @@ namespace VSFly
         public int FlightNo { get; set; }
 
         public virtual List<Booking> Bookings { get; }
+        public virtual Pilot Pilot { get; }
+        public virtual Pilot Copilot { get; }
 
         [Required]
         public string AirlineName { get; set; }
