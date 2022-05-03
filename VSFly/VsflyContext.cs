@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,6 +20,11 @@ namespace VSFly
 
         public DbSet<Pilot> Pilots { get; set; }
 
+        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
+        });
+
         public static string ConnectionString { get; set; } = @"Server=(localDB)\MSSQLLocalDB;Database=VsflyLimaSolliard";
 
         public VsflyContext()
@@ -29,6 +35,7 @@ namespace VSFly
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer(ConnectionString);
+            options.UseLoggerFactory(MyLoggerFactory).EnableSensitiveDataLogging();
 
         }
 
