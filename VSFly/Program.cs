@@ -14,14 +14,10 @@ namespace VSFly
             var e = context.Database.EnsureCreated();
 
             if (e)
-            {
                 Console.Write("DB created");
-            }
             else
-            {
                 Console.Write("DB already exists");
 
-            }
             Console.Write("Done");
 
 
@@ -44,8 +40,8 @@ namespace VSFly
             //context.SaveChanges();
 
             //Console.Write("Add Done");
-            
 
+            // try to display all the flights
             var pilotList = context.Pilots.ToList<Pilot>();
             foreach (Flight f in context.Flights)
             {

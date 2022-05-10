@@ -8,7 +8,7 @@ namespace VSFly
 {
     public class Pilot : Employee
     {
-        public int FlightHours { get; set; }
+        public int? FlightHours { get; set; }
 
         public string FlightSchool { get; set; }
         public DateTime LicenseDate { get; set; }

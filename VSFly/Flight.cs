@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +14,18 @@ namespace VSFly
         public int FlightNo { get; set; }
 
         public virtual List<Booking> Bookings { get; }
+        
+        [ForeignKey("PilotId")]
         public virtual Pilot Pilot { get; }
-        public virtual Pilot Copilot { get; }
+        public int PilotId { get; set; }
 
-        [Required]
-        public string AirlineName { get; set; }
-        [Required]
+        [ForeignKey("CopilotId")]
+        public virtual Pilot Copilot { get; }
         public int CopilotId { get; set; }
+
+       
+        public string AirlineName { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
         [Required]
@@ -28,10 +34,10 @@ namespace VSFly
         public string Departure { get; set; }
         [Required]
         public int FreeSeats { get; set; }
+
         public string Memo { get; set; }
         public Boolean NonSmokingFlight { get; set; }
-        [Required]
-        public int PilotId { get; set; }
+        
         [Required]
         public double Price { get; set; }
         [Required]
