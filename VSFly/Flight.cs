@@ -13,7 +13,7 @@ namespace VSFly
         [Key]
         public int FlightNo { get; set; }
 
-        public virtual List<Booking> Bookings { get; }
+        public virtual ICollection<Booking> Bookings { get; }
         
         [ForeignKey("PilotId")]
         public virtual Pilot Pilot { get; }
@@ -34,16 +34,11 @@ namespace VSFly
         public string Departure { get; set; }
         [Required]
         public int FreeSeats { get; set; }
-
-        public string Memo { get; set; }
-        public Boolean NonSmokingFlight { get; set; }
         
         [Required]
         public double Price { get; set; }
         [Required]
         public int Seat { get; set; }
-        public Boolean Strikebound { get; set; }
-        public string Timestamp { get; set; }
-        public Boolean Utilization { get; set; }
+      
     }
 }

@@ -9,6 +9,8 @@ namespace VSFly
 {
     public class Person
     {
+       [Key]
+        public int PersonId { get; set; } 
         [Required]
         public DateTime Birthday { get; set; }
         [Required]
@@ -17,8 +19,7 @@ namespace VSFly
         public string FullName { get; set; }
 
         public string GivenName { get; set; }
-        [Key]
-        public int PersonId { get; set; }
+        
         public string Surname { get; set; }
 
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace VSFly
 {
-    class VsflyContext : DbContext
+    public class VsflyContext : DbContext
     {
 
         public DbSet<Flight> Flights { get; set; }
@@ -25,7 +25,8 @@ namespace VSFly
             builder.AddConsole();
         });
 
-        public static string ConnectionString { get; set; } = @"Server=(localDB)\MSSQLLocalDB;Database=VsflyLimaSolliard";
+        public static string ConnectionString { get; set; } = @"Server=(localDB)\MSSQLLocalDB;Database=VsflyLimaSolliard;" +
+                                                  "Trusted_Connection=True;App=VSFly;MultipleActiveResultSets=true";
 
         public VsflyContext()
         {
@@ -41,11 +42,9 @@ namespace VSFly
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Booking>().HasKey(x => new { x.FlightNo, x.PassengerId });
+            builder.Entity<Booking>().HasKey(x => new { x.FlightNo, x.PassengerID});
 
-            //Default Values
-            builder.Entity<Flight>().Property(b => b.NonSmokingFlight).HasDefaultValue(true);
-
+     
         }
 
     }

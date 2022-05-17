@@ -13,6 +13,6 @@ namespace VSFly
         [Required]
         public string Status { get; set; }
 
-        public virtual List<Booking> Bookings { get; }
+        public virtual ICollection<Booking> Bookings { get; }
     }
 }

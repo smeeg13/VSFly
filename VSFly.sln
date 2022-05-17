@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VSFly", "VSFly\VSFly.csproj", "{76ED5E13-2F12-42CD-B7EB-8A642119BE8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{4FBDA6A1-C9D9-4B76-A94F-13D6A3A46A75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebApplication\WebAPI.csproj", "{4FBDA6A1-C9D9-4B76-A94F-13D6A3A46A75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCClient", "MVCClient\MVCClient.csproj", "{16BC0B87-0D09-41D6-AF2A-0B03B1D56524}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4FBDA6A1-C9D9-4B76-A94F-13D6A3A46A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FBDA6A1-C9D9-4B76-A94F-13D6A3A46A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FBDA6A1-C9D9-4B76-A94F-13D6A3A46A75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BC0B87-0D09-41D6-AF2A-0B03B1D56524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BC0B87-0D09-41D6-AF2A-0B03B1D56524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BC0B87-0D09-41D6-AF2A-0B03B1D56524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BC0B87-0D09-41D6-AF2A-0B03B1D56524}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

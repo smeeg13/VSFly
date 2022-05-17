@@ -8,6 +8,9 @@ namespace VSFly
     {
         static void Main(string[] args)
         {
+
+            //Don't use anymore, only for test
+
             Console.WriteLine("Hello from VFLy!");
 
             var context = new VsflyContext();
@@ -22,24 +25,26 @@ namespace VSFly
 
 
             //Add
-            //Pilot p = new Pilot() { FlightHours = 10, LicenseDate = DateTime.Today, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Crist Lima", PassportNumber = "NJ908ZTG8", Salary = 10000 };
-            //context.Pilots.Add(p);
-            //context.SaveChanges();
+            Pilot p = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Crist Lima", PassportNumber = "NJ908ZTG8", Salary = 10000 };
+            context.Pilots.Add(p);
+            context.SaveChanges();
+            Pilot p2 = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Meg", PassportNumber = "NJ908ZTG8", Salary = 10000 };
+            context.Pilots.Add(p2);
+            context.SaveChanges();
 
+            Flight flight1 = new Flight() { AirlineName = "EasyJet", CopilotId = 3, Date = DateTime.Today, Departure = "Prague", Destination = "Dubin", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
+            context.Flights.Add(flight1);
+            context.SaveChanges();
 
-            //Flight flight1 = new Flight() { AirlineName = "EasyJet", CopilotId = 1, Date = DateTime.Today, Departure = "Prague", Destination = "Dubin", FreeSeats = 500, NonSmokingFlight = false, PilotId = 2, Price = 160.0, Seat = 500, Timestamp = "1h", Utilization = true, Strikebound = false };
-            //context.Flights.Add(flight1);
-            //context.SaveChanges();
+            Flight flight2 = new Flight() { AirlineName = "Air France", CopilotId = 3, Date = DateTime.Today, Departure = "Amsterdam", Destination = "Zurich", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
+            context.Flights.Add(flight2);
+            context.SaveChanges();
 
-            //Flight flight2 = new Flight() { AirlineName = "Air France", CopilotId = 1, Date = DateTime.Today, Departure = "Amsterdam", Destination = "Zurich", FreeSeats = 500, NonSmokingFlight = false, PilotId = 2, Price = 160.0, Seat = 500, Timestamp = "1h", Utilization = true, Strikebound = false };
-            //context.Flights.Add(flight2);
-            //context.SaveChanges();
+            Flight flight3 = new Flight() { AirlineName = "	Swiss International Air Lines", CopilotId = 3, Date = DateTime.Today, Departure = "Bern", Destination = "Oslo", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500};
+            context.Flights.Add(flight3);
+            context.SaveChanges();
 
-            //Flight flight3 = new Flight() { AirlineName = "	Swiss International Air Lines", CopilotId = 1, Date = DateTime.Today, Departure = "Bern", Destination = "Oslo", FreeSeats = 500, NonSmokingFlight = false, PilotId = 2, Price = 160.0, Seat = 500, Timestamp = "1h", Utilization = true, Strikebound = false };
-            //context.Flights.Add(flight3);
-            //context.SaveChanges();
-
-            //Console.Write("Add Done");
+            Console.Write("Add Done");
 
             // try to display all the flights
             var pilotList = context.Pilots.ToList<Pilot>();
@@ -72,29 +77,29 @@ namespace VSFly
 
             var passengerJean = context.Passengers.Where(p => p.FullName == "Jean Dutrond").FirstOrDefault<Passenger>();
 
-            //peut faire pour le cours
-            var flightJean = context.Flights.Where(f => f.Bookings.Any(b => b.Passenger == passengerJean)).ToList<Flight>();
-            foreach (Flight f in flightJean)
-            {
-                Console.WriteLine("Date: {0}, Departure : {1}, Pilot {2}", f.Date, f.Departure, f.Pilot.FullName);
-            }
+            ////peut faire pour le cours
+            //var flightJean = context.Flights.Where(f => f.Bookings.Any(b => b.Passenger == passengerJean)).ToList<Flight>();
+            //foreach (Flight f in flightJean)
+            //{
+            //    Console.WriteLine("Date: {0}, Departure : {1}, Pilot {2}", f.Date, f.Departure, f.Pilot.FullName);
+            //}
 
             //pour des tonne de donnée entreprises utilisent
-            ////var bookingsJean = context.Bookings.Where(b => b.Passenger == passengerJean).ToList<Booking>();
-            ////var flightJean = new List<Flight>();
-            ////var pilotJean = new List<Pilot>();
-            ////foreach (Booking b in bookingsJean)
-            ////{
-            ////    flightJean = context.Flights.Where(f => f.FlightNo == b.FlightNo).ToList<Flight>();
-            ////}
-            ////foreach(Flight f in flightJean)
-            ////{
-            ////    Console.WriteLine("Fullname: {0}", f.Pilot.FullName);
-            ////}
+            //var bookingsJean = context.Bookings.Where(b => b.Passenger == passengerJean).ToList<Booking>();
+            //var flightJean = new List<Flight>();
+            //var pilotJean = new List<Pilot>();
+            //foreach (Booking b in bookingsJean)
+            //{
+            //    flightJean = context.Flights.Where(f => f.FlightNo == b.FlightNo).ToList<Flight>();
+            //}
+            //foreach(Flight f in flightJean)
+            //{
+            //    Console.WriteLine("Fullname: {0}", f.Pilot.FullName);
+            //}
 
 
 
-            
+
 
             //Edit
             //Pilot pilotToUpdate = pilotList.Where(p => p.FullName == "Meg Solliard ")
