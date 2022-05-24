@@ -29,5 +29,23 @@ namespace WebAPI.Extensions
             f.Date = fm.Date;
             return f;
         }
+
+        public static Models.PilotM ConvertToPilotM(this VSFly.Pilot p)
+        {
+            Models.PilotM pm = new Models.PilotM();
+            pm.PersonId = p.PersonId;
+            pm.FlightHours = p.FlightHours;
+           
+            return pm;
+        }
+
+        public static VSFly.Pilot ConvertToPilot(this Models.PilotM pm)
+        {
+            VSFly.Pilot p = new VSFly.Pilot();
+            p.PersonId = pm.PersonId;
+            p.FlightHours = pm.FlightHours;
+            
+            return p;
+        }
     }
 }

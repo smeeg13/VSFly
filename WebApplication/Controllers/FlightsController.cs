@@ -22,6 +22,7 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
+        //Display all flights still available
         // GET: api/Flights
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightM>>> GetFlights()
@@ -32,7 +33,10 @@ namespace WebAPI.Controllers
             foreach (Flight f in flightList)
             {
                 var FM = f.ConvertToFlightM();
-                flightMList.Add(FM);
+
+                //Check if flight have free seats
+                if(f.FreeSeats > 0)
+                    flightMList.Add(FM);
             }
             return flightMList;
         }

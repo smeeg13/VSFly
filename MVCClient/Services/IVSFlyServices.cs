@@ -10,5 +10,7 @@ namespace MVCClient.Services
     {
         public Task<IEnumerable<FlightM>> GetFlights();
 
+        public Task<IEnumerable<PilotM>> GetPilots();
+
     }
 }

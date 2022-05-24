@@ -28,5 +28,16 @@ namespace MVCClient.Services
             
             return flightList;
         }
+
+        public async Task<IEnumerable<PilotM>> GetPilots()
+        {
+            var uri = _baseuri + "Pilots";
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var pilotList = JsonConvert.DeserializeObject<IEnumerable<PilotM>>(responseString); //Deserialized what received in a list
+
+            return pilotList;
+        }
     }
 }
