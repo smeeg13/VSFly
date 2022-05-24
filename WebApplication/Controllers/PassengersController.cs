@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Passengers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Passenger>> GetPassenger(int id)
+        public async Task<ActionResult<PassengerM>> GetPassenger(int id)
         {
             var passenger = await _context.Passengers.FindAsync(id);
 
@@ -49,20 +49,23 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            return passenger;
+            PassengerM passengerM = passenger.ConvertToPassengerM();
+
+
+            return passengerM;
         }
 
         // PUT: api/Passengers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPassenger(int id, Passenger passenger)
+        public async Task<IActionResult> PutPassenger(int id, PassengerM passengerM)
         {
-            if (id != passenger.PersonId)
+            if (id != passengerM.PersonId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(passenger).State = EntityState.Modified;
+            _context.Entry(passengerM).State = EntityState.Modified;
 
             try
             {
@@ -86,12 +89,27 @@ namespace WebAPI.Controllers
         // POST: api/Passengers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Passenger>> PostPassenger(Passenger passenger)
+        public async Task<ActionResult<PassengerM>> PostPassenger(PassengerM passengerM)
         {
+            Passenger passenger = passengerM.ConvertToPassenger();
             _context.Passengers.Add(passenger);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (PassengerExists(passenger.PersonId))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-            return CreatedAtAction("GetPassenger", new { id = passenger.PersonId }, passenger);
+            return CreatedAtAction("GetPassenger", new { id = passengerM.PersonId }, passengerM);
         }
 
         // DELETE: api/Passengers/5

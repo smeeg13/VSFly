@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Pilots/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pilot>> GetPilot(int id)
+        public async Task<ActionResult<PilotM>> GetPilot(int id)
         {
             var pilot = await _context.Pilots.FindAsync(id);
 
@@ -47,20 +47,22 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            return pilot;
+            PilotM pilotM = pilot.ConvertToPilotM();
+
+            return pilotM;
         }
 
         // PUT: api/Pilots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPilot(int id, Pilot pilot)
+        public async Task<IActionResult> PutPilot(int id, PilotM pilotM)
         {
-            if (id != pilot.PersonId)
+            if (id != pilotM.PersonId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(pilot).State = EntityState.Modified;
+            _context.Entry(pilotM).State = EntityState.Modified;
 
             try
             {
@@ -84,12 +86,26 @@ namespace WebAPI.Controllers
         // POST: api/Pilots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Pilot>> PostPilot(Pilot pilot)
+        public async Task<ActionResult<PilotM>> PostPilot(PilotM pilotM)
         {
+            Pilot pilot = pilotM.ConvertToPilot();
             _context.Pilots.Add(pilot);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPilot", new { id = pilot.PersonId }, pilot);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (PilotExists(pilot.PersonId))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+                return CreatedAtAction("GetPilot", new { id = pilotM.PersonId }, pilotM);
         }
 
         // DELETE: api/Pilots/5
