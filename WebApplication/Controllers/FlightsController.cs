@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Flights/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Flight>> GetFlight(int id)
+        public async Task<ActionResult<FlightM>> GetFlight(int id)
         {
             var flight = await _context.Flights.FindAsync(id);
 
@@ -51,21 +51,22 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            FlightM flightM = flight.ConvertToFlightM();
 
-            return flight;
+            return flightM;
         }
 
         // PUT: api/Flights/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFlight(int id, Flight flight)
+        public async Task<IActionResult> PutFlight(int id, FlightM flightM)
         {
-            if (id != flight.FlightNo)
+            if (id != flightM.FlightNo)
             {
                 return BadRequest();
             }
 
-            _context.Entry(flight).State = EntityState.Modified;
+            _context.Entry(flightM).State = EntityState.Modified;
 
             try
             {
@@ -89,7 +90,7 @@ namespace WebAPI.Controllers
         // POST: api/Flights
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Flight>> PostFlight(FlightM flightM)
+        public async Task<ActionResult<FlightM>> PostFlight(FlightM flightM)
         {
 
             _context.Flights.Add(flightM.ConvertToFlight());
