@@ -47,5 +47,46 @@ namespace WebAPI.Extensions
             
             return p;
         }
+
+        public static Models.BookingM ConvertToBookingM(this VSFly.Booking b)
+        {
+            Models.BookingM bm = new Models.BookingM();
+            bm.FlightNo = b.FlightNo;
+            bm.PassengerID = b.PassengerID;
+
+            return bm;
+        }
+
+        public static VSFly.Booking ConvertToBooking(this Models.BookingM bm)
+        {
+            VSFly.Booking b = new VSFly.Booking();
+            b.FlightNo = bm.FlightNo;
+            b.PassengerID = bm.PassengerID;
+
+            return b;
+        }
+
+        public static VSFly.Passenger ConvertToPassenger(this Models.PassengerM pm)
+        {
+            VSFly.Passenger p = new VSFly.Passenger();
+            p.Birthday = pm.Birthday;
+            p.Email = pm.Email;
+            p.FullName = pm.FullName;
+            p.PersonId = pm.PersonId;
+            p.Status = pm.Status;
+
+            return p;
+        }
+        public static Models.PassengerM ConvertToPassengerM(this VSFly.Passenger p)
+        {
+            Models.PassengerM pm = new Models.PassengerM();
+            pm.Birthday = p.Birthday;
+            pm.Email = p.Email;
+            pm.FullName = p.FullName;
+            pm.PersonId = p.PersonId;
+            pm.Status = p.Status;
+
+            return pm;
+        }
     }
 }

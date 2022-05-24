@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VSFly;
+using WebAPI.Extensions;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -22,14 +24,22 @@ namespace WebAPI.Controllers
 
         // GET: api/Bookings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
+        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookings()
         {
-            return await _context.Bookings.ToListAsync();
+            var BookingList = await _context.Bookings.ToListAsync();
+            List<BookingM> bookingMList = new List<BookingM>();
+            foreach(Booking b in BookingList)
+            {
+                var BM = b.ConvertToBookingM();
+                bookingMList.Add(BM);
+            }
+
+            return bookingMList;
         }
 
         // GET: api/Bookings/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Booking>> GetBooking(int id)
+        public async Task<ActionResult<BookingM>> GetBooking(int id)
         {
             var booking = await _context.Bookings.FindAsync(id);
 
@@ -38,20 +48,22 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            return booking;
+            BookingM bookingM = booking.ConvertToBookingM();
+
+            return bookingM;
         }
 
         // PUT: api/Bookings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, Booking booking)
+        public async Task<IActionResult> PutBooking(int id, BookingM bookingM)
         {
-            if (id != booking.FlightNo)
+            if (id != bookingM.FlightNo)
             {
                 return BadRequest();
             }
 
-            _context.Entry(booking).State = EntityState.Modified;
+            _context.Entry(bookingM).State = EntityState.Modified;
 
             try
             {
@@ -75,8 +87,9 @@ namespace WebAPI.Controllers
         // POST: api/Bookings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+        public async Task<ActionResult<BookingM>> PostBooking(BookingM bookingM)
         {
+            Booking booking = bookingM.ConvertToBooking();
             _context.Bookings.Add(booking);
             try
             {
@@ -94,7 +107,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetBooking", new { id = booking.FlightNo }, booking);
+            return CreatedAtAction("GetBooking", new { id = bookingM.FlightNo }, bookingM);
         }
 
         // DELETE: api/Bookings/5
