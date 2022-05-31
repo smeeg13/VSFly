@@ -4,11 +4,27 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Flights Available</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @*<a asp-action="Create">Create New</a>*@
 </p>
+<div class="row">
+    <div class="fullcolumn">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            <b> <p class="tilteFiltre">Filter the flights : </p></b>
+            <p>
+                Enter Departure : <input type="text" name="searchDeparture" />         
+
+                Enter Destination : <input type="text" name="searchDestination" />
+            </p><p>
+</p>
+            <input class="filterButton" type="submit" value="Search" />
+
+        }
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -33,31 +49,59 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Departure)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.Price)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.SalePrice)
-            </th>
-            <td>
-              
-                @Html.ActionLink("Book this Flight", "Details","Flight", new {  id=item.FlightNo }) 
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </th>
+                <td>
+
+                    @Html.ActionLink("Book this Flight", "Details", "Flight", new { id = item.FlightNo })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+<style>
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .tilteFiltre {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .fullcolumn {
+        background-color: #f5f5f5;
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    .filterButton {
+        margin: 14px;
+    }
+</style>

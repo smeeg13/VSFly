@@ -16,6 +16,10 @@ namespace MVCClient.Models
         public DateTime Date { get; set; }
         public double Price { get; set; }
         public double SalePrice { get; set; }
+
+        public string searchDestination { get; set; }
+        public string searchDeparture { get; set; }
+
     }
 
 }

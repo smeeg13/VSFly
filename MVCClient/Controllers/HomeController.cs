@@ -12,18 +12,27 @@ namespace MVCClient.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IVSFlyServices _vSFly;
 
-        public HomeController(ILogger<HomeController> logger, IVSFlyServices vSFly)
+        public HomeController( IVSFlyServices vSFly)
         {
             _vSFly = vSFly;
-            _logger = logger;
         }
-
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchDestination, string searchDeparture)
         {
             var listFlights = await _vSFly.GetFlights();
+
+            if (!string.IsNullOrEmpty(searchDestination))
+            {
+                listFlights = listFlights.AsQueryable().Where(x => x.Destination.Contains(searchDestination));
+            }
+            if (!string.IsNullOrEmpty(searchDeparture))
+            {
+                listFlights = listFlights.AsQueryable().Where(x => x.Departure.Contains(searchDeparture));
+            }
+
             return View(listFlights);
         }
 

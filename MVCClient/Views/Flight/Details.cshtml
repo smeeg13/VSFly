@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Vol : @Html.DisplayFor(model => model.Departure) -  @Html.DisplayFor(model => model.Destination)</h1>
 
 <div>
-    <h4>FlightM</h4>
+<br/>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -50,5 +50,5 @@
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
 </div>
