@@ -24,7 +24,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalePrice)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +47,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.Price)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.SalePrice)
+            </th>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

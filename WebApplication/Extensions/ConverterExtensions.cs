@@ -17,6 +17,7 @@ namespace WebAPI.Extensions
             fm.Departure = f.Departure;
             fm.Destination = f.Destination;
             fm.Date = f.Date;
+            fm.Price = f.Price;
             return fm;
         }
 
@@ -27,6 +28,7 @@ namespace WebAPI.Extensions
             f.Departure = fm.Departure;
             f.Destination = fm.Destination;
             f.Date = fm.Date;
+            f.Price = fm.Price;
             return f;
         }
 
@@ -53,7 +55,7 @@ namespace WebAPI.Extensions
             Models.BookingM bm = new Models.BookingM();
             bm.FlightNo = b.FlightNo;
             bm.PassengerID = b.PassengerID;
-
+            bm.SalePrice = b.SalePrice;
             return bm;
         }
 
@@ -62,6 +64,7 @@ namespace WebAPI.Extensions
             VSFly.Booking b = new VSFly.Booking();
             b.FlightNo = bm.FlightNo;
             b.PassengerID = bm.PassengerID;
+            b.SalePrice = bm.SalePrice;
 
             return b;
         }

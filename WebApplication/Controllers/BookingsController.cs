@@ -37,6 +37,123 @@ namespace WebAPI.Controllers
             return bookingMList;
         }
 
+        //GET sum all salePrice of a flight
+
+        [Route("api/Booking/{id:int}/Sum")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<double>> GetSumSalePrice(int id)
+        {
+            var bookings = await _context.Bookings.Where(b => b.FlightNo == id).ToListAsync();
+            var sum = 0.0;
+            if (bookings == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Booking b in bookings)
+            {
+                sum += b.SalePrice;
+            }
+
+            return sum;
+        }
+
+        //GET avg all salePrice of a or many flights
+        [Route("api/Booking/{ids}/Avg")]
+        [HttpGet("{ids}")]
+        public async Task<ActionResult<double>> GetAvgSalePrice(List<int> ids)
+        {
+            var nb = 0;
+            var sum = 0.0;
+            foreach (int id in ids) { 
+                var bookings = await _context.Bookings.Where(b => b.FlightNo == id).ToListAsync();
+                
+                if (bookings!=null)
+                foreach (Booking b in bookings)
+                {
+                    sum += b.SalePrice;
+                    nb += 1;
+                }
+            }
+            var avg = sum / nb;
+
+            return avg;
+        }
+
+        //Get Tickets by destination
+        [Route("api/Booking/{id}/Tickets")]
+        [HttpGet("{destination}")]
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByDestination(string destination)
+        {
+            List<Ticket> tickets = new List<Ticket>();
+            var flights = await _context.Flights.Where(f => f.Destination == destination).ToListAsync();
+            if (flights == null)
+            {
+                return NotFound();
+            }
+
+            foreach(Flight f in flights)
+            {
+                var bookings = await _context.Bookings.Where(b => b.FlightNo == f.FlightNo).Include(x => x.Passenger).ToListAsync();
+
+                foreach(Booking b in bookings)
+                {
+                    Ticket ticket = new Ticket { fullName = b.Passenger.FullName, FlightNo = f.FlightNo, SalePrice = b.SalePrice };
+                    tickets.Add(ticket);
+                }
+            }
+            return tickets;
+        }
+
+
+        //GET by flightNo
+        [Route("api/Booking/{id:int}/FlightNo")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByFlightNo(int id)
+        {
+            var booking = await _context.Bookings.Where(b => b.FlightNo == id).ToListAsync();
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            List<BookingM> bookingMs = new List<BookingM>();
+
+            foreach(Booking b in booking) { 
+
+                BookingM bookingM = b.ConvertToBookingM();
+                bookingMs.Add(bookingM);
+
+            }
+
+            return bookingMs;
+        }
+
+        //GET by passengerId
+        [Route("api/Booking/{id:int}/PassengerId")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByPassengerId(int id)
+        {
+            var booking = await _context.Bookings.Where(b => b.PassengerID == id).ToListAsync();
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            List<BookingM> bookingMs = new List<BookingM>();
+
+            foreach (Booking b in booking)
+            {
+
+                BookingM bookingM = b.ConvertToBookingM();
+                bookingMs.Add(bookingM);
+
+            }
+
+            return bookingMs;
+        }
+
+
         // GET: api/Bookings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingM>> GetBooking(int id)

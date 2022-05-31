@@ -64,11 +64,11 @@ namespace VSFly
             {
                 Console.WriteLine("Date: {0}, Departure : {1}, Seats {2}", f.Date, f.Departure, f.Seat);
             }
-            Booking b1 = new Booking() { Flight = flightToPorto2[0], Passenger = new Passenger() { Birthday = DateTime.Today, Email = "crist@gmail.com", FullName = "Cristiana Lima", Status = "occupe" } };
+            Booking b1 = new Booking() { Flight = flightToPorto2[0], Passenger = new Passenger() { Birthday = DateTime.Today, Email = "crist@gmail.com", FullName = "Cristiana Lima", Status = "occupe" }, SalePrice = 100 };
 
             Passenger p1 = new Passenger() { Status = "maried", FullName = "Jean Dutrond", Email = "jd@gmail.com", Birthday = DateTime.Today };
 
-            Booking b2 = new Booking() { Flight = flightsToOslo[0], Passenger = p1 };
+            Booking b2 = new Booking() { Flight = flightsToOslo[0], Passenger = p1 , SalePrice=120};
             context.Passengers.Add(p1);
             context.Bookings.Add(b1);
             context.Bookings.Add(b2);

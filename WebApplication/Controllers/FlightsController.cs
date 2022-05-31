@@ -22,6 +22,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
+
+
         //Display all flights still available
         // GET: api/Flights
         [HttpGet]
@@ -32,16 +34,50 @@ namespace WebAPI.Controllers
             List<FlightM> flightMList = new List<FlightM>();
             foreach (Flight f in flightList)
             {
-                var FM = f.ConvertToFlightM();
-
                 //Check if flight have free seats
-                if(f.FreeSeats > 0)
+                if (f.FreeSeats!= 0) {
+                    var FM = f.ConvertToFlightM();
+
+                    FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
+
                     flightMList.Add(FM);
+                }
             }
             return flightMList;
         }
+        //to get the sale price
+        public double getSalePrice(int seat, int freeSeat, DateTime date, double price)
+        {
+            var priceSale = 0.0;
+            //% of airplane full
+            var ocup = seat - freeSeat;
+            var full = ocup * 100 / seat;
+
+            //see time before departure
+            var year = date.Date.Year - DateTime.Now.Date.Year;
+            var month = year * 12;
+            month = + date.Date.Month - DateTime.Now.Date.Month;
+            var days = month * 30;
+            days += date.Date.Day - DateTime.Now.Date.Day;
+
+            if (full > 80)
+                priceSale = price * 150 / 100;
+
+            else if (full < 20 && days < 60)
+                priceSale = price * 80 / 100;
+
+            else if (full < 50 && days < 30)
+                priceSale = price * 70 / 100;
+
+            else
+                priceSale = price;
+
+            return priceSale;
+        }
+
 
         // GET: api/Flights/5
+        [Route("api/Flights/{id:int}")]
         [HttpGet("{id}")]
         public async Task<ActionResult<FlightM>> GetFlight(int id)
         {
@@ -51,7 +87,9 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+
             FlightM flightM = flight.ConvertToFlightM();
+            flightM.SalePrice = getSalePrice(flight.Seat, flight.FreeSeats, flight.Date, flight.Price);
 
             return flightM;
         }
