@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVCClient.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,17 @@ using System.Threading.Tasks;
 namespace MVCClient.Controllers
 {
     public class FlightController : Controller
+
+
     {
+        private readonly IVSFlyServices _vSFly;
+
+        public FlightController(IVSFlyServices vSFly)
+        {
+            _vSFly = vSFly;
+        }
+
+
         // GET: FlightController
         public ActionResult Index()
         {
@@ -16,9 +27,10 @@ namespace MVCClient.Controllers
         }
 
         // GET: FlightController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var flight = await _vSFly.GetFlight(id);
+            return View(flight);
         }
 
         // GET: FlightController/Create

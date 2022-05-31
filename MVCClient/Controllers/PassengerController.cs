@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using MVCClient.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,22 @@ namespace MVCClient.Controllers
 {
     public class PassengerController : Controller
     {
+
+        private readonly ILogger<PassengerController> _logger;
+        private readonly IVSFlyServices _vSFly;
+
+        public PassengerController(ILogger<PassengerController> logger, IVSFlyServices vSFly)
+        {
+            _logger = logger;
+            _vSFly = vSFly;
+        }
+
         // GET: PassengerController
         public ActionResult Index()
         {
             return View();
         }
+
 
         // GET: PassengerController/Details/5
         public ActionResult Details(int id)

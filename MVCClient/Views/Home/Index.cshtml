@@ -54,9 +54,8 @@
                 @Html.DisplayFor(modelItem => item.SalePrice)
             </th>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+              
+                @Html.ActionLink("Book this Flight", "Details","Flight", new {  id=item.FlightNo }) 
             </td>
         </tr>
 }
