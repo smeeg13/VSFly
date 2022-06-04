@@ -18,5 +18,7 @@ namespace VSFly
         [Required]
         public string FullName { get; set; }
 
+        public string PassportID { get; set; }
+
     }
 }

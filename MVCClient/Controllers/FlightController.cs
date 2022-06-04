@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVCClient.Models;
 using MVCClient.Services;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,83 @@ namespace MVCClient.Controllers
         }
 
         // GET: FlightController/Details/5
-        public async Task<ActionResult> Details(int id)
+        [HttpGet]
+        [HttpPost]
+        public async Task<ActionResult> Details(int id, int NbPassengers)
         {
             var flight = await _vSFly.GetFlight(id);
-            return View(flight);
+
+            var bookFlight = new BookFlight();
+            bookFlight.FlightNo = flight.FlightNo;
+            bookFlight.Departure = flight.Departure;
+            bookFlight.Destination = flight.Destination;
+            bookFlight.Date = flight.Date;
+            bookFlight.SalePrice = flight.SalePrice;
+            if (NbPassengers < 1)
+            {
+                NbPassengers = 1;
+            }
+            bookFlight.NbPassengers = NbPassengers;
+            bookFlight.Passengers = new List<PassengerM>(NbPassengers);
+            for(int i =0; i < NbPassengers; i++)
+            {
+                bookFlight.Passengers.Add(new PassengerM());
+            }
+            
+            return View(bookFlight);
+        }
+
+        public async Task<ActionResult> BookFlight(BookFlight bookFlight)
+        {
+            List<BookingM> bookingMs = new List<BookingM>();
+             var passengers = await _vSFly.GetPassengers();
+
+            //Create passenger into db IF Dont exists
+            for (int i = 0; i<passengers.Count(); i++)
+            {
+                for(int j =0; j < bookFlight.Passengers.Count(); j++)
+                {
+                    if (passengers.ElementAt(i).Email.Equals(bookFlight.Passengers.ElementAt(j).Email))
+                    {
+                        //Passenger already exist
+                        bookFlight.Passengers.ElementAt(j).PersonId = passengers.ElementAt(i).PersonId;
+                    }
+                    else
+                    {
+                        //Must create the passenger
+                        var statusCode = _vSFly.CreatePassenger(bookFlight.Passengers.ElementAt(j));
+                        if (statusCode)
+                        {
+                            //Creation of the Passenger is OK
+                            //assign the new passenger id into bookflight.passengers
+
+                            //bookFlight.Passengers.ElementAt(j).PersonId = passengers.ElementAt(i).PersonId;
+
+
+
+                        }
+                       
+                    }
+                }
+                
+            }
+
+            foreach(PassengerM p in bookFlight.Passengers)
+            {
+                
+                //Create new booking for each passenger
+                BookingM bookingM = new BookingM();
+                bookingM.FlightNo = bookFlight.FlightNo;
+                bookingM.SalePrice = bookFlight.SalePrice;
+                bookingM.PassengerID = p.PersonId;
+                bookingMs.Add(bookingM);
+            }
+
+            
+
+            //Display la réservation
+
+            return View();
         }
 
         // GET: FlightController/Create

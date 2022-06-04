@@ -10,7 +10,7 @@ namespace VSFly
     public class Passenger : Person
     {
         public DateTime CustomerSince { get; set; }
-        [Required]
+        
         public string Status { get; set; }
 
         public virtual ICollection<Booking> Bookings { get; }

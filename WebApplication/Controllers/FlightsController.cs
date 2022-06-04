@@ -38,7 +38,6 @@ namespace WebAPI.Controllers
                 if (f.FreeSeats != 0)
                 {
                     var FM = f.ConvertToFlightM();
-
                     FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
 
                     flightMList.Add(FM);

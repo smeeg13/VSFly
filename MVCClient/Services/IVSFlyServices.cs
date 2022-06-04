@@ -16,5 +16,7 @@ namespace MVCClient.Services
 
         public Task<FlightM> GetFlight(int id);
 
+        public Boolean CreatePassenger(PassengerM student);
+
     }
 }

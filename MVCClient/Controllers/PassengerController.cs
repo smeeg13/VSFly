@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCClient.Services;
+using MVCClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,11 @@ namespace MVCClient.Controllers
         }
 
         // GET: PassengerController
-        public ActionResult Index()
+       [HttpGet]
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var listPassengers = await _vSFly.GetPassengers();
+            return View(listPassengers);
         }
 
 
@@ -43,16 +46,30 @@ namespace MVCClient.Controllers
         // POST: PassengerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(IFormCollection formCollection)
         {
-            try
+            PassengerM employee = new PassengerM();
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+
+                employee.FullName = formCollection["FullName"];
+                employee.PassportID = formCollection["PassportID"];
+                employee.Email = formCollection["Email"];
+                employee.Birthday = Convert.ToDateTime(formCollection["Birthday"]);
+
+
+                var statusCode = _vSFly.CreatePassenger(employee);
+                if (statusCode)
+                {
+                    //Creation of the Passenger is OK
+                    return RedirectToAction("Index");
+                }
             }
-            catch
-            {
-                return View();
-            }
+
+
+            ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
+
+            return View(employee);
         }
 
         // GET: PassengerController/Edit/5
