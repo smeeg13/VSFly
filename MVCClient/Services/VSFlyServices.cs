@@ -91,6 +91,42 @@ namespace MVCClient.Services
 
             return booking;
         }
+        //Get One Passenger by Email
+        public async Task<PassengerM> GetPassengerByPassportID(string passportId)
+        {
+            var uri = _baseuri + "Passengers/Find/" + passportId;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var booking = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
+
+            return booking;
+        }
+
+        //Get One Passenger by Id
+        public async Task<PassengerM> GetPassenger(int Id)
+        {
+            var uri = _baseuri + "Passengers/" + Id;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var booking = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
+
+            return booking;
+        }
+
+
+        //Get One Passenger by Id
+        public async Task<PilotM> GetPilot(int Id)
+        {
+            var uri = _baseuri + "Pilots/" + Id;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var booking = JsonConvert.DeserializeObject<PilotM>(responseString); //Deserialized what received in a list
+
+            return booking;
+        }
 
         //Get Sum Sale Price of one Flight
         public async Task<double> GetSumSalePrice(int id)
@@ -118,10 +154,30 @@ namespace MVCClient.Services
 
 
 
-        //POST METHOD TO DO
-        //for Booking
-        //For Passenger
+        //POST METHOD
+        //Create New Booking
+        [HttpPost]
+        public Boolean CreateBooking(BookingM booking)
+        {
 
+            var uri = _baseuri + "Bookings";
+
+            //HTTP POST
+            var postTask = _client.PostAsJsonAsync<BookingM>(uri, booking);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Create New Passenger
         [HttpPost]
         public Boolean CreatePassenger(PassengerM student)
         {

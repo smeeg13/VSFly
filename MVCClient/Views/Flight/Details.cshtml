@@ -57,44 +57,130 @@
 
     <hr />
 
-    @for (int i = 0; i < Model.Passengers.Count; i++)
+    
+    <form asp-action="BookFlight" asp-controller="Flight">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="FlightNo" class="control-label" hidden></label>
+            <input asp-for="FlightNo" class="form-control" hidden />
+            <span asp-validation-for="FlightNo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SalePrice" class="control-label" hidden></label>
+            <input asp-for="SalePrice" class="form-control" hidden />
+            <span asp-validation-for="SalePrice" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="control-label" hidden></label>
+            <input asp-for="Price" class="form-control" hidden />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NbPassengers" class="control-label" hidden></label>
+            <input asp-for="NbPassengers" class="form-control" hidden />
+            <span asp-validation-for="NbPassengers" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Date" class="control-label" hidden></label>
+            <input asp-for="Date" class="form-control" hidden />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Departure" class="control-label" hidden></label>
+            <input asp-for="Departure" class="form-control" hidden />
+            <span asp-validation-for="Departure" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Destination" class="control-label" hidden></label>
+            <input asp-for="Destination" class="form-control" hidden />
+            <span asp-validation-for="Destination" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Passengers" class="control-label" hidden></label>
+            <input asp-for="Passengers" class="form-control" hidden value="@Html.DisplayFor(model => model.Passengers)" />
+            <span asp-validation-for="Passengers" class="text-danger"></span>
+        </div>
+
+    
+            <div>
+                <h6>Enter Personnal Information of Passenger </h6>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Passenger.FullName" class="control-label">Full Name</label>
+                <input asp-for="Passenger.FullName" class="form-control" />
+                <span asp-validation-for="Passenger.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passenger.PassportID" class="control-label">Passport ID</label>
+                <input asp-for="Passenger.PassportID" class="form-control" />
+                <span asp-validation-for="Passenger.PassportID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passenger.Email" class="control-label"></label>
+                <input asp-for="Passenger.Email" class="form-control" />
+                <span asp-validation-for="Passenger.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passenger.Birthday" class="control-label"> </label>
+                <input asp-for="Passenger.Birthday" class="form-control" />
+                <span asp-validation-for="Passenger.Birthday" class="text-danger"></span>
+            </div>
+            <br />
+
+        
+
+        @*@for (int i = 0; i < Model.Passengers.Count; i++)
+        {
+            <div>
+                <h6>Enter Personnal Information of Passenger </h6>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Passengers.ElementAt(i).FullName" class="control-label">Full Name</label>
+                <input asp-for="Passengers.ElementAt(i).FullName" class="form-control" />
+                <span asp-validation-for="Passengers.ElementAt(i).FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passengers.ElementAt(i).PassportID" class="control-label">Passport ID</label>
+                <input asp-for="Passengers.ElementAt(i).PassportID" class="form-control" />
+                <span asp-validation-for="Passengers.ElementAt(i).PassportID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passengers.ElementAt(i).Email" class="control-label"></label>
+                <input asp-for="Passengers.ElementAt(i).Email" class="form-control" />
+                <span asp-validation-for="Passengers.ElementAt(i).Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passengers.ElementAt(i).Birthday" class="control-label"> </label>
+                <input asp-for="Passengers.ElementAt(i).Birthday" class="form-control" />
+                <span asp-validation-for="Passengers.ElementAt(i).Birthday" class="text-danger"></span>
+            </div>
+            <br />
+
+        }*@
+
+
+        <div class="form-group">
+            <input type="submit" value="Book the Flight" class="btn btn-primary" />
+        </div>
+    </form>
+
+    @*@using (Html.BeginForm("BookFlight", "Flight"))
     {
-        <div>
-            <h6>Enter Personnal Information of Passenger @Html.Value(i.ToString())</h6>
-        </div>
-        <hr />
-        <div class="form-group">
-            <label asp-for="Passengers.ElementAt(i).FullName" class="control-label">Full Name</label>
-            <input asp-for="Passengers.ElementAt(i).FullName" class="form-control" />
-            <span asp-validation-for="Passengers.ElementAt(i).FullName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Passengers.ElementAt(i).PassportID" class="control-label">Passport ID</label>
-            <input asp-for="Passengers.ElementAt(i).PassportID" class="form-control" />
-            <span asp-validation-for="Passengers.ElementAt(i).PassportID" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Passengers.ElementAt(i).Email" class="control-label"></label>
-            <input asp-for="Passengers.ElementAt(i).Email" class="form-control" />
-            <span asp-validation-for="Passengers.ElementAt(i).Email" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Passengers.ElementAt(i).Birthday" class="control-label"> </label>
-            <input asp-for="Passengers.ElementAt(i).Birthday" class="form-control" />
-            <span asp-validation-for="Passengers.ElementAt(i).Birthday" class="text-danger"></span>
-        </div>
-        <br />
-
-    }
+        <label name="FlightNo" class="control-label" hidden>@Html.DisplayFor(model => model.FlightNo)</label>
+        <label name="NbPassengers" class="control-label" hidden>@Html.DisplayFor(model => model.NbPassengers)</label>
+        <label name="Date" class="control-label" hidden>@Html.DisplayFor(model => model.Date)</label>
+        <label name="Departure" class="control-label" hidden>@Html.DisplayFor(model => model.Departure)</label>
+        <label aspname-for="Destination" class="control-label" hidden>@Html.DisplayFor(model => model.Destination)</label>
 
 
+        <input type="submit" value="Book" />
+    }*@
 </div>
 
-@using (Html.BeginForm("BookFlight", "Flight"))
-{
-   
-    <input type="submit" value="Book" />
-}
 <hr />
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |

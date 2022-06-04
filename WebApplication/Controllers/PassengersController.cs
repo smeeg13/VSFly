@@ -56,6 +56,29 @@ namespace WebAPI.Controllers
             return passengerM;
         }
 
+        // GET: api/Passengers/Find/2
+        [HttpGet("Find/{passportId}")]
+        public async Task<ActionResult<PassengerM>> GetPassengerByEmail(string passportId)
+        {
+            var passengers = await _context.Passengers.ToListAsync() ;
+
+            if (passengers == null)
+            {
+                return NotFound();
+            }
+
+            PassengerM passengerM = new();
+            foreach (Passenger p in passengers)
+            {
+                if (p.PassportID.Equals(passportId))
+                {
+                    passengerM = p.ConvertToPassengerM();
+                }
+            }
+
+            return passengerM;
+        }
+
         // PUT: api/Passengers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -16,7 +16,15 @@ namespace MVCClient.Services
 
         public Task<FlightM> GetFlight(int id);
 
+      
+
+        public Task<PassengerM> GetPassengerByPassportID(string passportId);
+        public  Task<PassengerM> GetPassenger(int Id); 
+        public Task<PilotM> GetPilot(int Id);
+        public Task<BookingM> GetBooking(int id);
+
         public Boolean CreatePassenger(PassengerM student);
+        public Boolean CreateBooking(BookingM booking);
 
     }
 }
