@@ -35,15 +35,12 @@ namespace MVCClient.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            var listPassengers = await _vSFly.GetPassengers();
-            return View(listPassengers);
-        }
+            var passenger = await _vSFly.GetPassenger((int)HttpContext.Session.GetInt32("PersonId"));
 
+            //Retrieve all booking for this passenger
+            passenger.Bookings = await _vSFly.GetBookingByPassengerId(passenger.PersonId);
 
-        // GET: PassengerController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
+            return View(passenger);
         }
 
         // GET: PassengerController/Create
@@ -57,17 +54,17 @@ namespace MVCClient.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection formCollection)
         {
-            PassengerM employee = new PassengerM();
+            PassengerM passenger = new PassengerM();
             if (ModelState.IsValid)
             {
 
-                employee.FullName = formCollection["FullName"];
-                employee.PassportID = formCollection["PassportID"];
-                employee.Email = formCollection["Email"];
-                employee.Birthday = Convert.ToDateTime(formCollection["Birthday"]);
+                passenger.FullName = formCollection["FullName"];
+                passenger.PassportID = formCollection["PassportID"];
+                passenger.Email = formCollection["Email"];
+                passenger.Birthday = Convert.ToDateTime(formCollection["Birthday"]);
 
 
-                var statusCode = _vSFly.CreatePassenger(employee);
+                var statusCode = _vSFly.CreatePassenger(passenger);
                 if (statusCode)
                 {
                     //Creation of the Passenger is OK
@@ -78,13 +75,14 @@ namespace MVCClient.Controllers
 
             ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
 
-            return View(employee);
+            return View(passenger);
         }
 
         // GET: PassengerController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var Passenger = await _vSFly.GetPassenger(id);
+            return View(Passenger);
         }
 
         // POST: PassengerController/Edit/5

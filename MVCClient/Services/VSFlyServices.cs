@@ -55,7 +55,20 @@ namespace MVCClient.Services
 
             return flight;
         }
-        
+
+        //Get All Flights for One Pilot
+        public async Task<IEnumerable<FlightM>> GetFlightsByPilotId(int id)
+        {
+            var uri = _baseuri + "Flights/PilotId/" + id;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightM>>(responseString); //Deserialized what received in a list
+
+            IEnumerable<FlightM> query = flightsForPilot.OrderBy(f => f.Date);
+            return query;
+        }
+
         //Get All Booking for One Flight
         public async Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id)
         {
@@ -71,7 +84,7 @@ namespace MVCClient.Services
          //Get All Booking for One Passenger
         public async Task<IEnumerable<BookingM>> GetBookingByPassengerId(int id)
         {
-            var uri = _baseuri + "PassengerId/" + id;
+            var uri = _baseuri + "Bookings/PassengerId/" + id;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
@@ -92,17 +105,7 @@ namespace MVCClient.Services
             return bookingsFoPassenger;
         }
 
-        //Get One Booking by ID
-        public async Task<BookingM> GetBooking(int id)
-        {
-            var uri = _baseuri + "Bookings/" + id;
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var booking = JsonConvert.DeserializeObject<BookingM>(responseString); //Deserialized what received in a list
-
-            return booking;
-        }
+       
         //Get One Passenger by Email
         public async Task<PassengerM> GetPassengerByPassportID(string passportId)
         {

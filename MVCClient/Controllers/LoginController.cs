@@ -25,14 +25,14 @@ namespace MVCClient.Controllers
         {
             {
                 if (ModelState.IsValid)
-                {
+                {                        
+                    //Redirect to Pilot page if Pilot
                     if (login.IsPilot)
                     {
                         var pilot = await _vSFly.GetPilot(login.PersonID);
-                        //Redirect to Pilot page if Pilot
                         if (pilot != null)
                         {
-                           // HttpContext.Session.SetInt32("PersonId", pilot.PersonId);
+                            HttpContext.Session.SetInt32("PersonId", pilot.PersonId);
                             HttpContext.Session.SetString("UserType", "Pilot");
 
                             return RedirectToAction("Index", "Pilots");
@@ -49,16 +49,15 @@ namespace MVCClient.Controllers
                             if (passenger.Status.Equals("Admin"))
                             {
                                 HttpContext.Session.SetString("UserType", "Admin");
-                             //   HttpContext.Session.SetInt32("PersonId", passenger.PersonId);
+                                HttpContext.Session.SetInt32("PersonId", passenger.PersonId);
 
                                 return RedirectToAction("Index", "Admin");
-
                             }
                             
                         ModelState.AddModelError(string.Empty, "Invalid Id or Email");
-                            HttpContext.Session.SetString("UserType", "Passenger");
+                        HttpContext.Session.SetString("UserType", "Passenger");
 
-                        //    HttpContext.Session.SetInt32("PersonId", passenger.PersonId);
+                        HttpContext.Session.SetInt32("PersonId", passenger.PersonId);
                         return RedirectToAction("Index", "Passenger");
                         }
                     }
@@ -66,6 +65,5 @@ namespace MVCClient.Controllers
             }
             return View();
         }
-
     }
 }

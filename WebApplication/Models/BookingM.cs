@@ -12,6 +12,9 @@ namespace WebAPI.Models
         public int FlightNo { get; set; }
         public int PassengerID { get; set; }
         public double SalePrice { get; set; }
+
+        public FlightM Flight { get; set; }
+        public PassengerM Passenger { get; set; }
     }
 
 }

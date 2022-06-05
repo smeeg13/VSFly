@@ -36,8 +36,10 @@ namespace MVCClient.Controllers
             }
 
 
-            var listPilots = await _vSFly.GetPilots();
-            return View(listPilots);
+            var Pilot = await _vSFly.GetPilot((int)HttpContext.Session.GetInt32("PersonId"));
+
+            Pilot.Flights = await _vSFly.GetFlightsByPilotId(Pilot.PersonId);
+            return View(Pilot);
         }
 
 

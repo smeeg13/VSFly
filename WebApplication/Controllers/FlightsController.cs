@@ -93,6 +93,30 @@ namespace WebAPI.Controllers
             return flightM;
         }
 
+        // GET: api/Flights/PilotId/5
+        [Route("PilotId/{pilotId:int}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<FlightM>>> GetFlightsByPilotId(int pilotId)
+        {
+            var flights = await _context.Flights.Where(b => b.PilotId == pilotId).ToListAsync();
+
+            if (flights == null)
+            {
+                return NotFound();
+            }
+            List<FlightM> flightsMs = new ();
+
+            foreach (Flight f in flights)
+            {
+
+                FlightM flightgM = f.ConvertToFlightM();
+                flightsMs.Add(flightgM);
+
+            }
+
+            return flightsMs;
+        }
+
         //// PUT: api/Flights/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]

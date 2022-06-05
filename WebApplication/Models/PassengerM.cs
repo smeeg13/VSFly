@@ -14,5 +14,8 @@ namespace WebAPI.Models
  
         public string PassportID { get;  set; }
         public string Status { get; set; }
+
+        public IEnumerable<BookingM> Bookings { get; set; }
+
     }
 }

@@ -9,5 +9,8 @@ namespace WebAPI.Models
     {
         public int PersonId { get; set; }
         public int? FlightHours { get; set; }
+
+        public IEnumerable<FlightM> Flights { get; set; }
+
     }
 }
