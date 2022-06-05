@@ -76,6 +76,7 @@ namespace WebAPI.Extensions
             p.Email = pm.Email;
             p.FullName = pm.FullName;
             p.PersonId = pm.PersonId;
+            p.Status = pm.Status;
           
             p.PassportID = pm.PassportID;
 
@@ -89,7 +90,8 @@ namespace WebAPI.Extensions
             pm.Email = p.Email;
             pm.FullName = p.FullName;
             pm.PersonId = p.PersonId;
-          
+            pm.Status = p.Status;
+
             pm.PassportID = p.PassportID;
 
             return pm;

@@ -13,5 +13,6 @@ namespace MVCClient.Models
         public string FullName { get; set; }
 
         public string PassportID { get; set; }
+        public string Status { get; internal set; }
     }
 }

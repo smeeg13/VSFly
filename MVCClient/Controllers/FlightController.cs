@@ -58,49 +58,48 @@ namespace MVCClient.Controllers
         {
             List<BookingM> bookingMs = new List<BookingM>();
              var passengers = await _vSFly.GetPassengers();
-
+            Boolean AlreadyExist = false;
             //Create passenger into db IF Dont exists
             for (int i = 0; i<passengers.Count(); i++)
             {
                
-                    if (passengers.ElementAt(i).Email.Equals(bookFlight.Passenger.Email))
+                    if (bookFlight.Passenger.PassportID == passengers.ElementAt(i).PassportID)
                     {
+                        AlreadyExist = true;
                         //Passenger already exist
-                        bookFlight.Passenger.PersonId = passengers.ElementAt(i).PersonId;
+                        bookFlight.Passenger = passengers.ElementAt(i);
                     }
-                    else
-                    {
+                    //else
+                    //{
                         //Must create the passenger
-                        var statusCode = _vSFly.CreatePassenger(bookFlight.Passenger);
-                        if (statusCode)
-                        {
-                            //Creation of the Passenger is OK
-                            //assign the new passenger id into bookflight.passengers
-                            PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passenger.PassportID);
-                            bookFlight.Passenger.PersonId = passengerM.PersonId;
-                        }
+                        //var statusCode =  _vSFly.CreatePassenger(bookFlight.Passenger);
+                        //if (statusCode)
+                        //{
+                        //    //Creation of the Passenger is OK
+                        //    //assign the new passenger id into bookflight.passengers
+                        //    PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passenger.PassportID);
+                        //    bookFlight.Passenger.PersonId = passengerM.PersonId;
+                        //}
                        
-                    }
-                                  
-                
+                  //  }
+            }
+
+            if (!AlreadyExist)
+            {
+                //Must create the passenger
+                var statusCode = _vSFly.CreatePassenger(bookFlight.Passenger);
+                if (statusCode)
+                {
+                    //Creation of the Passenger is OK
+                    //assign the new passenger id into bookflight.passengers
+                    PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passenger.PassportID);
+                    bookFlight.Passenger = passengerM;
+                  
+                }
             }
             
 
-                //Create new booking for each passenger
-                BookingM bookingM = new BookingM();
-                bookingM.FlightNo = bookFlight.FlightNo;
-                bookingM.SalePrice = bookFlight.SalePrice;
-                bookingM.PassengerID = bookFlight.Passenger.PersonId;
-
-            var statusCode2 = _vSFly.CreateBooking(bookingM);
-            if (statusCode2)
-            {
-                //Creation Booking ok
-                //Display Booking View
-                bookFlight.Booking = bookingM;
-                return View(bookFlight);
-
-            }
+              
 
             ////Create passenger into db IF Dont exists
             //for (int i = 0; i < passengers.Count(); i++)
@@ -145,8 +144,33 @@ namespace MVCClient.Controllers
             return View(bookFlight);
         }
 
-        // GET: FlightController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> ConfirmBooking(BookFlight bookFlight)
+        {
+            //Create new booking for each passenger
+            BookingM bookingM = new BookingM();
+            bookingM.FlightNo = bookFlight.FlightNo;
+            bookingM.SalePrice = bookFlight.SalePrice;
+            bookingM.PassengerID = bookFlight.Passenger.PersonId;
+
+            var statusCode2 = _vSFly.CreateBooking(bookingM);
+            if (statusCode2)
+            {
+                //Creation Booking ok
+                //Get back the booking created
+                BookingM bookCreated = await _vSFly.GetSpecificBooking(bookFlight.FlightNo, bookFlight.Passenger.PersonId);
+                //Display Booking View
+                bookFlight.Booking = bookCreated;
+                return View(bookFlight);
+
+            }
+            return View();
+        }
+
+
+
+
+            // GET: FlightController/Create
+            public ActionResult Create()
         {
             return View();
         }

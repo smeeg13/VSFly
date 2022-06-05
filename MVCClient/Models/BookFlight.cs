@@ -19,8 +19,9 @@ namespace MVCClient.Models
         public PassengerM Passenger { get; set; }
         public BookingM Booking { get; set; }
 
-        public List<PassengerM> Passengers { get; set; }
+        public string BookFlightStatus { get; set; }
 
+        public List<PassengerM> Passengers { get; set; }
         public List<BookingM> Bookings { get; set; }
 
         public BookFlight()

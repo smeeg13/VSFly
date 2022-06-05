@@ -13,5 +13,6 @@ namespace WebAPI.Models
         public string FullName { get; set; }
  
         public string PassportID { get;  set; }
+        public string Status { get; set; }
     }
 }

@@ -174,6 +174,31 @@ namespace WebAPI.Controllers
             return bookingM;
         }
 
+        // GET: api/Bookings/5
+        [HttpGet("Find/{FlightNo}/{PersonId}")]
+        public async Task<ActionResult<BookingM>> GetSpecificBooking(int FlightNo, int PersonId)
+        {
+            var bookings = await _context.Bookings.Where(e => e.FlightNo == FlightNo).ToListAsync();
+            var booking = new Booking();
+           
+
+            if (bookings == null)
+            {
+                return NotFound();
+            }
+
+            foreach (Booking b in bookings)
+            {
+                if (b.PassengerID == PersonId)
+                {
+                    booking = b;
+                }
+            }
+            BookingM bookingM = booking.ConvertToBookingM();
+
+            return bookingM;
+        }
+
         // PUT: api/Bookings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
