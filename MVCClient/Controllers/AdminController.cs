@@ -22,14 +22,16 @@ namespace MVCClient.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-
-            if (HttpContext.Session.GetInt32("PersonID") == null)
+            if (HttpContext.Session.GetInt32("UserType") == null)
             {
-               
                 return RedirectToAction("Index", "Login");
-
-               
             }
+
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             return View();
         }
 

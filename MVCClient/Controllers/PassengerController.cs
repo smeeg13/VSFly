@@ -26,6 +26,15 @@ namespace MVCClient.Controllers
        [HttpGet]
         public async Task<ActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("UserType") == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (!HttpContext.Session.GetString("UserType").Equals("Passenger"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             var listPassengers = await _vSFly.GetPassengers();
             return View(listPassengers);
         }

@@ -13,5 +13,7 @@ namespace MVCClient.Models
         public string Email { get; set; }
         [Required]
         public int PersonID { get; set; }
+
+        public Boolean IsPilot { get; set; }
     }
 }

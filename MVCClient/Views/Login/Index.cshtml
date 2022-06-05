@@ -35,14 +35,11 @@
                             <input type="number" asp-for="PersonID" class="form-control" />
                             <span asp-validation-for="PersonID" class="text-danger"></span>
                         </div>
-                        @*<div>
-                            <input type="checkbox" id="coding" name="interest" value="coding">
-                            <label for="coding">As Pilot</label>
-                        </div>
                         <div>
-                            <input type="checkbox" id="coding" name="interest" value="coding">
-                            <label for="coding">As Admin</label>
-                        </div>*@
+                            <input asp-for="IsPilot" type="checkbox" >
+                            <label >I'm a Pilot</label>
+                        </div>
+                    
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn float-right login_btn">
                         </div>

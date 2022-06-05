@@ -115,6 +115,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<PassengerM>> PostPassenger(PassengerM passengerM)
         {
+            passengerM.Status = "Passenger";
             Passenger passenger = passengerM.ConvertToPassenger();
             _context.Passengers.Add(passenger);
             try

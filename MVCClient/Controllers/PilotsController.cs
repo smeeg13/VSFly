@@ -24,19 +24,22 @@ namespace MVCClient.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            if (HttpContext.Session.GetInt32("UserType") == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (!HttpContext.Session.GetString("UserType").Equals("Pilot"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
             var listPilots = await _vSFly.GetPilots();
             return View(listPilots);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
