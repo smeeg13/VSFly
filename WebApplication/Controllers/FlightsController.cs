@@ -97,6 +97,52 @@ namespace WebAPI.Controllers
             return priceSale;
         }
 
+        //GET sum all salePrice of a flight
+        private double GetSumSalePrice(List<Booking> bookings)
+        {
+            //var bookingss = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
+            var sum = 0.0;
+            //if (bookings == null)
+            //{
+            //    return NotFound();
+            //}
+
+            foreach (Booking b in bookings)
+            {
+                sum += b.SalePrice;
+            }
+
+            return sum;
+        }
+
+
+        ////GET avg all salePrice of a or many flights
+        //public double GetAvgSalePriceAsync(List<Flight> flights, List<Booking> bookings, string destination)
+        //{
+        //    var nb = 0;
+        //    var sum = 0.0;
+        //    var avg = 0.0;
+        //    foreach (Flight f in flights)
+        //    {
+        //        if (bookings != null)
+        //        {
+        //            foreach (Booking b in bookings)
+        //            {
+        //                sum += b.SalePrice;
+        //                nb += 1;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            avg = 0.0;
+        //        }
+                    
+        //    }
+        //     avg = sum / nb;
+
+        //    return avg;
+        //}
+
 
         //// GET: api/Flights/5
         [HttpGet("{id}")]
@@ -111,7 +157,7 @@ namespace WebAPI.Controllers
 
             FlightM flightM = flight.ConvertToFlightM();
             flightM.SalePrice = getSalePrice(flight.Seat, flight.FreeSeats, flight.Date, flight.Price);
-
+            
             return flightM;
         }
 
@@ -139,6 +185,76 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
+        //Get all destination Available
+        // GET: api/Flights/Destinations
+        [HttpGet("Destinations")]
+        public async Task<ActionResult<IEnumerable<Destination>>> GetAllDestinations()
+        {
+
+            var flightsAvailable = await _context.Flights.Where(x=>x.FreeSeats > 0).ToListAsync();
+            var destNames = flightsAvailable.Select(x => x.Destination).Distinct().ToList();
+            
+            List<Destination> destinations = new List<Destination>();
+            for(int i=0; i<destNames.Count(); i++)
+            {
+                var newDest = new Destination(destNames.ElementAt(i).ToString());
+                destinations.Add(newDest);
+            }
+            if (destinations != null)
+            {
+                foreach (Destination dest in destinations)
+                {
+                    var flightForDest = flightsAvailable.Where(x => x.Destination == dest.DestinationName).ToList();
+                    List<FlightAdminM> flightAdminForDest = new();
+                    foreach (Flight f in flightForDest)
+                    {
+
+                        var FM = f.ConvertToFlightAdminM();
+                        FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
+
+                        flightAdminForDest.Add(FM);
+
+                    }
+                    dest.Flights = flightAdminForDest;
+
+                }
+            }
+
+
+
+
+            foreach (Destination dest2 in destinations)
+            {
+
+                foreach (FlightAdminM f in dest2.Flights)
+                {
+                    var bookings = await _context.Bookings.Where(b => b.Flight.Destination == dest2.DestinationName).ToListAsync();
+                    if (bookings != null)
+                    {
+                        dest2.SumSales = GetSumSalePrice(bookings);
+                    }
+                    else
+                    {
+                        dest2.SumSales = 0;
+                    }
+
+                    //var avgflights = await _context.Flights.Where(f => f.Destination == destination.DestinationName).ToListAsync();
+                    //foreach (Flight flightavg in avgflights)
+                    //{
+                    //    var avgbookings = await _context.Bookings.Where(b => b.FlightNo == flightavg.FlightNo).ToList();
+
+                    //    if (avgbookings != null)
+                    //    {
+                    //        destination.AvgSales = GetAvgSalePriceAsync(avgflights,avgbookings, destination.DestinationName);
+                    //    }
+
+                    //}
+                }
+            }
+
+
+            return destinations;
+        }
 
         private bool FlightExists(int id)
         {
@@ -161,7 +277,16 @@ namespace WebAPI.Controllers
 
                 var FM = f.ConvertToFlightAdminM();
                 FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
+                var bookings = await _context.Bookings.Where(b => b.FlightNo == FM.FlightNo).ToListAsync();
+                if (bookings != null)
+                {
+                    FM.SumSales = GetSumSalePrice(bookings);
 
+                }
+                else
+                {
+                    FM.SumSales = 0;
+                }
                 flightMList.Add(FM);
 
             }
@@ -182,6 +307,16 @@ namespace WebAPI.Controllers
 
             FlightAdminM flightM = flight.ConvertToFlightAdminM();
             flightM.SalePrice = getSalePrice(flight.Seat, flight.FreeSeats, flight.Date, flight.Price);
+            var bookings = await _context.Bookings.Where(b => b.FlightNo == flightM.FlightNo).ToListAsync();
+            if (bookings != null)
+            {
+            flightM.SumSales = GetSumSalePrice(bookings);
+
+            }
+            else
+            {
+                flightM.SumSales = 0;
+            }
 
             return flightM;
         }

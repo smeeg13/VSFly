@@ -44,14 +44,14 @@
                         @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
                         {
                             <b> <p class="tilteFiltre">Filter Flights : </p></b>
-                            <p>
+                            <div>
 
                                 Enter Departure : <input type="text" name="searchDeparture" />
 
-                            </p>
-                            <p>
+                            </div>
+                            <div>
                                 Enter Destination : <input type="text" name="searchDestination" />
-                            </p>
+                            </div>
                             <input class="filterButton" type="submit" value="rechercher" />
 
                         }
@@ -76,7 +76,7 @@
                                 @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).Date)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).AirlineName)
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).SumSales)
                             </th>
 
                         </tr>
@@ -98,11 +98,11 @@
                                     @Html.DisplayFor(modelItem => item.Date)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.AirlineName)
+                                    @Html.DisplayFor(modelItem => item.SumSales)
                                 </td>
 
                                 <td>
-                                    <a asp-controller="Flight" asp-action="BaseDetails" asp-route-id="@item.FlightNo">Details</a>
+                                    <a asp-controller="Admin" asp-action="DetailsFlight" asp-route-id="@item.FlightNo">Details</a>
                                 </td>
                             </tr>
                         }

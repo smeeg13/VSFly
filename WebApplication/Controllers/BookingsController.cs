@@ -37,51 +37,8 @@ namespace WebAPI.Controllers
             return bookingMList;
         }
 
-        //GET sum all salePrice of a flight
+        
 
-        [Route("Sum/{flightNo:int}")]
-        [HttpGet]
-        public async Task<ActionResult<double>> GetSumSalePrice(int flightNo)
-        {
-            var bookings = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
-            var sum = 0.0;
-            if (bookings == null)
-            {
-                return NotFound();
-            }
-
-            foreach (Booking b in bookings)
-            {
-                sum += b.SalePrice;
-            }
-
-            return sum;
-        }
-
-        //GET avg all salePrice of a or many flights
-        [Route("Avg/{destination}")]
-        [HttpGet]
-        public async Task<ActionResult<double>> GetAvgSalePrice(string destination)
-        {
-            var flights = await _context.Flights.Where(f => f.Destination == destination).ToListAsync();
-
-            var nb = 0;
-            var sum = 0.0;
-            foreach (Flight f in flights)
-            {
-                var bookings = await _context.Bookings.Where(b => b.FlightNo == f.FlightNo).ToListAsync();
-
-                if (bookings != null)
-                    foreach (Booking b in bookings)
-                    {
-                        sum += b.SalePrice;
-                        nb += 1;
-                    }
-            }
-            var avg = sum / nb;
-
-            return avg;
-        }
 
         //Get Tickets by destination
         [Route("Tickets/{destination}")]
@@ -101,7 +58,7 @@ namespace WebAPI.Controllers
 
                 foreach (Booking b in bookings)
                 {
-                    Ticket ticket = new Ticket { FullName = b.Passenger.FullName, FlightNo = f.FlightNo, SalePrice = b.SalePrice, Date = f.Date, Destination = f.Destination,Departure = f.Departure };
+                    Ticket ticket = new Ticket { FullName = b.Passenger.FullName, FlightNo = f.FlightNo, SalePrice = b.SalePrice, Date = f.Date, Destination = f.Destination,Departure = f.Departure, PassengerId = b.PassengerID };
                     tickets.Add(ticket);
                 }
             }

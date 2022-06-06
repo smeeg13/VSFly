@@ -31,6 +31,8 @@ namespace MVCClient.Services
         public  Task<IEnumerable<Ticket>> GetTicketsByPassengerId(int id);
 
         public Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id);
+        public Task<IEnumerable<Destination>> GetAllDestinations();
+
 
 
         public Boolean CreatePassenger(PassengerM student);

@@ -29,9 +29,11 @@ namespace MVCClient.Services
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
             var flightList = JsonConvert.DeserializeObject<IEnumerable<FlightM>>(responseString); //Deserialized what received in a list
-            
+
             return flightList;
         }
+
+
         //Get All Flight
         public async Task<IEnumerable<FlightM>> GetAllFlights()
         {
@@ -191,33 +193,46 @@ namespace MVCClient.Services
             return booking;
         }
 
-        //Get Sum Sale Price of one Flight
-        public async Task<double> GetSumSalePrice(int id)
+        ////Get Sum Sale Price of one Flight
+        //public async Task<double> GetSumSalePrice(int id)
+        //{
+        //    var uri = _baseuri + "Sum/" + id;
+
+        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+        //    var sumSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
+
+        //    return sumSalePrice;
+        //}
+
+        ////Get Average Sale Price of one/many Flight for one Destination
+        //public async Task<double> GetAvgSalePrice(string destination)
+        //{
+        //    var uri = _baseuri + "Avg/" + destination;
+
+        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+        //    var avgSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
+
+        //    return avgSalePrice;
+        //}
+
+        //Get All Destinations and their Flights
+        public async Task<IEnumerable<Destination>> GetAllDestinations()
         {
-            var uri = _baseuri + "Sum/" + id;
+            var uri = _baseuri + "Flights/Destinations" ;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var sumSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
+            var Destinations = JsonConvert.DeserializeObject<IEnumerable<Destination>>(responseString); //Deserialized what received in a list
 
-            return sumSalePrice;
-        }
-
-        //Get Average Sale Price of one/many Flight for one Destination
-        public async Task<double> GetAvgSalePrice(string destination)
-        {
-            var uri = _baseuri + "Avg/" + destination;
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var avgSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
-
-            return avgSalePrice;
+            return Destinations;
         }
 
 
 
-        //POST METHOD
+//-----------------------------------POST METHODS-------------------------------------
+       
         //Create New Booking
         [HttpPost]
         public Boolean CreateBooking(BookingM booking)
