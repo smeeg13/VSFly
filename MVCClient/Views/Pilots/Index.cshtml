@@ -1,0 +1,77 @@
+﻿@model MVCClient.Models.PilotAdminM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>PilotM</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PersonId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PersonId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FlightHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FlightHours)
+        </dd>
+    </dl>
+</div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().FlightNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Departure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Flights)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Details of Flight", "BaseDetails", "Flight", new { id = item.FlightNo })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<form asp-action="Index" asp-controller="Home">
+
+    <div class="form-group">
+        <input type="submit" value="Bake Home" class="btn btn-primary" />
+    </div>
+</form>

@@ -1,0 +1,381 @@
+﻿@model MVCClient.Models.Admin
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="row">
+        <div class="rightcolumntitle">
+            <h2>Administration Area</h2>
+        </div>
+        <div class="leftcolumntitle">
+            @using (Html.BeginForm("CreateAdmin", "Admin"))
+            {
+                <input type="submit" value="New Admin" />
+            }
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="fullcolumn">
+            <div class="card">
+
+                <div class="row">
+                    <div class="rightcolumntitle">
+                        <h4>All Flights</h4>
+                    </div>
+                    <div class="leftcolumntitle">
+                        @using (Html.BeginForm("CreateFlight", "Admin", FormMethod.Get))
+                        {
+                            <input type="submit" value="New Flight" />
+                        }
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="fullcolumn">
+                        @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+                        {
+                            <b> <p class="tilteFiltre">Filter Flights : </p></b>
+                            <p>
+
+                                Enter Departure : <input type="text" name="searchDeparture" />
+
+                            </p>
+                            <p>
+                                Enter Destination : <input type="text" name="searchDestination" />
+                            </p>
+                            <input class="filterButton" type="submit" value="rechercher" />
+
+                        }
+                    </div>
+                </div>
+
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).FlightNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).Departure)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).Destination)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).Date)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Flights.ElementAtOrDefault(0).AirlineName)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Flights)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FlightNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Departure)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Destination)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AirlineName)
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Flight" asp-action="BaseDetails" asp-route-id="@item.FlightNo">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="fullcolumn">
+            <div class="card">
+
+                <div class="row">
+                    <div class="rightcolumntitle">
+                        <h4>All Pilots</h4>
+                    </div>
+                    <div class="leftcolumntitle">
+                        @using (Html.BeginForm("CreatePilot", "Admin", FormMethod.Get))
+                        {
+                            <input type="submit" value="New Pilot" />
+                        }
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="fullcolumn">
+                        @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+                            {
+                                <b> <p class="tilteFiltre">Filter Flights : </p></b>
+                                <p>
+
+                                    Enter Departure : <input type="text" name="searchDeparture" />
+
+                                </p>
+                                <p>
+                                    Enter Destination : <input type="text" name="searchDestination" />
+                                </p>
+                                <input class="filterButton" type="submit" value="rechercher" />
+
+                            }*@
+                    </div>
+                </div>
+
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pilots.ElementAtOrDefault(0).PersonId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pilots.ElementAtOrDefault(0).FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pilots.ElementAtOrDefault(0).Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pilots.ElementAtOrDefault(0).PassportID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Pilots.ElementAtOrDefault(0).FlightHours)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Pilots)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PersonId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassportID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FlightHours)
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Pilots" asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="fullcolumn">
+            <div class="card">
+
+                <div class="row">
+                    <div class="rightcolumntitle">
+                        <h4>All Passengers</h4>
+                    </div>
+                    <div class="leftcolumntitle">
+                        @using (Html.BeginForm("Create", "Passenger", FormMethod.Get))
+                        {
+                            <input type="submit" value="New Passenger" />
+                        }
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="fullcolumn">
+                        @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+                            {
+                                <b> <p class="tilteFiltre">Filter Flights : </p></b>
+                                <p>
+
+                                    Enter Departure : <input type="text" name="searchDeparture" />
+
+                                </p>
+                                <p>
+                                    Enter Destination : <input type="text" name="searchDestination" />
+                                </p>
+                                <input class="filterButton" type="submit" value="rechercher" />
+
+                            }*@
+                    </div>
+                </div>
+
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).PersonId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).PassportID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).Status)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Passengers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PersonId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassportID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Passenger" asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .filterButton {
+        margin: 14px;
+    }
+
+    .tilteFiltre {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .selects {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .fullcolumn {
+        background-color: #f5f5f5;
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    /* Left column */
+    .leftcolumn {
+        float: left;
+        width: 40%;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 20px;
+    }
+
+    .leftcolumntitle {
+        padding: 10px;
+        float: right;
+        width: 30%;
+    }
+
+    /* Right column */
+    .rightcolumn {
+        float: left;
+        width: 60%;
+        padding-left: 20px;
+    }
+    /* Right column */
+    .rightcolumntitle {
+        padding: 10px;
+        float: left;
+        width: 70%;
+        padding-left: 20px;
+    }
+
+    /* Add a card effect for articles */
+    .card {
+        background-color: white;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    body {
+        font-family: Arial;
+        background: #f1f1f1;
+        padding: 5px;
+    }
+</style>
