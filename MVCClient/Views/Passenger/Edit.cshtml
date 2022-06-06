@@ -16,22 +16,22 @@
             
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" value="@Html.DisplayFor(model => model.Email)"/>
+                <input asp-for="Email" class="form-control" value="@Html.ValueFor(model => model.Email)"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" value="@Html.DisplayFor(model => model.FullName)"/>
+                <input asp-for="FullName" class="form-control" value="@Html.ValueFor(model => model.FullName)"/>
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PassportID" class="control-label"></label>
-                <input asp-for="PassportID" class="form-control" value="@Html.DisplayFor(model => model.PassportID)"/>
+                <input asp-for="PassportID" class="form-control" value="@Html.ValueFor(model => model.PassportID)"/>
                 <span asp-validation-for="PassportID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Birthday" class="control-label"></label>
-                <input asp-for="Birthday" class="form-control" value="@Html.DisplayFor(model => model.Birthday)"/>
+                <input asp-for="Birthday"  type="date" class="form-control" value="@Html.ValueFor(model => model.Birthday)"/>
                 <span asp-validation-for="Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">

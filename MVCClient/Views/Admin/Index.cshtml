@@ -135,19 +135,19 @@
                 <div class="row">
                     <div class="fullcolumn">
                         @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
-                        {
-                            <b> <p class="tilteFiltre">Filter Flights : </p></b>
-                            <p>
+                            {
+                                <b> <p class="tilteFiltre">Filter Flights : </p></b>
+                                <p>
 
-                                Enter Departure : <input type="text" name="searchDeparture" />
+                                    Enter Departure : <input type="text" name="searchDeparture" />
 
-                            </p>
-                            <p>
-                                Enter Destination : <input type="text" name="searchDestination" />
-                            </p>
-                            <input class="filterButton" type="submit" value="rechercher" />
+                                </p>
+                                <p>
+                                    Enter Destination : <input type="text" name="searchDestination" />
+                                </p>
+                                <input class="filterButton" type="submit" value="rechercher" />
 
-                        }*@
+                            }*@
                     </div>
                 </div>
 
@@ -206,6 +206,99 @@
         </div>
 
     </div>
+
+    <div class="row">
+        <div class="fullcolumn">
+            <div class="card">
+
+                <div class="row">
+                    <div class="rightcolumntitle">
+                        <h4>All Passengers</h4>
+                    </div>
+                    <div class="leftcolumntitle">
+                        @using (Html.BeginForm("Create", "Passenger", FormMethod.Get))
+                        {
+                            <input type="submit" value="New Passenger" />
+                        }
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="fullcolumn">
+                        @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
+                            {
+                                <b> <p class="tilteFiltre">Filter Flights : </p></b>
+                                <p>
+
+                                    Enter Departure : <input type="text" name="searchDeparture" />
+
+                                </p>
+                                <p>
+                                    Enter Destination : <input type="text" name="searchDestination" />
+                                </p>
+                                <input class="filterButton" type="submit" value="rechercher" />
+
+                            }*@
+                    </div>
+                </div>
+
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).PersonId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).Email)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).PassportID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).Status)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Passengers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PersonId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassportID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Passenger" asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
 </body>
 </html>
 

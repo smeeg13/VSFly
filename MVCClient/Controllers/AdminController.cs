@@ -55,6 +55,9 @@ namespace MVCClient.Controllers
             var pilots = await _vSFly.GetPilots();
             admin.Pilots = pilots;
 
+            var passengers = await _vSFly.GetPassengers();
+            admin.Passengers = passengers;
+
             return View(admin);
         }
 

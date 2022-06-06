@@ -132,21 +132,33 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketByPassengerId(int passengerId)
         {
-            var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).ToListAsync();
+            var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).Include(p => p.Passenger).Include(p => p.Flight).ToListAsync();
+           // var passengers = await _context.Passengers.Where(p => p.PersonId == passengerId).ToListAsync();
 
             if (booking == null)
             {
                 return NotFound();
             }
             List<Ticket> tickets = new ();
+            //for (int i = 0; i < passengers.Count(); i++)
+            //{
+            //    for (int j = 0; j < booking.Count(); i++)
+            //    {
+            //        if (passengers.ElementAt(j).PersonId == booking.ElementAt(i).PassengerID)
+            //        {
+            //            booking.ElementAt(i).Passenger = passengers.ElementAt(j);
+            //        }
 
+            //    }
+            //}
             foreach (Booking b in booking)
             {
-
+                
                 Ticket ticket = ConverterExtensions.GenerateTicket(b);
                 tickets.Add(ticket);
 
             }
+          
 
             return tickets;
         }

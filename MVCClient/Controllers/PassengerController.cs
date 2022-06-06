@@ -78,6 +78,16 @@ namespace MVCClient.Controllers
             return View(passenger);
         }
 
+
+        // GET: PassengerController/Details/5
+        [HttpGet]
+        public async Task<ActionResult> Details(int id)
+        {
+            var p = await _vSFly.GetPassenger(id);
+
+            return View(p);
+        }
+
         // GET: PassengerController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
