@@ -25,10 +25,10 @@ namespace VSFly
 
 
             //Add
-            Pilot p = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Crist Lima", PassportNumber = "NJ908ZTG8", Salary = 10000 };
+            Pilot p = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "cristina@gmail.com", FullName = "Crist Lima", Salary = 10000 };
             context.Pilots.Add(p);
             context.SaveChanges();
-            Pilot p2 = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Meg", PassportNumber = "NJ908ZTG8", Salary = 10000 };
+            Pilot p2 = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Meg", Salary = 10000 };
             context.Pilots.Add(p2);
             context.SaveChanges();
 
@@ -66,7 +66,7 @@ namespace VSFly
             }
             Booking b1 = new Booking() { Flight = flightToPorto2[0], Passenger = new Passenger() { Birthday = DateTime.Today, Email = "crist@gmail.com", FullName = "Cristiana Lima", Status = "occupe" }, SalePrice = 100 };
 
-            Passenger p1 = new Passenger() { Status = "maried", FullName = "Jean Dutrond", Email = "jd@gmail.com", Birthday = DateTime.Today };
+            Passenger p1 = new Passenger() { Status = "Passenger", FullName = "Jean Dutrond", Email = "jd@gmail.com", Birthday = DateTime.Today };
 
             Booking b2 = new Booking() { Flight = flightsToOslo[0], Passenger = p1 , SalePrice=120};
             context.Passengers.Add(p1);

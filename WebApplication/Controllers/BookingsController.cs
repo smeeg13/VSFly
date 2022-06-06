@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
         }
 
         //Get Tickets by destination
-        [Route("Tickets/{destiantion}")]
+        [Route("Tickets/{destination}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByDestination(string destination)
         {
@@ -101,10 +101,53 @@ namespace WebAPI.Controllers
 
                 foreach (Booking b in bookings)
                 {
-                    Ticket ticket = new Ticket { fullName = b.Passenger.FullName, FlightNo = f.FlightNo, SalePrice = b.SalePrice };
+                    Ticket ticket = new Ticket { FullName = b.Passenger.FullName, FlightNo = f.FlightNo, SalePrice = b.SalePrice, Date = f.Date, Destination = f.Destination,Departure = f.Departure };
                     tickets.Add(ticket);
                 }
             }
+            return tickets;
+        }
+
+        //Get Ticket for One Specific Booking
+        [Route("Tickets/{flightNo}/{personId}")]
+        [HttpGet]
+        public async Task<ActionResult<List<Ticket>>> GetTicket(int flightNo, int personId)
+        {
+            var bookings = await _context.Bookings.Where(b => b.FlightNo == flightNo).Where(b1 => b1.PassengerID ==personId).Include(x => x.Flight).Include(y => y.Passenger).Distinct().ToListAsync();
+            if (bookings == null)
+            {
+                return NotFound();
+            }
+            List<Ticket> tickets = new();
+
+            foreach (Booking f in bookings)
+            {
+                Ticket ticket = ConverterExtensions.GenerateTicket(f);
+                tickets.Add(ticket);
+            }
+            return tickets;
+        }
+        //GET Ticket for One Specific passenger
+        [Route("Tickets/PassengerId/{passengerId:int}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketByPassengerId(int passengerId)
+        {
+            var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).ToListAsync();
+
+            if (booking == null)
+            {
+                return NotFound();
+            }
+            List<Ticket> tickets = new ();
+
+            foreach (Booking b in booking)
+            {
+
+                Ticket ticket = ConverterExtensions.GenerateTicket(b);
+                tickets.Add(ticket);
+
+            }
+
             return tickets;
         }
 

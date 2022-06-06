@@ -24,13 +24,13 @@ namespace WebAPI.Controllers
 
         // GET: api/Pilots
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PilotM>>> GetPilots()
+        public async Task<ActionResult<IEnumerable<PilotAdminM>>> GetPilots()
         {
             var PilotList = await _context.Pilots.ToListAsync();
-            List<PilotM> pilotMList = new List<PilotM>();
+            List<PilotAdminM> pilotMList = new List<PilotAdminM>();
             foreach (Pilot p in PilotList)
             {
-                var PM = p.ConvertToPilotM();
+                var PM = p.ConvertToPilotAdminM();
                 pilotMList.Add(PM);
             }
             return pilotMList;
@@ -52,10 +52,21 @@ namespace WebAPI.Controllers
             return pilotM;
         }
 
+       
+
+        private bool PilotExists(int id)
+        {
+            return _context.Pilots.Any(e => e.PersonId == id);
+        }
+
+
+
+        //_____________________ADMIN METHODS_________________________________
+        
         // PUT: api/Pilots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPilot(int id, PilotM pilotM)
+        [HttpPut("Admin/UpdatePilot/{id:int}")]
+        public async Task<IActionResult> PutPilot(int id, PilotAdminM pilotM)
         {
             if (id != pilotM.PersonId)
             {
@@ -85,10 +96,11 @@ namespace WebAPI.Controllers
 
         // POST: api/Pilots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("Admin/CreatePilot")]
         [HttpPost]
-        public async Task<ActionResult<PilotM>> PostPilot(PilotM pilotM)
+        public async Task<ActionResult<PilotAdminM>> PostPilot(PilotAdminM pilotM)
         {
-            Pilot pilot = pilotM.ConvertToPilot();
+            Pilot pilot = pilotM.ConvertToPilotFromAdmin();
             _context.Pilots.Add(pilot);
             try
             {
@@ -109,7 +121,7 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Pilots/5
-        [HttpDelete("{id}")]
+        [HttpDelete("Admin/DeletePilot/{id}")]
         public async Task<IActionResult> DeletePilot(int id)
         {
             var pilot = await _context.Pilots.FindAsync(id);
@@ -122,11 +134,6 @@ namespace WebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool PilotExists(int id)
-        {
-            return _context.Pilots.Any(e => e.PersonId == id);
         }
     }
 }

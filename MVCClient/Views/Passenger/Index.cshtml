@@ -44,8 +44,8 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) | 
+    <a asp-action="Index" asp-controller="Home">Back Home</a>
 </div>
 
 <hr />
@@ -54,28 +54,40 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Bookings.ElementAtOrDefault(0).FlightNo)
+                @Html.DisplayNameFor(model => model.Tickets.ElementAtOrDefault(0).FlightNo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bookings.ElementAtOrDefault(0).SalePrice)
+                @Html.DisplayNameFor(model => model.Tickets.ElementAtOrDefault(0).Departure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets.ElementAtOrDefault(0).Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets.ElementAtOrDefault(0).SalePrice)
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Bookings)
+        @foreach (var item in Model.Tickets)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FlightNo)
-                </td>
-                <th>
-                    @Html.DisplayFor(modelItem => item.SalePrice)
-                </th>
-                <td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightNo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Departure)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Destination)
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => item.SalePrice)
+            </th>
+            <td>
 
-                    @Html.ActionLink("Details of Booking", "Details", "Booking", new { flightNo = item.FlightNo , passengerId = item.PassengerID})
-                </td>
-            </tr>
+                @Html.ActionLink("Details of Booking", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
+            </td>
+        </tr>
         }
     </tbody>
 </table>

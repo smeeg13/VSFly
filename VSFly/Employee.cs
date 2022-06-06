@@ -10,8 +10,7 @@ namespace VSFly
 
     public class Employee : Person
     {
-        [Required]
-        public string PassportNumber { get; set; }
+        
         [Required]
         public double Salary { get; set; }
 

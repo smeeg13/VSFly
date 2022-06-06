@@ -25,15 +25,9 @@ namespace MVCClient.Controllers
         }
 
         // GET: BookingController/Details/5
-        public async Task<ActionResult> Details(int flightNo, int passengerId)
+        public async Task<ActionResult> Details(int flightNo, int personId)
         {
-            var book = await _vSFly.GetSpecificBooking(flightNo, passengerId);
-
-            //Get the flight corresponding
-            book.Flight = await _vSFly.GetFlight(book.FlightNo);
-
-            //Get the passenger Corresponding
-            book.Passenger = await _vSFly.GetPassenger(book.PassengerID);
+            var book = await _vSFly.GetTicket(flightNo, personId);
 
             return View(book);
         }

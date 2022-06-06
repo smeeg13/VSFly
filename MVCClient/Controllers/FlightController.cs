@@ -56,12 +56,9 @@ namespace MVCClient.Controllers
 
         // GET: FlightController/BaseDetails/5
         [HttpGet]
-
         public async Task<ActionResult> BaseDetails(int id)
         {
-            var flight = await _vSFly.GetFlight(id);
-
-            
+            var flight = await _vSFly.GetAdminFlight(id);
 
             return View(flight);
         }

@@ -117,6 +117,7 @@ namespace WebAPI.Controllers
         {
             passengerM.Status = "Passenger";
             Passenger passenger = passengerM.ConvertToPassenger();
+            passenger.CustomerSince = DateTime.Now;
             _context.Passengers.Add(passenger);
             try
             {

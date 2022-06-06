@@ -13,14 +13,14 @@ namespace VSFly
         [Key]
         public int FlightNo { get; set; }
 
-        public virtual ICollection<Booking> Bookings { get; }
+        public virtual ICollection<Booking> Bookings { get;  }
         
         [ForeignKey("PilotId")]
-        public virtual Pilot Pilot { get; }
+        public virtual Pilot Pilot { get;  }
         public int PilotId { get; set; }
 
         [ForeignKey("CopilotId")]
-        public virtual Pilot Copilot { get; }
+        public virtual Pilot Copilot { get;  }
         public int CopilotId { get; set; }
 
        

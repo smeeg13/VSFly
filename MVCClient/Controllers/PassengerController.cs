@@ -37,8 +37,8 @@ namespace MVCClient.Controllers
             }
             var passenger = await _vSFly.GetPassenger((int)HttpContext.Session.GetInt32("PersonId"));
 
-            //Retrieve all booking for this passenger
-            passenger.Bookings = await _vSFly.GetBookingByPassengerId(passenger.PersonId);
+            //Retrieve all tickets for this passenger
+            passenger.Tickets = await _vSFly.GetTicketsByPassengerId(passenger.PersonId);
 
             return View(passenger);
         }

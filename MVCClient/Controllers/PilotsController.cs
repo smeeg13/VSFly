@@ -42,6 +42,13 @@ namespace MVCClient.Controllers
             return View(Pilot);
         }
 
+        // GET: PilotController/Details/5
+        [HttpGet]
+        public async Task<ActionResult> Details(int id)
+        {
+            var pilot = await _vSFly.GetPilot(id);
 
+            return View(pilot);
+        }
     }
 }

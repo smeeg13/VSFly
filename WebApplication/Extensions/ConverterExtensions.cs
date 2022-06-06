@@ -9,7 +9,20 @@ namespace WebAPI.Extensions
     {
 
         //Converting models to DB
+        public static Models.Ticket GenerateTicket(this VSFly.Booking b )
+        {
 
+            Models.Ticket t = new();
+            t.PassengerId = b.PassengerID;
+            t.FlightNo = b.FlightNo;
+            t.FullName = b.Passenger.FullName;
+            t.Departure = b.Flight.Departure;
+            t.Destination = b.Flight.Destination;
+            t.Date = b.Flight.Date;
+            t.SalePrice = b.SalePrice;
+
+            return t;
+        }
         public static Models.FlightM ConvertToFlightM(this VSFly.Flight f)
         {
             Models.FlightM fm = new Models.FlightM();
@@ -31,6 +44,41 @@ namespace WebAPI.Extensions
             f.Price = fm.Price;
             return f;
         }
+        //AdminConverter Flight
+        public static Models.FlightAdminM ConvertToFlightAdminM(this VSFly.Flight f)
+        {
+            Models.FlightAdminM fm = new Models.FlightAdminM();
+            fm.FlightNo = f.FlightNo;
+            fm.Departure = f.Departure;
+            fm.Destination = f.Destination;
+            fm.Date = f.Date;
+            fm.Price = f.Price;
+            
+            fm.PilotId = f.PilotId;
+  
+            fm.CopilotId = f.CopilotId;
+            fm.Seat = f.Seat;
+            fm.FreeSeats = f.FreeSeats;
+            fm.AirlineName = f.AirlineName;
+            return fm;
+        }
+        public static VSFly.Flight ConvertToFlightFromAdmin(this Models.FlightAdminM fAdmin)
+        {
+            VSFly.Flight f = new VSFly.Flight();
+            f.FlightNo = fAdmin.FlightNo;
+            f.Departure = fAdmin.Departure;
+            f.Destination = fAdmin.Destination;
+            f.Date = fAdmin.Date;
+            f.Price = fAdmin.Price;
+            
+            f.PilotId = fAdmin.PilotId;
+           
+            f.CopilotId = fAdmin.CopilotId;
+            f.Seat = fAdmin.Seat;
+            f.FreeSeats = fAdmin.FreeSeats;
+            f.AirlineName = fAdmin.AirlineName;
+            return f;
+        }
 
         public static Models.PilotM ConvertToPilotM(this VSFly.Pilot p)
         {
@@ -38,6 +86,35 @@ namespace WebAPI.Extensions
             pm.PersonId = p.PersonId;
             pm.FlightHours = p.FlightHours;
            
+            return pm;
+        }
+
+        //AdminConverter Flight
+        public static Models.PilotAdminM ConvertToPilotAdminM(this VSFly.Pilot p)
+        {
+            Models.PilotAdminM pm = new Models.PilotAdminM();
+            pm.PersonId = p.PersonId;
+            pm.FlightHours = p.FlightHours;
+            pm.Birthday = p.Birthday;
+            pm.Email = p.Email;
+            pm.FullName = p.FullName;
+            pm.PassportID = p.PassportID;
+            pm.Salary = p.Salary;
+
+            return pm;
+        }
+
+        public static VSFly.Pilot ConvertToPilotFromAdmin(this Models.PilotAdminM p)
+        {
+            VSFly.Pilot pm = new VSFly.Pilot();
+            pm.PersonId = p.PersonId;
+            pm.FlightHours = p.FlightHours;
+            pm.Birthday = p.Birthday;
+            pm.Email = p.Email;
+            pm.FullName = p.FullName;
+            pm.PassportID = p.PassportID;
+            pm.Salary = p.Salary;
+
             return pm;
         }
 
