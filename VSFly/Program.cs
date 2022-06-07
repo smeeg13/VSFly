@@ -25,22 +25,26 @@ namespace VSFly
 
 
             //Add
-            Pilot p = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "cristina@gmail.com", FullName = "Crist Lima", Salary = 10000 };
+            Pilot p = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "cristina@gmail.com", FullName = "Crist Lima", PassportID= "11", Salary = 10000 };
             context.Pilots.Add(p);
             context.SaveChanges();
-            Pilot p2 = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Meg", Salary = 10000 };
+            Pilot p2 = new Pilot() { FlightHours = 10, Birthday = DateTime.Today, Email = "meg@gmail.com", FullName = "Meg",PassportID = "12", Salary = 10000 };
             context.Pilots.Add(p2);
             context.SaveChanges();
 
-            Flight flight1 = new Flight() { AirlineName = "EasyJet", CopilotId = 3, Date = DateTime.Today, Departure = "Prague", Destination = "Dubin", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
+            Passenger passenger = new Passenger() { Birthday = DateTime.Today, Email = "megane@gmail.com", FullName = "Megane", PassportID = "900", Status="Admin" };
+            context.Pilots.Add(p2);
+            context.SaveChanges();
+
+            Flight flight1 = new Flight() { AirlineName = "EasyJet", CopilotId = 1, Date = DateTime.Today, Departure = "Prague", Destination = "Dublin", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
             context.Flights.Add(flight1);
             context.SaveChanges();
 
-            Flight flight2 = new Flight() { AirlineName = "Air France", CopilotId = 3, Date = DateTime.Today, Departure = "Amsterdam", Destination = "Zurich", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
+            Flight flight2 = new Flight() { AirlineName = "Air France", CopilotId = 1, Date = DateTime.Today, Departure = "Amsterdam", Destination = "Zurich", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };
             context.Flights.Add(flight2);
             context.SaveChanges();
 
-            Flight flight3 = new Flight() { AirlineName = "	Swiss International Air Lines", CopilotId = 3, Date = DateTime.Today, Departure = "Bern", Destination = "Oslo", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500};
+            Flight flight3 = new Flight() { AirlineName = "	Swiss International Air Lines", CopilotId = 2, Date = DateTime.Today, Departure = "Bern", Destination = "Oslo", FreeSeats = 500, PilotId = 1,  Price = 160.0, Seat = 500};
             context.Flights.Add(flight3);
             context.SaveChanges();
 
@@ -64,7 +68,7 @@ namespace VSFly
             {
                 Console.WriteLine("Date: {0}, Departure : {1}, Seats {2}", f.Date, f.Departure, f.Seat);
             }
-            Booking b1 = new Booking() { Flight = flightToPorto2[0], Passenger = new Passenger() { Birthday = DateTime.Today, Email = "crist@gmail.com", FullName = "Cristiana Lima", Status = "occupe" }, SalePrice = 100 };
+            Booking b1 = new Booking() { Flight = flightToPorto2[0], Passenger = new Passenger() { Birthday = DateTime.Today, Email = "crist@gmail.com", FullName = "Cristiana Lima", Status = "Passenger" }, SalePrice = 100 };
 
             Passenger p1 = new Passenger() { Status = "Passenger", FullName = "Jean Dutrond", Email = "jd@gmail.com", Birthday = DateTime.Today };
 

@@ -163,6 +163,7 @@ namespace MVCClient.Controllers
         }
 
         // GET: Admin/EditFlight/5
+        [HttpGet]
         public async Task<ActionResult> EditFlight(int id)
         {
             if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
@@ -177,7 +178,7 @@ namespace MVCClient.Controllers
         // POST: BookingController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditFlight(int id, IFormCollection collection)
         {
             if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
             {
