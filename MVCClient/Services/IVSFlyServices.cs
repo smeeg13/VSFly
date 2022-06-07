@@ -33,6 +33,7 @@ namespace MVCClient.Services
 
         public Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id);
         public Task<IEnumerable<Destination>> GetAllDestinations();
+        public Task<IEnumerable<FlightAdminM>> GetFlightsForDestination(string destinationName);
 
 
 

@@ -204,6 +204,25 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
+        [HttpGet("Destinations/Flights/{destinationName}")]
+        public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsForDestination(string destinationName)
+        {
+            var flightsAvailable = await _context.Flights.Where(x => x.FreeSeats > 0).ToListAsync();
+            var flightForDest = flightsAvailable.Where(x => x.Destination == destinationName).ToList();
+            List<FlightAdminM> flightAdminForDest = new();
+            foreach (Flight f in flightForDest)
+            {
+
+                var FM = f.ConvertToFlightAdminM();
+                FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
+
+                flightAdminForDest.Add(FM);
+
+            }
+            return flightAdminForDest;
+
+        }
+
         //Get all destination Available
         // GET: api/Flights/Destinations
         [Route("Destinations")]
@@ -254,8 +273,7 @@ namespace WebAPI.Controllers
                         {
                             bookingsAll.Add(b);
                         }
-                        //var avgflights = await _context.Flights.Where(f => f.Destination == dest2.DestinationName).ToListAsync();
-                        //dest2.AvgSales = GetAvgSalePrice(avgflights);
+
                     }
                     else
                     {

@@ -241,10 +241,22 @@ namespace MVCClient.Services
             return Destinations;
         }
 
+        //Get All Destinations and their Flights
+        public async Task<IEnumerable<FlightAdminM>> GetFlightsForDestination(string destinationName)
+        {
+            var uri = _baseuri + "Flights/Destinations/Flights/"+ destinationName;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var FlightsForDestinations = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+
+            return FlightsForDestinations;
+        }
 
 
-//-----------------------------------POST METHODS-------------------------------------
-       
+
+        //-----------------------------------POST METHODS-------------------------------------
+
         //Create New Booking
         [HttpPost]
         public Boolean CreateBooking(BookingM booking)

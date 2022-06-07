@@ -13,7 +13,8 @@ namespace MVCClient.Models
         public List<FlightAdminM> Flights { get; set; }
         public double SumSales { get; set; }
         public double AvgSales { get; set; }
-
+      
     }
 }
+
 
