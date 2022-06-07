@@ -103,7 +103,7 @@ namespace WebAPI.Controllers
         // POST: api/Pilots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("Admin/CreatePilot")]
-        [HttpPost("Admin/CreatePilot")]
+        [HttpPost]
         public async Task<ActionResult<PilotAdminM>> PostPilot(PilotAdminM pilotM)
         {
             Pilot pilot = pilotM.ConvertToPilotFromAdmin();

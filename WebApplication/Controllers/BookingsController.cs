@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
 
         //Get Tickets by destination
         [Route("Tickets/{destination}")]
-        [HttpGet("Tickets/{destination}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByDestination(string destination)
         {
             List<Ticket> tickets = new List<Ticket>();
@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
 
         //Get Ticket for One Specific Booking
         [Route("Tickets/{flightNo}/{personId}")]
-        [HttpGet("Tickets/{flightNo}/{personId}")]
+        [HttpGet]
         public async Task<ActionResult<List<Ticket>>> GetTicket(int flightNo, int personId)
         {
             var bookings = await _context.Bookings.Where(b => b.FlightNo == flightNo).Where(b1 => b1.PassengerID ==personId).Include(x => x.Flight).Include(y => y.Passenger).Distinct().ToListAsync();
@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
         }
         //GET Ticket for One Specific passenger
         [Route("Tickets/PassengerId/{passengerId:int}")]
-        [HttpGet("Tickets/PassengerId/{passengerId:int}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketByPassengerId(int passengerId)
         {
             var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).Include(p => p.Passenger).Include(p => p.Flight).ToListAsync();
@@ -123,7 +123,7 @@ namespace WebAPI.Controllers
 
         //GET by flightNo
         [Route("FlightNo/{flightNo:int}")]
-        [HttpGet("FlightNo/{flightNo:int}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByFlightNo(int flightNo)
         {
             var booking = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
@@ -147,7 +147,7 @@ namespace WebAPI.Controllers
 
         //GET by passengerId
         [Route("PassengerId/{passengerId:int}")]
-        [HttpGet("PassengerId/{passengerId:int}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByPassengerId(int passengerId)
         {
             var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).ToListAsync();

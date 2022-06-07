@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         //Display all flights 
         // GET: api/Flights/All
         [Route("All")]
-        [HttpGet("All")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightM>>> GetAllFlights()
         {
 
@@ -207,7 +207,7 @@ namespace WebAPI.Controllers
         //Get all destination Available
         // GET: api/Flights/Destinations
         [Route("Destinations")]
-        [HttpGet("Destinations")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Destination>>> GetAllDestinations()
         {
 
@@ -279,7 +279,7 @@ namespace WebAPI.Controllers
         //Display all flights 
         // GET: api/Flights/Admin/All
         [Route("Admin/All")]
-       // [HttpGet("Admin/All")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetAdminFlights()
         {
 
