@@ -33,7 +33,7 @@ namespace VSFly
             context.SaveChanges();
 
             Passenger passenger = new Passenger() { Birthday = DateTime.Today, Email = "megane@gmail.com", FullName = "Megane", PassportID = "900", Status="Admin" };
-            context.Pilots.Add(p2);
+            context.Passengers.Add(passenger);
             context.SaveChanges();
 
             Flight flight1 = new Flight() { AirlineName = "EasyJet", CopilotId = 1, Date = DateTime.Today, Departure = "Prague", Destination = "Dublin", FreeSeats = 500, PilotId = 2, Price = 160.0, Seat = 500 };

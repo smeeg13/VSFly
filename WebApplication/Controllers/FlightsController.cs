@@ -117,16 +117,14 @@ namespace WebAPI.Controllers
 
 
         //GET avg all salePrice of a or many flights
-        private double GetAvgSalePrice(List<Flight> flights)
+        private double GetAvgSalePrice(List<Booking> bookings)
         {
             
 
             var nb = 0;
             var sum = 0.0;
             var avg = 0.0;
-            foreach (Flight f in flights)
-            {
-                var bookings = _context.Bookings.Where(b => b.FlightNo == f.FlightNo).ToList();
+
                 if (bookings != null)
                 {
                     foreach (Booking b in bookings)
@@ -135,12 +133,9 @@ namespace WebAPI.Controllers
                         nb += 1;
                     }
                 }
-                else
-                {
-                    avg = 0.0;
-                }
-            }
+            if(nb!=0)
             avg = sum / nb;
+
 
             return avg;
         }
@@ -247,13 +242,18 @@ namespace WebAPI.Controllers
 
             foreach (Destination dest2 in destinations)
             {
-
+                List<Booking> bookingsAll = new List<Booking>();
                 foreach (FlightAdminM f in dest2.Flights)
                 {
+                    
                     var bookings = await _context.Bookings.Where(b => b.Flight.Destination == dest2.DestinationName).ToListAsync();
                     if (bookings != null)
                     {
                         dest2.SumSales = GetSumSalePrice(bookings);
+                        foreach(Booking b in bookings)
+                        {
+                            bookingsAll.Add(b);
+                        }
                         //var avgflights = await _context.Flights.Where(f => f.Destination == dest2.DestinationName).ToListAsync();
                         //dest2.AvgSales = GetAvgSalePrice(avgflights);
                     }
@@ -262,6 +262,7 @@ namespace WebAPI.Controllers
                         dest2.SumSales = 0;
                     }
                 }
+                dest2.AvgSales = GetAvgSalePrice(bookingsAll);
             }
 
 
