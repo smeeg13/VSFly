@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
 
             if (pilot == null)
             {
-                return NotFound();
+                return null;
             }
 
             PilotAdminM pilotM = pilot.ConvertToPilotAdminM();

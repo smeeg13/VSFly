@@ -36,6 +36,8 @@ namespace MVCClient.Controllers
 
                             return RedirectToAction("Index", "Pilots");
                         }
+                        ModelState.AddModelError(string.Empty, "Wrong id or password");
+                        return View();
                     }
 
                     var passenger = await _vSFly.GetPassenger(login.PersonID);
