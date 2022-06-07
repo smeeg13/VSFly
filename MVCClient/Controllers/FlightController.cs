@@ -54,14 +54,7 @@ namespace MVCClient.Controllers
             return View(bookFlight);
         }
 
-        // GET: FlightController/BaseDetails/5
-        [HttpGet]
-        public async Task<ActionResult> BaseDetails(int id)
-        {
-            var flight = await _vSFly.GetAdminFlight(id);
-
-            return View(flight);
-        }
+       
 
         public async Task<ActionResult> BookFlight(BookFlight bookFlight)
         {

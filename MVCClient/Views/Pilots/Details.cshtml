@@ -56,7 +56,7 @@
 </div>
 <div>
     @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ })*@
-    <form asp-action="Edit" asp-controller="Pilot" asp-route-id="@Html.ValueFor(model => model.PersonId)">
+    <form asp-action="Edit" asp-controller="Pilots" asp-route-id="@Html.ValueFor(model => model.PersonId)">
         <input type="submit" value="Edit" >
     </form>
 

@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         //Display all flights 
         // GET: api/Flights/All
         [Route("All")]
-        [HttpGet]
+        [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<FlightM>>> GetAllFlights()
         {
 
@@ -116,32 +116,34 @@ namespace WebAPI.Controllers
         }
 
 
-        ////GET avg all salePrice of a or many flights
-        //public double GetAvgSalePriceAsync(List<Flight> flights, List<Booking> bookings, string destination)
-        //{
-        //    var nb = 0;
-        //    var sum = 0.0;
-        //    var avg = 0.0;
-        //    foreach (Flight f in flights)
-        //    {
-        //        if (bookings != null)
-        //        {
-        //            foreach (Booking b in bookings)
-        //            {
-        //                sum += b.SalePrice;
-        //                nb += 1;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            avg = 0.0;
-        //        }
-                    
-        //    }
-        //     avg = sum / nb;
+        //GET avg all salePrice of a or many flights
+        private double GetAvgSalePrice(List<Flight> flights)
+        {
+            
 
-        //    return avg;
-        //}
+            var nb = 0;
+            var sum = 0.0;
+            var avg = 0.0;
+            foreach (Flight f in flights)
+            {
+                var bookings = _context.Bookings.Where(b => b.FlightNo == f.FlightNo).ToList();
+                if (bookings != null)
+                {
+                    foreach (Booking b in bookings)
+                    {
+                        sum += b.SalePrice;
+                        nb += 1;
+                    }
+                }
+                else
+                {
+                    avg = 0.0;
+                }
+            }
+            avg = sum / nb;
+
+            return avg;
+        }
 
 
         //// GET: api/Flights/5
@@ -162,8 +164,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/Flights/PilotId/5
-        [Route("PilotId/{pilotId:int}")]
-        [HttpGet]
+        [HttpGet("PilotId/{pilotId:int}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsByPilotId(int pilotId)
         {
             var flights = await _context.Flights.Where(b => b.PilotId == pilotId).ToListAsync();
@@ -185,8 +186,32 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
+        // GET: api/Flights/PilotId/5
+        [HttpGet("CoPilotId/{copilotId:int}")]
+        public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsByCoPilotId(int copilotId)
+        {
+            var flights = await _context.Flights.Where(b => b.CopilotId == copilotId).ToListAsync();
+
+            if (flights == null)
+            {
+                return NotFound();
+            }
+            List<FlightAdminM> flightsMs = new();
+
+            foreach (Flight f in flights)
+            {
+
+                FlightAdminM flightgM = f.ConvertToFlightAdminM();
+                flightsMs.Add(flightgM);
+
+            }
+
+            return flightsMs;
+        }
+
         //Get all destination Available
         // GET: api/Flights/Destinations
+        [Route("Destinations")]
         [HttpGet("Destinations")]
         public async Task<ActionResult<IEnumerable<Destination>>> GetAllDestinations()
         {
@@ -220,9 +245,6 @@ namespace WebAPI.Controllers
                 }
             }
 
-
-
-
             foreach (Destination dest2 in destinations)
             {
 
@@ -232,23 +254,13 @@ namespace WebAPI.Controllers
                     if (bookings != null)
                     {
                         dest2.SumSales = GetSumSalePrice(bookings);
+                        //var avgflights = await _context.Flights.Where(f => f.Destination == dest2.DestinationName).ToListAsync();
+                        //dest2.AvgSales = GetAvgSalePrice(avgflights);
                     }
                     else
                     {
                         dest2.SumSales = 0;
                     }
-
-                    //var avgflights = await _context.Flights.Where(f => f.Destination == destination.DestinationName).ToListAsync();
-                    //foreach (Flight flightavg in avgflights)
-                    //{
-                    //    var avgbookings = await _context.Bookings.Where(b => b.FlightNo == flightavg.FlightNo).ToList();
-
-                    //    if (avgbookings != null)
-                    //    {
-                    //        destination.AvgSales = GetAvgSalePriceAsync(avgflights,avgbookings, destination.DestinationName);
-                    //    }
-
-                    //}
                 }
             }
 
@@ -266,7 +278,7 @@ namespace WebAPI.Controllers
         //Display all flights 
         // GET: api/Flights/Admin/All
         [Route("Admin/All")]
-        [HttpGet]
+       // [HttpGet("Admin/All")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetAdminFlights()
         {
 
@@ -294,8 +306,8 @@ namespace WebAPI.Controllers
             flightList.OrderBy(f => f.FreeSeats);
             return flightMList;
         }
-        //// GET: api/FlightsAdmin/5
-        [HttpGet("Admin/{id}")]
+        //// GET: api/Flights/Admin/5
+        [HttpGet("Admin/FlightNo/{id}")]
         public async Task<ActionResult<FlightAdminM>> GetAdminFlight(int id)
         {
             var flight = await _context.Flights.FindAsync(id);
@@ -359,15 +371,26 @@ namespace WebAPI.Controllers
         }
         // PUT: api/Flights/Admin/UpdateFlight/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Admin/UpdateFlight/{id:int}")]
+        [HttpPut("Update/{id:int}")]
         public async Task<IActionResult> PutFlight(int id, FlightAdminM flightM)
         {
             if (id != flightM.FlightNo)
             {
                 return BadRequest();
             }
+            var existingFlight = _context.Flights.Where(s => s.FlightNo == flightM.FlightNo).FirstOrDefault<Flight>();
 
-            _context.Entry(flightM).State = EntityState.Modified;
+            if (existingFlight != null)
+            {
+                existingFlight.AirlineName = flightM.AirlineName;
+                existingFlight.Destination = flightM.Destination;
+                existingFlight.Departure = flightM.Departure;
+                existingFlight.CopilotId = flightM.CopilotId;
+                existingFlight.PilotId = flightM.PilotId;
+                existingFlight.Price = flightM.Price;
+                existingFlight.Seat = flightM.Seat;
+
+            }
 
             try
             {
@@ -385,7 +408,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // DELETE: api/Flights/5

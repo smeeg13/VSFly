@@ -11,8 +11,9 @@ namespace MVCClient.Models
         public int PersonId { get; set; }
         public int? FlightHours { get; set; }
 
-        public IEnumerable<FlightAdminM> Flights { get; set; }
-      
+        public IEnumerable<FlightAdminM> FlightsToPilot { get; set; }
+        public IEnumerable<FlightAdminM> FlightsToCoPilot { get; set; }
+
         public DateTime Birthday { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }

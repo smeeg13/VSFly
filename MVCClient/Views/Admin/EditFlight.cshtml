@@ -1,0 +1,75 @@
+﻿@model MVCClient.Models.FlightAdminM
+
+@{
+    ViewData["Title"] = "EditFlight";
+}
+
+<h2>Edit Flight</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditFlight" asp-controller="Admin" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FlightNo" class="control-label"></label>
+                <input asp-for="FlightNo" class="form-control" value="@Html.ValueFor(model => model.FlightNo)" disabled />
+                <span asp-validation-for="FlightNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Departure" class="control-label"></label>
+                <input asp-for="Departure" class="form-control" value="@Html.ValueFor(model => model.Departure)" />
+                <span asp-validation-for="Departure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination" class="control-label"></label>
+                <input asp-for="Destination" class="form-control" value="@Html.ValueFor(model => model.Destination)" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" type="datetime" value="@Html.ValueFor(model => model.Date)" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" value="@Html.ValueFor(model => model.Price)" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirlineName" class="control-label"></label>
+                <input asp-for="AirlineName" class="form-control" value="@Html.ValueFor(model => model.AirlineName)" />
+                <span asp-validation-for="AirlineName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FreeSeats" class="control-label">Free Seats to calculate</label>
+                <input asp-for="FreeSeats" class="form-control" value="@Html.ValueFor(model => model.FreeSeats)" disabled />
+                <span asp-validation-for="FreeSeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seat" class="control-label"></label>
+                <input asp-for="Seat" type="number" class="form-control" value="@Html.ValueFor(model => model.Seat)" />
+                <span asp-validation-for="Seat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PilotId" class="control-label"></label>
+                <input asp-for="PilotId" type="number" class="form-control" value="@Html.ValueFor(model => model.PilotId)" />
+                <span asp-validation-for="PilotId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CopilotId" class="control-label"></label>
+                <input asp-for="CopilotId" type="number" class="form-control" value="@Html.ValueFor(model => model.CopilotId)" />
+                <span asp-validation-for="CopilotId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<form>
+    <input type="button" value="Cancel" onclick="history.back()">
+</form>
+

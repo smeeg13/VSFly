@@ -25,7 +25,7 @@ namespace MVCClient.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(string searchDestination, string searchDeparture, int searchFlightNo)
         {
-            if (HttpContext.Session.GetInt32("UserType") == null)
+            if (HttpContext.Session.GetInt32("PersonId") == null)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -63,9 +63,11 @@ namespace MVCClient.Controllers
 
 
         // GET: Admin/DetailsFlight/5
-        public async Task<ActionResult> DetailsFlight(int flightNo)
+        public async Task<ActionResult> DetailsFlight(int id)
         {
-            var f = await _vSFly.GetAdminFlight(flightNo);
+            ViewBag.Message = HttpContext.Session.GetString("UserType");
+
+            var f = await _vSFly.GetAdminFlight(id);
 
             return View(f);
         }
@@ -73,6 +75,10 @@ namespace MVCClient.Controllers
         // GET: Admin/CreateFlight/
         public ActionResult CreateFlight()
         {
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 
@@ -81,6 +87,10 @@ namespace MVCClient.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateFlight(IFormCollection formCollection)
         {
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             FlightAdminM f = new();
             if (ModelState.IsValid)
             {
@@ -114,6 +124,10 @@ namespace MVCClient.Controllers
         // GET: Admin/CreatePilot/
         public ActionResult CreatePilot()
         {
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 
@@ -149,9 +163,15 @@ namespace MVCClient.Controllers
         }
 
         // GET: Admin/EditFlight/5
-        public ActionResult EditFlight(int id)
+        public async Task<ActionResult> EditFlight(int id)
         {
-            return View();
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            var Flight = await _vSFly.GetAdminFlight(id);
+
+            return View(Flight);
         }
 
         // POST: BookingController/Edit/5
@@ -159,14 +179,30 @@ namespace MVCClient.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            FlightAdminM flight = new();
+            flight.AirlineName = collection["AirlineName"];
+            flight.CopilotId = Int32.Parse(collection["CopilotId"]);
+            flight.PilotId = Int32.Parse(collection["PilotId"]);
+            flight.Date = Convert.ToDateTime(collection["Date"]);
+            flight.Departure = collection["Departure"];
+            flight.Destination = collection["Destination"];
+            flight.Price = Double.Parse(collection["Price"]);
+            flight.Seat = Int32.Parse(collection["Seat"]);
+
+            var statusCode = _vSFly.UpdateFlight(flight);
+            if (statusCode)
             {
-                return View();
+                //Update of the Passenger is OK
+
+                return RedirectToAction("DetailsFlight", "Admin", new { id = flight.FlightNo });
             }
+
+
+            return RedirectToAction("EditFlight", "Admin", new { id = flight.FlightNo });
         }
 
         // GET: BookingController/Delete/5

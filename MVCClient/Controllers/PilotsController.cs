@@ -38,7 +38,10 @@ namespace MVCClient.Controllers
 
             var Pilot = await _vSFly.GetPilot((int)HttpContext.Session.GetInt32("PersonId"));
 
-            Pilot.Flights = await _vSFly.GetFlightsByPilotId(Pilot.PersonId);
+            Pilot.FlightsToPilot = await _vSFly.GetFlightsByPilotId(Pilot.PersonId);
+            Pilot.FlightsToCoPilot = await _vSFly.GetFlightsByCoPilotId(Pilot.PersonId);
+
+
             return View(Pilot);
         }
 
@@ -50,5 +53,36 @@ namespace MVCClient.Controllers
 
             return View(pilot);
         }
+
+        // GET: PilotController/Edit/5
+        public async Task<ActionResult> Edit(int id)
+        {
+            var pilot = await _vSFly.GetPilot(id);
+            return View(pilot);
+        }
+
+        // POST: PilotController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            PilotAdminM pilot = new();
+            pilot.PersonId = id;
+            pilot.FullName = collection["Fullname"];
+            pilot.Email = collection["Email"];
+            pilot.Birthday = Convert.ToDateTime(collection["Birthday"]);
+            pilot.PassportID = collection["PassportID"];
+
+            var statusCode = _vSFly.UpdatePilot(pilot);
+            if (statusCode)
+            {
+                //Update of the Passenger is OK
+
+                return RedirectToAction("Details", "Pilots", new { id = pilot.PersonId });
+            }
+
+            return RedirectToAction("Edit", "Pilots", new { id = pilot.PersonId });
+        }
+
     }
 }

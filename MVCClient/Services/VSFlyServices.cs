@@ -82,6 +82,18 @@ namespace MVCClient.Services
             IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
             return query;
         }
+        //Get All Flights for One CoPilot
+        public async Task<IEnumerable<FlightAdminM>> GetFlightsByCoPilotId(int id)
+        {
+            var uri = _baseuri + "Flights/CoPilotId/" + id;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+
+            IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
+            return query;
+        }
 
         //Get All Booking for One Flight
         public async Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id)
@@ -220,7 +232,7 @@ namespace MVCClient.Services
         //Get All Destinations and their Flights
         public async Task<IEnumerable<Destination>> GetAllDestinations()
         {
-            var uri = _baseuri + "Flights/Destinations" ;
+            var uri = _baseuri + "Flights/Destinations";
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
@@ -277,9 +289,71 @@ namespace MVCClient.Services
             }
         }
 
+        //Update Passenger
+        [HttpPut]
+        public Boolean UpdatePassenger(PassengerM p)
+        {
 
+            var uri = _baseuri + "Passengers/Update/"+p.PersonId;
 
+            //HTTP POST
+            var postTask = _client.PutAsJsonAsync<PassengerM>(uri, p);
+            postTask.Wait();
 
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Update Pilot
+        [HttpPut]
+        public Boolean UpdatePilot(PilotAdminM p)
+        {
+
+            var uri = _baseuri + "Pilots/Update/" + p.PersonId;
+
+            //HTTP POST
+            var postTask = _client.PutAsJsonAsync<PilotAdminM>(uri, p);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Update Flight
+        [HttpPut]
+        public Boolean UpdateFlight(FlightAdminM f)
+        {
+
+            var uri = _baseuri + "Flights/Update/" + f.FlightNo;
+
+            //HTTP POST
+            var postTask = _client.PutAsJsonAsync<FlightAdminM>(uri, f);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
         public async Task<IEnumerable<PilotAdminM>> GetPilots()
@@ -321,7 +395,7 @@ namespace MVCClient.Services
         //Get One Flight by ID
         public async Task<FlightAdminM> GetAdminFlight(int id)
         {
-            var uri = _baseuri + "Flights/Admin/" + id;
+            var uri = _baseuri + "Flights/Admin/FlightNo/" + id;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 

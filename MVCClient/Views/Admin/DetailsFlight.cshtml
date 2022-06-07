@@ -84,6 +84,17 @@
         </dd>
     </dl>
 </div>
+
+
+
+@if (ViewBag.Message != "Admin") { 
+
+<form>
+    <input type="button" value="Go back" onclick="history.back()">
+</form>
+
+} else {
+
 <div>
     <form asp-action="EditFlight" asp-controller="Admin" asp-route-id="@Html.ValueFor(model => model.FlightNo)">
         <input type="submit" value="Edit">
@@ -93,4 +104,14 @@
         <input type="button" value="Go back" onclick="history.back()">
     </form>
 </div>
+}
+@*<div>
+    <form asp-action="EditFlight" asp-controller="Admin" asp-route-id="@Html.ValueFor(model => model.FlightNo)">
+        <input type="submit" value="Edit">
+    </form>
+
+    <form>
+        <input type="button" value="Go back" onclick="history.back()">
+    </form>
+</div>*@
 

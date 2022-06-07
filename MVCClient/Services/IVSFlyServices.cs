@@ -17,6 +17,7 @@ namespace MVCClient.Services
 
         public Task<FlightM> GetFlight(int id);
         public Task<IEnumerable<FlightAdminM>> GetFlightsByPilotId(int id);
+        public  Task<IEnumerable<FlightAdminM>> GetFlightsByCoPilotId(int id);
 
 
 
@@ -36,7 +37,12 @@ namespace MVCClient.Services
 
 
         public Boolean CreatePassenger(PassengerM student);
-        public Boolean CreateBooking(BookingM booking);
+        public Boolean UpdatePassenger(PassengerM p);
+        public Boolean UpdatePilot(PilotAdminM p);
+
+        public Boolean UpdateFlight(FlightAdminM f);
+
+public Boolean CreateBooking(BookingM booking);
 
         //_____________________ADMIN METHODS_________________________________
         public  Task<IEnumerable<FlightAdminM>> GetAllAdminFlights();

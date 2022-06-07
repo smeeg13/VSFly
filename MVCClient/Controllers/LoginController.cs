@@ -19,7 +19,6 @@ namespace MVCClient.Controllers
         }
 
 
-
         // GET: LoginController
         public async Task<ActionResult> Index(Login login)
         {

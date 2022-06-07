@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Pilots/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PilotM>> GetPilot(int id)
+        public async Task<ActionResult<PilotAdminM>> GetPilot(int id)
         {
             var pilot = await _context.Pilots.FindAsync(id);
 
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            PilotM pilotM = pilot.ConvertToPilotM();
+            PilotAdminM pilotM = pilot.ConvertToPilotAdminM();
 
             return pilotM;
         }
@@ -62,18 +62,25 @@ namespace WebAPI.Controllers
 
 
         //_____________________ADMIN METHODS_________________________________
-        
+
         // PUT: api/Pilots/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Admin/UpdatePilot/{id:int}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutPilot(int id, PilotAdminM pilotM)
         {
             if (id != pilotM.PersonId)
             {
                 return BadRequest();
             }
+            var existingPassenger = _context.Pilots.Where(s => s.PersonId == pilotM.PersonId).FirstOrDefault<Pilot>();
 
-            _context.Entry(pilotM).State = EntityState.Modified;
+            if (existingPassenger != null)
+            {
+                existingPassenger.FullName = pilotM.FullName;
+                existingPassenger.PassportID = pilotM.PassportID;
+                existingPassenger.Email = pilotM.Email;
+                existingPassenger.Birthday = pilotM.Birthday;
+            }
 
             try
             {
@@ -81,7 +88,7 @@ namespace WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PilotExists(id))
+                if (!PilotExists(pilotM.PersonId))
                 {
                     return NotFound();
                 }
@@ -91,13 +98,12 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
-
         // POST: api/Pilots
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("Admin/CreatePilot")]
-        [HttpPost]
+        [HttpPost("Admin/CreatePilot")]
         public async Task<ActionResult<PilotAdminM>> PostPilot(PilotAdminM pilotM)
         {
             Pilot pilot = pilotM.ConvertToPilotFromAdmin();

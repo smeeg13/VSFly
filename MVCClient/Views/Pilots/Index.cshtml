@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h2>Pilot's Area</h2>
 
 <div>
-    <h4>PilotM</h4>
+    <h4>Personnal Information</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -17,35 +17,97 @@
             @Html.DisplayFor(model => model.PersonId)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PassportID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PassportID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FlightHours)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FlightHours)
         </dd>
     </dl>
+    <div>
+        @Html.ActionLink("Edit", "Edit", "Pilots", new { id = Model.PersonId }) 
+    </div>
 </div>
+<br />
 
-
-
+<h4>Flights to Pilot</h4>
+<hr />
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().FlightNo)
+                @Html.DisplayNameFor(model => model.FlightsToPilot.FirstOrDefault().FlightNo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Departure)
+                @Html.DisplayNameFor(model => model.FlightsToPilot.FirstOrDefault().Departure)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Destination)
+                @Html.DisplayNameFor(model => model.FlightsToPilot.FirstOrDefault().Destination)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Date)
+                @Html.DisplayNameFor(model => model.FlightsToPilot.FirstOrDefault().Date)
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Flights)
+        @foreach (var item in Model.FlightsToPilot)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Details of Flight", "DetailsFlight", "Admin", new { id = item.FlightNo })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+<h4>Flights to CoPilot</h4>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightsToCoPilot.FirstOrDefault().FlightNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightsToCoPilot.FirstOrDefault().Departure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightsToCoPilot.FirstOrDefault().Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightsToCoPilot.FirstOrDefault().Date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FlightsToCoPilot)
         {
             <tr>
                 <td>

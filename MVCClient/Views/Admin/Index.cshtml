@@ -102,7 +102,7 @@
                                 </td>
 
                                 <td>
-                                    <a asp-controller="Admin" asp-action="DetailsFlight" asp-route-id="@item.FlightNo">Details</a>
+                                    @Html.ActionLink("Details", "DetailsFlight", "Admin", new { id = item.FlightNo })
                                 </td>
                             </tr>
                         }

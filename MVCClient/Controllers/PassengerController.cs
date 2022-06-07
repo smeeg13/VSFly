@@ -100,14 +100,22 @@ namespace MVCClient.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            try
+            PassengerM passenger = new();
+            passenger.PersonId = Int32.Parse(collection["PersonId"]);
+            passenger.FullName = collection["Fullname"];
+            passenger.Email = collection["Email"];
+            passenger.Birthday = Convert.ToDateTime(collection["Birthday"]);
+            passenger.PassportID =collection["PassportID"];
+
+            var statusCode = _vSFly.UpdatePassenger(passenger);
+            if (statusCode)
             {
-                return RedirectToAction(nameof(Index));
+                //Update of the Passenger is OK
+
+                return RedirectToAction("Details", "Passenger", new { id = passenger.PersonId });
             }
-            catch
-            {
-                return View();
-            }
+
+            return RedirectToAction("Edit","Passenger", new { id = passenger.PersonId });
         }
 
         // GET: PassengerController/Delete/5

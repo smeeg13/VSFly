@@ -81,23 +81,30 @@ namespace WebAPI.Controllers
 
         // PUT: api/Passengers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> PutPassenger(int id, PassengerM passengerM)
         {
             if (id != passengerM.PersonId)
             {
                 return BadRequest();
             }
+            var existingPassenger = _context.Passengers.Where(s => s.PersonId == passengerM.PersonId).FirstOrDefault<Passenger>();
 
-            _context.Entry(passengerM).State = EntityState.Modified;
-
+            if (existingPassenger != null)
+            {
+                existingPassenger.FullName = passengerM.FullName;
+                existingPassenger.PassportID = passengerM.PassportID;
+                existingPassenger.Email = passengerM.Email;
+                existingPassenger.Birthday = passengerM.Birthday;
+            }
+          
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PassengerExists(id))
+                if (!PassengerExists(passengerM.PersonId))
                 {
                     return NotFound();
                 }
@@ -107,7 +114,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Passengers
