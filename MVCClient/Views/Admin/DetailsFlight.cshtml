@@ -96,9 +96,15 @@
 } else {
 
 <div>
-    <form asp-action="EditFlight" asp-controller="Admin" asp-route-id="@Html.ValueFor(model => model.FlightNo)">
+
+    @using (Html.BeginForm("EditFlight", "Admin",new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
+    {
         <input type="submit" value="Edit">
-    </form>
+    }
+
+
+
+    
 
     <form>
         <input type="button" value="Go back" onclick="history.back()">

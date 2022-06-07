@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
 
             if (passenger == null)
             {
-                return NotFound();
+                return null;
             }
 
             PassengerM passengerM = passenger.ConvertToPassengerM();
@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
 
             if (passengers == null)
             {
-                return NotFound();
+                return null;
             }
 
             PassengerM passengerM = new();
@@ -106,7 +106,7 @@ namespace WebAPI.Controllers
             {
                 if (!PassengerExists(passengerM.PersonId))
                 {
-                    return NotFound();
+                    return null;
                 }
                 else
                 {

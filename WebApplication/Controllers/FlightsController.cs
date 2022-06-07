@@ -119,7 +119,6 @@ namespace WebAPI.Controllers
         //GET avg all salePrice of a or many flights
         private double GetAvgSalePrice(List<Booking> bookings)
         {
-            
 
             var nb = 0;
             var sum = 0.0;
@@ -136,7 +135,6 @@ namespace WebAPI.Controllers
             if(nb!=0)
             avg = sum / nb;
 
-
             return avg;
         }
 
@@ -149,7 +147,7 @@ namespace WebAPI.Controllers
 
             if (flight == null)
             {
-                return NotFound();
+                return null;
             }
 
             FlightM flightM = flight.ConvertToFlightM();
@@ -166,7 +164,7 @@ namespace WebAPI.Controllers
 
             if (flights == null)
             {
-                return NotFound();
+                return null;
             }
             List<FlightAdminM> flightsMs = new();
 
@@ -189,7 +187,7 @@ namespace WebAPI.Controllers
 
             if (flights == null)
             {
-                return NotFound();
+                return null;
             }
             List<FlightAdminM> flightsMs = new();
 
@@ -263,8 +261,7 @@ namespace WebAPI.Controllers
             {
                 List<Booking> bookingsAll = new List<Booking>();
                 foreach (FlightAdminM f in dest2.Flights)
-                {
-                    
+                {  
                     var bookings = await _context.Bookings.Where(b => b.Flight.Destination == dest2.DestinationName).ToListAsync();
                     if (bookings != null)
                     {
@@ -273,7 +270,6 @@ namespace WebAPI.Controllers
                         {
                             bookingsAll.Add(b);
                         }
-
                     }
                     else
                     {
@@ -282,8 +278,6 @@ namespace WebAPI.Controllers
                 }
                 dest2.AvgSales = GetAvgSalePrice(bookingsAll);
             }
-
-
             return destinations;
         }
 
@@ -333,7 +327,7 @@ namespace WebAPI.Controllers
 
             if (flight == null)
             {
-                return NotFound();
+                return null;
             }
 
             FlightAdminM flightM = flight.ConvertToFlightAdminM();
@@ -360,7 +354,7 @@ namespace WebAPI.Controllers
 
             if (flights == null)
             {
-                return NotFound();
+                return null;
             }
             List<FlightAdminM> flightsMs = new();
 

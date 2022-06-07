@@ -10,22 +10,22 @@
     <h4>Destination</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DestinationName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DestinationName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SumSales)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SumSales)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AvgSales)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AvgSales)
         </dd>
     </dl>
@@ -39,7 +39,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Date)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
@@ -53,17 +53,29 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
-               
+
                 <td>
-                   
-                    @Html.ActionLink("Details", "DetailsFlight","Admin", new {  id=item.FlightNo  })                     
+
+                    @if (ViewBag.Session == "Admin")
+                    {
+
+                        @Html.ActionLink("Details Admin", "DetailsFlight", "Admin", new { id = item.FlightNo })
+
+                    }
+                    else
+                    {@Html.ActionLink("Details", "BaseDetails", "Flight", new { id = item.FlightNo })
+
+
+                }
+
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div>
-  
-    <a asp-action="Index">Back to List</a>
-</div>
+<br />
+<form>
+    <input type="button" value="Go back" onclick="history.back()">
+</form>

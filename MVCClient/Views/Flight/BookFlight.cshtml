@@ -8,7 +8,7 @@
 <br />
 <div>
     <h4>
-        Flight Information :
+        Flight Information 
     </h4>
     <hr />
 
@@ -50,35 +50,108 @@
     </dl>
     <br />
     <h4>
-        Passenger Information :
+        Passenger Information 
     </h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            Full Name :
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Passenger.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            Passport ID :
-        </dt>
 
-        <dd class="col-sm-10">
-           @Html.DisplayFor(model => model.Passenger.PassportID)
-        </dd>
-        <dt class="col-sm-2">
-            Email :
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Passenger.Email)
-        </dd>
-        <dt class="col-sm-2">
-            Birthday :
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Passenger.Birthday)
-        </dd>
+        @if (ViewBag.AlreadyExist == true)
+        {
+            <div class="rightColumn">
+                <h6>Informations saved in our system :</h6>
+            
+            <dd class="col-sm-10">
+                <b>Full Name :</b>@Html.DisplayFor(model => model.Passenger.FullName)
+            </dd>
+            <dd class="col-sm-10">
+                <b>Passport ID :</b> @Html.DisplayFor(model => model.Passenger.PassportID)
+            </dd>
+           
+            <dd class="col-sm-10">
+                <b>Email :</b> @Html.DisplayFor(model => model.Passenger.Email)
+            </dd>
+           
+            <dd class="col-sm-10">
+                <b>Birthday :</b>@Html.DisplayFor(model => model.Passenger.Birthday)
+            </dd>
+</div>
+        <div class="middleColumn">
+            <form asp-controller="Flight" asp-action="UpdateFromBooking" asp-route-id="@Html.ValueFor(model => model.Passenger.PersonId)" >
+                <div class="form-group">
+                    <input name="FlightNo" type="number" value="@Html.ValueFor(model => model.FlightNo)" class="btn btn-primary" hidden />
+                    <input name="Destination" type="text" value="@Html.ValueFor(model => model.Destination)" class="btn btn-primary" hidden />
+                    <input name="Departure" type="text" value="@Html.ValueFor(model => model.Departure)" class="btn btn-primary" hidden />
+                    <input name="Date" type="datetime" value="@Html.ValueFor(model => model.Date)" class="btn btn-primary" hidden />
+                    <input name="Price" type="number" value="@Html.ValueFor(model => model.Price)" class="btn btn-primary" hidden />
+                    <input name="SalePrice" type="number" value="@Html.ValueFor(model => model.SalePrice)" class="btn btn-primary" hidden />
+
+                    <input name="FullName" type="text" value="@ViewBag.Fullname" class="btn btn-primary" hidden />
+                    <input name="Email" type="email" value="@ViewBag.Email" class="btn btn-primary" hidden />
+                    <input name="PassportID" type="number" value="@ViewBag.PassportID" class="btn btn-primary" hidden />
+                    <input name="Birthday" type="datetime" value="@ViewBag.Birthday" class="btn btn-primary" hidden />
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Save Info Entered" class="btn btn-primary" />
+                </div>
+            </form>
+           
+        </div>
+        <div class="leftColumn">
+            <h6>Informations entered before :</h6>
+
+            <dd class="col-sm-10">
+                <b>Full Name :</b> @ViewBag.FullName
+            </dd>
+            
+            <dd class="col-sm-10">
+                <b>Passport ID :</b> @ViewBag.PassportID
+            </dd>
+          
+            <dd class="col-sm-10">
+                <b>Email :</b> @ViewBag.Email
+            </dd>
+           
+            <dd class="col-sm-10">
+                <b>Birthday :</b> @ViewBag.Birthday
+            </dd>
+        </div>
+        }
+        else
+        {
+            <h6>Informations entered before :</h6>
+            <dt class="col-sm-2">
+                Full Name :
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Passenger.FullName)
+            </dd>
+            <dt class="col-sm-2">
+                Passport ID :
+            </dt>
+
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Passenger.PassportID)
+            </dd>
+            <dt class="col-sm-2">
+                Email :
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Passenger.Email)
+            </dd>
+            <dt class="col-sm-2">
+                Birthday :
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Passenger.Birthday)
+            </dd>
+        }
+
+
+
+
+
+
     </dl>
 </div>
 
@@ -167,3 +240,34 @@
     @*  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
     <a asp-action="Index" asp-controller="Home">Back Home</a>
 </div>
+
+
+<style>
+    /* Create two unequal columns that floats next to each other */
+    /* Left column */
+    .leftColumn {
+        float: left;
+        width: 40%;
+      
+    }
+    /* Right column */
+    .middleColumn {
+        float: left;
+        width: 20%;
+    }
+
+    /* Right column */
+    .rightColumn {
+        float: left;
+        width: 40%;
+    }
+    
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+</style>

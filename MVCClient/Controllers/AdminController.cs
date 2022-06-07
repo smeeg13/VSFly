@@ -185,6 +185,7 @@ namespace MVCClient.Controllers
                 return RedirectToAction("Index", "Login");
             }
             FlightAdminM flight = new();
+            flight.FlightNo =id;
             flight.AirlineName = collection["AirlineName"];
             flight.CopilotId = Int32.Parse(collection["CopilotId"]);
             flight.PilotId = Int32.Parse(collection["PilotId"]);
