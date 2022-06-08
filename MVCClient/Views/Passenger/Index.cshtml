@@ -74,10 +74,10 @@
                 @Html.DisplayFor(modelItem => item.FlightNo)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Departure)
+                @Html.DisplayFor(model => item.Departure)
             </td>
             <td>
-                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Destination)
+                @Html.DisplayFor(model => item.Destination)
             </td>
             <th>
                 @Html.DisplayFor(modelItem => item.SalePrice)

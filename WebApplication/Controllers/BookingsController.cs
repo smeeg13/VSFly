@@ -251,6 +251,12 @@ namespace WebAPI.Controllers
         {
             Booking booking = bookingM.ConvertToBooking();
             _context.Bookings.Add(booking);
+            //-1 Free Seat for the corresponding flight
+            var flight = _context.Flights.Where(x=>x.FlightNo == booking.FlightNo).FirstOrDefault();
+            flight.FreeSeats = flight.FreeSeats - 1;
+            _context.Entry(flight).State = EntityState.Modified;
+
+
             try
             {
                 await _context.SaveChangesAsync();

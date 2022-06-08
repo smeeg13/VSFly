@@ -96,6 +96,7 @@ namespace WebAPI.Controllers
                 existingPassenger.PassportID = passengerM.PassportID;
                 existingPassenger.Email = passengerM.Email;
                 existingPassenger.Birthday = passengerM.Birthday;
+                existingPassenger.Status = passengerM.Status;
             }
           
             try

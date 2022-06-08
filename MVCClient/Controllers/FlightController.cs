@@ -217,9 +217,6 @@ namespace MVCClient.Controllers
             return View();
         }
 
-
-
-
             // GET: FlightController/Create
             public ActionResult Create()
         {

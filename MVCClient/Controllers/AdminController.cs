@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVCClient.Controllers
 {
@@ -161,6 +162,74 @@ namespace MVCClient.Controllers
             return View(p);
 
         }
+
+        // GET: Admin/CreateAdmin/
+        [HttpGet]
+        [HttpPost]
+        public async  Task<ActionResult> CreateAdmin(string PassportIdChoosed, string fullname)
+        {
+            if (!HttpContext.Session.GetString("UserType").Equals("Admin"))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            PassengerAdmin passengerAdmin = new();
+            var passengers = await _vSFly.GetPassengers();
+            passengerAdmin.Passengers = passengers;
+            IQueryable<string> passportQuery = from m in passengers.AsQueryable()
+                                               orderby m.PassportID
+                                               select m.PassportID;
+            passengerAdmin.PassportIdList = new SelectList(passportQuery);
+            if (!string.IsNullOrEmpty(PassportIdChoosed))
+            {
+                passengerAdmin.Passengers = passengers.Where(x => x.PassportID ==PassportIdChoosed);
+            }
+            if (!string.IsNullOrEmpty(fullname))
+            {
+                passengerAdmin.Passengers = passengers.Where(x => x.FullName.Contains(fullname));
+            }
+
+            return View(passengerAdmin);
+        }
+
+        // POST: AdminController/Admin/ChangeStatusEdit/5
+        public async Task<ActionResult> ChangeStatus(int id, string status)
+        {
+            PassengerM passenger = new();
+            passenger = await _vSFly.GetPassenger(id);
+            if (passenger != null)
+            {
+                if (status.Equals("Passenger"))
+                {
+                    passenger.Status = "Admin";
+                }
+                else
+                {
+                    passenger.Status = "Passenger";
+                }
+
+
+                var statusCode = _vSFly.UpdatePassenger(passenger);
+                if (statusCode)
+                {
+                    //Update of the Passenger is OK
+                    PassengerAdmin passengerAdmin = new();
+                    var passengers = await _vSFly.GetPassengers();
+                    passengerAdmin.Passengers = passengers;
+                    IQueryable<string> passportQuery = from m in passengers.AsQueryable()
+                                                       orderby m.PassportID
+                                                       select m.PassportID;
+                    passengerAdmin.PassportIdList = new SelectList(passportQuery);
+
+                    return View("CreateAdmin", passengerAdmin);
+                }
+
+            }
+           
+            return null;
+        }
+
+
 
         // GET: Admin/EditFlight/5
         [HttpGet]
