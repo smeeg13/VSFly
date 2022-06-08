@@ -26,11 +26,11 @@ namespace MVCClient.Controllers
 
             if (!string.IsNullOrEmpty(searchDestination))
             {
-                listFlights = listFlights.AsQueryable().Where(x => x.Destination.Contains(searchDestination));
+                listFlights = listFlights.AsQueryable().Where(x => x.Destination.ToLower().Contains(searchDestination));
             }
             if (!string.IsNullOrEmpty(searchDeparture))
             {
-                listFlights = listFlights.AsQueryable().Where(x => x.Departure.Contains(searchDeparture));
+                listFlights = listFlights.AsQueryable().Where(x => x.Departure.ToLower().Contains(searchDeparture));
             }
 
             return View(listFlights);

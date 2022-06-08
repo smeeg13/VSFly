@@ -186,7 +186,7 @@ namespace MVCClient.Controllers
             }
             if (!string.IsNullOrEmpty(fullname))
             {
-                passengerAdmin.Passengers = passengers.Where(x => x.FullName.Contains(fullname));
+                passengerAdmin.Passengers = passengers.Where(x => x.FullName.ToLower().Contains(fullname));
             }
 
             return View(passengerAdmin);
@@ -276,27 +276,7 @@ namespace MVCClient.Controllers
             return RedirectToAction("EditFlight", "Admin", new { id = flight.FlightNo });
         }
 
-        // GET: BookingController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BookingController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+        
 
     }
 }

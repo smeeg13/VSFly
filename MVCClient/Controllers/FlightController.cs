@@ -40,11 +40,11 @@ namespace MVCClient.Controllers
             bookFlight.Destination = flight.Destination;
             bookFlight.Date = flight.Date;
             bookFlight.SalePrice = flight.SalePrice;
-            if (NbPassengers < 1)
+            if (NbPassengers != 1)
             {
                 NbPassengers = 1;
             }
-            bookFlight.NbPassengers = NbPassengers;
+            bookFlight.NbPassengers = 1;
             bookFlight.Passengers = new List<PassengerM>(NbPassengers);
             for(int i =0; i < NbPassengers; i++)
             {
@@ -215,69 +215,6 @@ namespace MVCClient.Controllers
 
             }
             return View();
-        }
-
-            // GET: FlightController/Create
-            public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: FlightController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FlightController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: FlightController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: FlightController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: FlightController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
