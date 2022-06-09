@@ -16,6 +16,9 @@ namespace WebAPI.Models
         public string DestinationName { get; set; }
 
         public List<FlightAdminM> Flights { get; set; }
+
+        public List<Ticket> TicketsSold { get; set; }
+
         public double SumSales { get; set; }
         public double AvgSales { get; set; }
 

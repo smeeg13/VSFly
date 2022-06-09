@@ -28,7 +28,8 @@ namespace MVCClient.Controllers
         {
 
             var destination = await _vSFly.GetAllDestinations();
-            var destNames = await _vSFly.GetAllDestinations(); // Use LINQ to get list of clients.
+            var destNames = await _vSFly.GetAllDestinations(); 
+            // Use LINQ to get list of destination names.
             IQueryable<string> destNameQuery = from m in destNames.AsQueryable()
                                                orderby m.DestinationName
                                                select m.DestinationName;
@@ -52,16 +53,20 @@ namespace MVCClient.Controllers
         {
             Destination destination = new();
             var dests = await _vSFly.GetAllDestinations();
-            foreach(Destination d in dests)
+
+            
+            
+
+            foreach (Destination d in dests)
             {
                 if (d.DestinationName.Equals(destinationName))
                 {
                     destination = d;
                 }
             }
-            var flights =await _vSFly.GetFlightsForDestination( destinationName);
+            destination.TicketsSold = (List<Ticket>)await _vSFly.GetTicketsByDestination(destinationName);
 
-            destination.Flights = (List<FlightAdminM>)flights;
+            destination.Flights = (List<FlightAdminM>)await _vSFly.GetFlightsForDestination(destinationName);
             ViewBag.Session = HttpContext.Session.GetString("UserType");
             return View(destination);
         }

@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
 
 
         //Get Tickets by destination
-        [Route("Tickets/{destination}")]
+        [Route("Tickets/Destination/{destination}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByDestination(string destination)
         {

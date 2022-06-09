@@ -130,6 +130,18 @@ namespace MVCClient.Services
             return bookingsFoPassenger;
         }
 
+        //Get All Tickets for One Destination
+        public async Task<IEnumerable<Ticket>> GetTicketsByDestination(string dest)
+        {
+            var uri = _baseuri + "Bookings/Tickets/Destination/" + dest;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var ticketsFoDestination = JsonConvert.DeserializeObject<IEnumerable<Ticket>>(responseString); //Deserialized what received in a list
+
+            return ticketsFoDestination;
+        }
+
         //Get All Booking for One Passenger
         public async Task<BookingM> GetSpecificBooking(int FlightNo, int PersonId)
         {
