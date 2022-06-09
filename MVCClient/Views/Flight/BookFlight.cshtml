@@ -78,17 +78,18 @@
         <div class="middleColumn">
             <form asp-controller="Flight" asp-action="UpdateFromBooking" asp-route-id="@Html.ValueFor(model => model.Passenger.PersonId)" >
                 <div class="form-group">
-                    <input name="FlightNo" type="number" value="@Html.ValueFor(model => model.FlightNo)" class="btn btn-primary" hidden />
-                    <input name="Destination" type="text" value="@Html.ValueFor(model => model.Destination)" class="btn btn-primary" hidden />
-                    <input name="Departure" type="text" value="@Html.ValueFor(model => model.Departure)" class="btn btn-primary" hidden />
-                    <input name="Date" type="datetime" value="@Html.ValueFor(model => model.Date)" class="btn btn-primary" hidden />
-                    <input name="Price" type="number" value="@Html.ValueFor(model => model.Price)" class="btn btn-primary" hidden />
-                    <input name="SalePrice" type="number" value="@Html.ValueFor(model => model.SalePrice)" class="btn btn-primary" hidden />
+                    <input asp-for="FlightNo"  type="number" value="@Html.ValueFor(model => model.FlightNo)" class="form-control" hidden />
+                    <input asp-for="Destination"  type="text" value="@Html.ValueFor(model => model.Destination)" class="form-control" hidden />
+                    <input asp-for="Departure"  type="text" value="@Html.ValueFor(model => model.Departure)" class="form-control" hidden />
+                    <input asp-for="Date"  type="datetime" value="@Html.ValueFor(model => model.Date)" class="form-control" hidden />
+                    <input asp-for="Price"  type="number" value="@Html.ValueFor(model => model.Price)" class="form-control" hidden />
+                    <input asp-for="SalePrice"  type="number" value="@Html.ValueFor(model => model.SalePrice)" class="form-control" hidden />
 
-                    <input name="FullName" type="text" value="@ViewBag.Fullname" class="btn btn-primary" hidden />
-                    <input name="Email" type="email" value="@ViewBag.Email" class="btn btn-primary" hidden />
-                    <input name="PassportID" type="number" value="@ViewBag.PassportID" class="btn btn-primary" hidden />
-                    <input name="Birthday" type="datetime" value="@ViewBag.Birthday" class="btn btn-primary" hidden />
+                    <input asp-for="Passenger.FullName"  type="text" value="@ViewBag.Fullname" class="form-control" hidden />
+                    <input asp-for="Passenger.Email"  type="email" value="@ViewBag.Email" class="form-control" hidden />
+                    <input asp-for="Passenger.PassportID" type="number" value="@ViewBag.PassportID" class="form-control" hidden />
+                    <input asp-for="Passenger.Birthday" type="datetime" value="@ViewBag.Birthday" class="form-control" hidden />
+                    <input asp-for="Passenger.Status" type="text" value="@Html.ValueFor(model => model.Passenger.Status)" class="form-control" hidden />
                 </div>
                 
                 <div class="form-group">
@@ -159,74 +160,23 @@
 
 
 <form asp-action="ConfirmBooking" asp-controller="Flight">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="FlightNo" class="control-label" hidden></label>
-        <input asp-for="FlightNo" class="form-control" hidden value="@Html.ValueFor(model => model.FlightNo)"/>
-        <span asp-validation-for="FlightNo" class="text-danger"></span>
+        <input asp-for="FlightNo" type="number" value="@Html.ValueFor(model => model.FlightNo)" class="form-control" hidden />
+        <input asp-for="Destination" type="text" value="@Html.ValueFor(model => model.Destination)" class="form-control" hidden />
+        <input asp-for="Departure" type="text" value="@Html.ValueFor(model => model.Departure)" class="form-control" hidden />
+        <input asp-for="Date" type="datetime" value="@Html.ValueFor(model => model.Date)" class="form-control" hidden />
+        <input asp-for="Price" type="number" value="@Html.ValueFor(model => model.Price)" class="form-control" hidden />
+        <input asp-for="SalePrice" type="number" value="@Html.ValueFor(model => model.SalePrice)" class="form-control" hidden />
+
+        <input asp-for="Passenger.FullName" type="text" value="@Html.ValueFor(model => model.Passenger.FullName)" class="form-control" hidden />
+        <input asp-for="Passenger.Email" type="email" value="@Html.ValueFor(model => model.Passenger.Email)" class="form-control" hidden />
+        <input asp-for="Passenger.PassportID" type="text" value="@Html.ValueFor(model => model.Passenger.PassportID)" class="form-control" hidden />
+        <input asp-for="Passenger.PersonId" type="number" value="@Html.ValueFor(model => model.Passenger.PersonId)" class="form-control" hidden />
+        <input asp-for="Passenger.Birthday" type="datetime" value="@Html.ValueFor(model => model.Passenger.Birthday)" class="form-control" hidden />
+        <input asp-for="Passenger.Status" type="text" value="@Html.ValueFor(model => model.Passenger.Status)" class="form-control" hidden />
     </div>
 
-    <div class="form-group">
-        <label asp-for="SalePrice" class="control-label" hidden></label>
-        <input asp-for="SalePrice" class="form-control" hidden value="@Html.ValueFor(model => model.SalePrice)"/>
-        <span asp-validation-for="SalePrice" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Price" class="control-label" hidden></label>
-        <input asp-for="Price" class="form-control" hidden value="@Html.ValueFor(model => model.Price)"/>
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
 
-    <div class="form-group">
-        <label asp-for="NbPassengers" class="control-label" hidden></label>
-        <input asp-for="NbPassengers" class="form-control" hidden value="@Html.ValueFor(model => model.NbPassengers)"/>
-        <span asp-validation-for="NbPassengers" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Date" class="control-label" hidden></label>
-        <input asp-for="Date" class="form-control" hidden value="@Html.ValueFor(model => model.Date)" />
-        <span asp-validation-for="Date" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Departure" class="control-label" hidden></label>
-        <input asp-for="Departure" class="form-control" hidden value="@Html.ValueFor(model => model.Departure)"/>
-        <span asp-validation-for="Departure" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Destination" class="control-label" hidden></label>
-        <input asp-for="Destination" class="form-control" hidden value="@Html.ValueFor(model => model.Destination)"/>
-        <span asp-validation-for="Destination" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passengers" class="control-label" hidden></label>
-        <input asp-for="Passengers" class="form-control" hidden value="@Html.ValueFor(model => model.Passengers)" />
-        <span asp-validation-for="Passengers" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passenger.FullName" class="control-label" hidden>Full Name</label>
-        <input asp-for="Passenger.FullName" class="form-control" hidden value="@Html.ValueFor(model => model.Passenger.FullName)"/>
-        <span asp-validation-for="Passenger.FullName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passenger.PassportID" class="control-label" hidden>Passport ID</label>
-        <input asp-for="Passenger.PassportID" class="form-control" hidden value="@Html.ValueFor(model => model.Passenger.PassportID)"/>
-        <span asp-validation-for="Passenger.PassportID" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passenger.Email" class="control-label" hidden></label>
-        <input asp-for="Passenger.Email" class="form-control" hidden value="@Html.ValueFor(model => model.Passenger.Email)"/>
-        <span asp-validation-for="Passenger.Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passenger.Birthday" class="control-label" hidden> </label>
-        <input asp-for="Passenger.Birthday" class="form-control" hidden value="@Html.ValueFor(model => model.Passenger.Birthday)"/>
-        <span asp-validation-for="Passenger.Birthday" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Passenger.PersonId" class="control-label" hidden> </label>
-        <input asp-for="Passenger.PersonId" class="form-control" hidden value="@Html.ValueFor(model => model.Passenger.PersonId)"/>
-        <span asp-validation-for="Passenger.PersonId" class="text-danger"></span>
-    </div>
     <br />
 
     <div class="form-group">

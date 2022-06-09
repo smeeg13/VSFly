@@ -26,7 +26,7 @@ namespace MVCClient.Controllers
        [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (HttpContext.Session.GetInt32("UserType") == null)
+            if (HttpContext.Session.GetInt32("PersonId") == null)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -98,24 +98,40 @@ namespace MVCClient.Controllers
         // POST: PassengerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, PassengerM passengerM)
         {
-            PassengerM passenger = new();
-            passenger.PersonId = Int32.Parse(collection["PersonId"]);
-            passenger.FullName = collection["Fullname"];
-            passenger.Email = collection["Email"];
-            passenger.Birthday = Convert.ToDateTime(collection["Birthday"]);
-            passenger.PassportID =collection["PassportID"];
-
-            var statusCode = _vSFly.UpdatePassenger(passenger);
-            if (statusCode)
+            passengerM.PersonId = id;
+            if (ModelState.IsValid)
             {
-                //Update of the Passenger is OK
+                PassengerM passenger = new();
+                passenger.PersonId = id;
+                passenger.PassportID = passengerM.PassportID;
+                passenger.FullName = passengerM.FullName;
+                passenger.Email = passengerM.Email;
+                passenger.Birthday = passengerM.Birthday;
+                passenger.Status = passengerM.Status;
+                
 
-                return RedirectToAction("Details", "Passenger", new { id = passenger.PersonId });
+                var statusCode = _vSFly.UpdatePassenger(passenger);
+                if (statusCode)
+                {
+                    //Update of the Passenger is OK
+
+                    return RedirectToAction("Details", "Passenger", new { id = id });
+                }
+                ModelState.AddModelError(string.Empty, "Something went wrong, Please contact the administration");
+
+                return View("Edit", passengerM);
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Please control that the info you entered are in the right format");
+
+                return View("Edit", passengerM);
+
             }
 
-            return RedirectToAction("Edit","Passenger", new { id = passenger.PersonId });
+           
         }
 
 

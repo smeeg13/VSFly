@@ -29,7 +29,6 @@ namespace MVCClient.Controllers
 
         // GET: FlightController/Details/5
         [HttpGet]
-        [HttpPost]
         public async Task<ActionResult> Details(int id, int NbPassengers)
         {
             var flight = await _vSFly.GetFlight(id);
@@ -45,11 +44,11 @@ namespace MVCClient.Controllers
                 NbPassengers = 1;
             }
             bookFlight.NbPassengers = 1;
-            bookFlight.Passengers = new List<PassengerM>(NbPassengers);
-            for(int i =0; i < NbPassengers; i++)
-            {
-                bookFlight.Passengers.Add(new PassengerM());
-            }
+            //bookFlight.Passengers = new List<PassengerM>(NbPassengers);
+            //for(int i =0; i < NbPassengers; i++)
+            //{
+            //    bookFlight.Passengers.Add(new PassengerM());
+            //}
             
             return View(bookFlight);
         }
@@ -67,43 +66,87 @@ namespace MVCClient.Controllers
 
 
         
+        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> BookFlight(BookFlight bookFlight)
         {
-            ViewBag.Fullname = bookFlight.Passenger.FullName;
-            ViewBag.Email = bookFlight.Passenger.Email;
-            ViewBag.PassportID = bookFlight.Passenger.PassportID;
-            ViewBag.Birthday = bookFlight.Passenger.Birthday;
-
-            List<BookingM> bookingMs = new List<BookingM>();
-             var passengers = await _vSFly.GetPassengers();
-            Boolean AlreadyExist = false;
-            //Create passenger into db IF Dont exists
-            for (int i = 0; i<passengers.Count(); i++)
+            bookFlight.Passenger = new PassengerM();
+            bookFlight.Passenger.FullName = bookFlight.FullName;
+            bookFlight.Passenger.Email = bookFlight.Email;
+            bookFlight.Passenger.PassportID = bookFlight.PassportID;
+            bookFlight.Passenger.Birthday = bookFlight.Birthday;
+            
+            if (ModelState.IsValid)
             {
-                    if (bookFlight.Passenger.PassportID == passengers.ElementAt(i).PassportID)
+                ViewBag.Fullname = bookFlight.FullName;
+                ViewBag.Email = bookFlight.Email;
+                ViewBag.PassportID = bookFlight.PassportID;
+                ViewBag.Birthday = bookFlight.Birthday;
+
+                var passengers = await _vSFly.GetPassengers();
+                Boolean AlreadyExist = false;
+                //Create passenger into db IF Dont exists
+                for (int i = 0; i < passengers.Count(); i++)
+                {
+                    if (bookFlight.PassportID == passengers.ElementAt(i).PassportID)
                     {
                         AlreadyExist = true;
                         //Passenger already exist
                         bookFlight.Passenger = passengers.ElementAt(i);
-                    ViewBag.AlreadyExist = true;
+                        ViewBag.AlreadyExist = true;
 
+                       
+                    }
                 }
-            }
 
-            if (!AlreadyExist)
-            {
-                //Must create the passenger
-                var statusCode = _vSFly.CreatePassenger(bookFlight.Passenger);
-                if (statusCode)
+                if (AlreadyExist)
                 {
-                    //Creation of the Passenger is OK
-                    //assign the new passenger id into bookflight.passengers
-                    PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passenger.PassportID);
-                    bookFlight.Passenger = passengerM;
-                    ViewBag.AlreadyExist = false;
+                   
+                    //Check if this passenger already have a booking for this flight
+                        var bookingsAll = await _vSFly.GetBookingByPassengerId(bookFlight.Passenger.PersonId);
 
+                       foreach(BookingM bookingM in bookingsAll)
+                    {
+                        if(bookFlight.FlightNo == bookingM.FlightNo)
+                        {
+                            //Passenger already have a ticket for this flight
+                            ModelState.AddModelError(string.Empty, "You already have a ticket for this flight ! ");
+
+                            return View("Details", bookFlight);
+                        }
+                    }
+                       
+                       //Go to confirmation of ticket
+                        return View(bookFlight);
                 }
+                else
+                {
+                    //Must create the passenger
+                    bookFlight.Passenger.Status = "Passenger";
+                    var statusCode = _vSFly.CreatePassenger(bookFlight.Passenger);
+                    if (statusCode)
+                    {
+                        //Creation of the Passenger is OK
+                        //assign the new passenger id into bookflight.passengers
+                        PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passenger.PassportID);
+                        bookFlight.Passenger = passengerM;
+                        ViewBag.AlreadyExist = false;
+                        return View(bookFlight);
+
+                    }
+                }
+                ModelState.AddModelError(string.Empty, "there was a problem, contact administrators ! ");
+
+                return View();
+
             }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Please control that the info you entered are in the right format");
+
+                return View("Details", bookFlight);
+            }
+           
             
 
               
@@ -148,53 +191,39 @@ namespace MVCClient.Controllers
 
             //Display la réservation
 
-            return View(bookFlight);
+           
         }
 
 
         // POST: PassengerController/UpdateFromBooking/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UpdateFromBooking(int id, IFormCollection collection)
+        public ActionResult UpdateFromBooking(int id, BookFlight bookFlight)
         {
 
-            BookFlight book = new();
-            book.FlightNo = Int32.Parse(collection["FlightNo"]);
-            book.Destination = collection["Destination"];
-            book.Departure = collection["Departure"];
-            book.Date = Convert.ToDateTime(collection["Date"]);
-            book.NbPassengers = 1;
-            book.Price = Double.Parse(collection["Price"]);
-            book.SalePrice = Double.Parse(collection["SalePrice"]);
-            PassengerM passenger = new();
-            passenger.PersonId = id;
-            passenger.FullName = collection["Fullname"];
-            passenger.Email = collection["Email"];
-            passenger.Birthday = Convert.ToDateTime(collection["Birthday"]);
-            passenger.PassportID = collection["PassportID"];
-
-            var statusCode = _vSFly.UpdatePassenger(passenger);
+            bookFlight.Passenger.PersonId = id; 
+            var statusCode = _vSFly.UpdatePassenger(bookFlight.Passenger);
             if (statusCode)
             {
                 //Update of the Passenger is OK
-                ViewBag.Fullname = passenger.FullName;
-                ViewBag.Email = passenger.Email;
-                ViewBag.PassportID = passenger.PassportID;
-                ViewBag.Birthday = passenger.Birthday;
+                ViewBag.Fullname = bookFlight.Passenger.FullName;
+                ViewBag.Email = bookFlight.Passenger.Email;
+                ViewBag.PassportID = bookFlight.Passenger.PassportID;
+                ViewBag.Birthday = bookFlight.Passenger.Birthday;
                 ViewBag.AlreadyExist = true;
-                book.Passenger = passenger;
                 ModelState.AddModelError(string.Empty, "Modification Has been Made");
-                return View("BookFlight", book);
+                return View("BookFlight", bookFlight);
             }
             ModelState.AddModelError(string.Empty, "Something went wrong, please contact the administrator");
 
 
-            return View("BookFlight", book);
+            return View();
         }
 
 
 
-
+        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult> ConfirmBooking(BookFlight bookFlight)
         {
             //Create new booking for each passenger

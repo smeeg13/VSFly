@@ -168,16 +168,16 @@ namespace MVCClient.Services
         }
 
 
-        //Get One Passenger by Email
+        //Get One Passenger by PassportID
         public async Task<PassengerM> GetPassengerByPassportID(string passportId)
         {
             var uri = _baseuri + "Passengers/Find/" + passportId;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var booking = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
+            var passenger = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
 
-            return booking;
+            return passenger;
         }
 
         //Get One Passenger by Id
@@ -187,11 +187,21 @@ namespace MVCClient.Services
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var booking = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
+            var passenger = JsonConvert.DeserializeObject<PassengerM>(responseString); //Deserialized what received in a list
 
-            return booking;
+            return passenger;
         }
+        //Get One Pilot by PassportID
+        public async Task<PilotAdminM> GetPilotByPassportID(string passportId)
+        {
+            var uri = _baseuri + "Pilots/Find/" + passportId;
 
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var pilotAdmin = JsonConvert.DeserializeObject<PilotAdminM>(responseString); //Deserialized what received in a list
+
+            return pilotAdmin;
+        }
 
         //Get One Passenger by Id
         public async Task<PilotAdminM> GetPilot(int Id)
@@ -200,9 +210,9 @@ namespace MVCClient.Services
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var booking = JsonConvert.DeserializeObject<PilotAdminM>(responseString); //Deserialized what received in a list
+            var pilotAdmin = JsonConvert.DeserializeObject<PilotAdminM>(responseString); //Deserialized what received in a list
 
-            return booking;
+            return pilotAdmin;
         }
 
         ////Get Sum Sale Price of one Flight

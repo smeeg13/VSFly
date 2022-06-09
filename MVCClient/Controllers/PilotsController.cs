@@ -25,7 +25,7 @@ namespace MVCClient.Controllers
         public async Task<IActionResult> Index()
         {
 
-            if (HttpContext.Session.GetInt32("UserType") == null)
+            if (HttpContext.Session.GetInt32("PersonId") == null)
             {
                 return RedirectToAction("Index", "Login");
             }

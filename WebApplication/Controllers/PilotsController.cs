@@ -51,8 +51,31 @@ namespace WebAPI.Controllers
 
             return pilotM;
         }
+        // GET: api/Pilots/Find/2
+        [HttpGet("Find/{passportId}")]
+        public async Task<ActionResult<PilotAdminM>> GetPilotByPassportID(string passportId)
+        {
+            var passengers = await _context.Pilots.ToListAsync();
 
-       
+            if (passengers == null)
+            {
+                return null;
+            }
+
+            PilotAdminM passengerM = null;
+            foreach (Pilot p in passengers)
+            {
+                if (passportId.Equals(p.PassportID))
+                {
+                    passengerM = p.ConvertToPilotAdminM();
+                }
+            }
+            if (passengerM != null)
+                return passengerM;
+            else
+                return null;
+        }
+
 
         private bool PilotExists(int id)
         {

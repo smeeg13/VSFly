@@ -28,24 +28,28 @@ namespace MVCClient.Controllers
                 //Redirect to Pilot page if Pilot
                 if (login.IsPilot)
                 {
-                    var pilot = await _vSFly.GetPilot(login.PersonID);
+                    var pilot = await _vSFly.GetPilotByPassportID(login.PassportID);
                     if (pilot != null)
                     {
-                        HttpContext.Session.SetInt32("PersonId", pilot.PersonId);
-                        HttpContext.Session.SetString("UserType", "Pilot");
+                        if (login.Email.Equals(pilot.Email))
+                        {
+                            HttpContext.Session.SetInt32("PersonId", pilot.PersonId);
+                            HttpContext.Session.SetString("UserType", "Pilot");
 
-                        return RedirectToAction("Index", "Pilots");
+                            return RedirectToAction("Index", "Pilots");
+                        }
+                            
                     }
-                    ModelState.AddModelError(string.Empty, "Invalid Id or Email");
+                    ModelState.AddModelError(string.Empty, "Invalid Email or Passport ID");
                     return View();
                 }
 
-                var passenger = await _vSFly.GetPassenger(login.PersonID);
+                var passenger = await _vSFly.GetPassengerByPassportID(login.PassportID);
 
                 //Redirect to Passenger page if Passenger
                 if (passenger != null)
                 {
-                    if (passenger.Email.Equals(login.Email))
+                    if (login.Email.Equals(passenger.Email))
                     {
                         if (passenger.Status.Equals("Admin"))
                         {

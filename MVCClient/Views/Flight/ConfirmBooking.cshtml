@@ -86,7 +86,7 @@
 
 
 
-<form asp-action="Details" asp-controller="Flight">
+<form asp-action="Details" asp-controller="Flight" asp-route-id="@Html.ValueFor(model => model.FlightNo)">
     
     <div class="form-group">     
         <input name="id" hidden value="@Html.ValueFor(model => model.FlightNo)" />

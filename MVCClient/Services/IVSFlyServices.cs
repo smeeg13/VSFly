@@ -22,7 +22,8 @@ namespace MVCClient.Services
 
 
         public Task<PassengerM> GetPassengerByPassportID(string passportId);
-        public  Task<PassengerM> GetPassenger(int Id); 
+        public  Task<PassengerM> GetPassenger(int Id);
+        public Task<PilotAdminM> GetPilotByPassportID(string passportId);
         public Task<PilotAdminM> GetPilot(int Id);
    
         public Task<BookingM> GetSpecificBooking(int FlightNo, int PersonId);

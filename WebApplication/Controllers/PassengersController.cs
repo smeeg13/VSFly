@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Passengers/Find/2
         [HttpGet("Find/{passportId}")]
-        public async Task<ActionResult<PassengerM>> GetPassengerByEmail(string passportId)
+        public async Task<ActionResult<PassengerM>> GetPassengerByPassportID(string passportId)
         {
             var passengers = await _context.Passengers.ToListAsync() ;
 
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
             PassengerM passengerM = new();
             foreach (Passenger p in passengers)
             {
-                if (p.PassportID.Equals(passportId))
+                if (passportId.Equals(p.PassportID))
                 {
                     passengerM = p.ConvertToPassengerM();
                 }

@@ -9,10 +9,11 @@ namespace MVCClient.Models
     public class Login
     {
 
-        [Required]
+        [Required(ErrorMessage = "Email cannot be empty")]
+        [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        public int PersonID { get; set; }
+        [Required(ErrorMessage ="Passport ID cannot be empty")]
+        public string PassportID { get; set; }
 
         public Boolean IsPilot { get; set; }
     }
