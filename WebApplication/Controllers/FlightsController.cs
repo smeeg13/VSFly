@@ -428,6 +428,9 @@ namespace WebAPI.Controllers
         [HttpDelete("Admin/DeleteFlight/{id:int}")]
         public async Task<IActionResult> DeleteFlight(int id)
         {
+            if (id <= 0)
+                return NotFound();
+
             var flight = await _context.Flights.FindAsync(id);
             if (flight == null)
             {
@@ -437,7 +440,7 @@ namespace WebAPI.Controllers
             _context.Flights.Remove(flight);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
     }
 }

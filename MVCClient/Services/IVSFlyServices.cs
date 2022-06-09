@@ -50,6 +50,12 @@ public Boolean CreateBooking(BookingM booking);
         public  Task<IEnumerable<FlightAdminM>> GetAllAdminFlights();
         public  Task<FlightAdminM> GetAdminFlight(int id);
         public Boolean CreateFlight(FlightAdminM f);
+        public Boolean DeleteFlight(int id);
+        public Boolean DeletePilot(int id);
+        public Boolean DeletePassenger(int id);
+
+
+
         public Boolean CreatePilot(PilotAdminM f);
 
 

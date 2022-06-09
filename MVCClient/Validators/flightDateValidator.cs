@@ -16,8 +16,10 @@ namespace MVCClient.Validators
             var dateTime = (DateTime)value;
             if (dateTime < DateTime.Now)
                 return new ValidationResult("Date of flight can not be before todays date");
+            if (dateTime > DateTime.Now.AddYears(20))
+                return new ValidationResult("Date of flight can not be later than 20 years from now");
 
-            return base.IsValid(value, validationContext);
+            return ValidationResult.Success;
         }
     }
 }

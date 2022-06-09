@@ -16,16 +16,19 @@ namespace MVCClient.Models
         public IEnumerable<FlightAdminM> FlightsToPilot { get; set; }
         public IEnumerable<FlightAdminM> FlightsToCoPilot { get; set; }
 
-        [birthdayValidator] 
+        [Required(ErrorMessage = "Please enter a Birthday date")]
+        [birthdayValidator]
         public DateTime Birthday { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please, Enter a valid email")]
         [EmailAddress] 
         public string Email { get; set; }
+        [Required(ErrorMessage = "Please, Enter a Name")]
         public string FullName { get; set; }
 
-        [Required]
-        [MaxLength(15)] 
+        [Required(ErrorMessage = "Please enter a Passport ID")]
+        [MaxLength(15)]
         public string PassportID { get; set; }
+        [Range(0, 100000000)]
         public double Salary { get; set; }
     }
 }

@@ -469,5 +469,53 @@ namespace MVCClient.Services
                 return false;
             }
         }
+
+
+        public Boolean DeleteFlight(int id)
+        {
+
+            var uri = _baseuri + "Flights/Admin/DeleteFlight/" + id;
+
+            //HTTP DELETE
+            var deleteTask = _client.DeleteAsync(uri);
+            deleteTask.Wait();
+
+            var result = deleteTask.Result;
+            if (result.IsSuccessStatusCode)
+                return true;
+           
+            return false;
+        }
+
+        public Boolean DeletePilot(int id)
+        {
+
+            var uri = _baseuri + "Pilots/Admin/DeletePilot/" + id;
+
+            //HTTP DELETE
+            var deleteTask = _client.DeleteAsync(uri);
+            deleteTask.Wait();
+
+            var result = deleteTask.Result;
+            if (result.IsSuccessStatusCode)
+                return true;
+
+            return false;
+        }
+        public Boolean DeletePassenger(int id)
+        {
+
+            var uri = _baseuri + "Passengers/Admin/DeletePassenger/" + id;
+
+            //HTTP DELETE
+            var deleteTask = _client.DeleteAsync(uri);
+            deleteTask.Wait();
+
+            var result = deleteTask.Result;
+            if (result.IsSuccessStatusCode)
+                return true;
+
+            return false;
+        }
     }
 }

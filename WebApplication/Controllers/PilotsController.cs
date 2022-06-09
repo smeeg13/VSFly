@@ -31,6 +31,10 @@ namespace WebAPI.Controllers
             foreach (Pilot p in PilotList)
             {
                 var PM = p.ConvertToPilotAdminM();
+                if(PM.Salary<=0 || PM.Salary == null)
+                {
+                    PM.Salary = 40000;
+                }
                 pilotMList.Add(PM);
             }
             return pilotMList;
@@ -48,30 +52,37 @@ namespace WebAPI.Controllers
             }
 
             PilotAdminM pilotM = pilot.ConvertToPilotAdminM();
-
+            if (pilotM.Salary <= 0 || pilotM.Salary == null)
+            {
+                pilotM.Salary = 40000;
+            }
             return pilotM;
         }
         // GET: api/Pilots/Find/2
         [HttpGet("Find/{passportId}")]
         public async Task<ActionResult<PilotAdminM>> GetPilotByPassportID(string passportId)
         {
-            var passengers = await _context.Pilots.ToListAsync();
+            var pilots = await _context.Pilots.ToListAsync();
 
-            if (passengers == null)
+            if (pilots == null)
             {
                 return null;
             }
 
-            PilotAdminM passengerM = null;
-            foreach (Pilot p in passengers)
+            PilotAdminM pilotM = null;
+            foreach (Pilot p in pilots)
             {
                 if (passportId.Equals(p.PassportID))
                 {
-                    passengerM = p.ConvertToPilotAdminM();
+                    pilotM = p.ConvertToPilotAdminM();
+                    if (pilotM.Salary <= 0 || pilotM.Salary == null)
+                    {
+                        pilotM.Salary = 40000;
+                    }
                 }
             }
-            if (passengerM != null)
-                return passengerM;
+            if (pilotM != null)
+                return pilotM;
             else
                 return null;
         }
@@ -150,9 +161,12 @@ namespace WebAPI.Controllers
         }
 
         // DELETE: api/Pilots/5
-        [HttpDelete("Admin/DeletePilot/{id}")]
+        [HttpDelete("Admin/DeletePilot/{id:int}")]
         public async Task<IActionResult> DeletePilot(int id)
         {
+            if (id <= 0)
+                return NotFound();
+
             var pilot = await _context.Pilots.FindAsync(id);
             if (pilot == null)
             {
@@ -162,7 +176,7 @@ namespace WebAPI.Controllers
             _context.Pilots.Remove(pilot);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
     }
 }

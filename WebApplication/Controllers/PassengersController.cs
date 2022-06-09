@@ -146,20 +146,23 @@ namespace WebAPI.Controllers
             return CreatedAtAction("GetPassenger", new { id = passengerM.PersonId }, passengerM);
         }
 
-        // DELETE: api/Passengers/5
-        [HttpDelete("{id}")]
+        // DELETE: api/Passengers/Admin/DeletePassenger/5
+        [HttpDelete("Admin/DeletePassenger/{id:int}")]
         public async Task<IActionResult> DeletePassenger(int id)
         {
-            var passenger = await _context.Passengers.FindAsync(id);
-            if (passenger == null)
+            if (id <= 0)
+                return NotFound();
+
+            var Passenger = await _context.Passengers.FindAsync(id);
+            if (Passenger == null)
             {
                 return NotFound();
             }
 
-            _context.Passengers.Remove(passenger);
+            _context.Passengers.Remove(Passenger);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool PassengerExists(int id)

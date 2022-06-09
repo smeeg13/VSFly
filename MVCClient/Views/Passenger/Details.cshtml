@@ -49,7 +49,41 @@
         </dd>
     </dl>
 </div>
+
+
+@if (ViewBag.Message != "Admin")
+{
+
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.PersonId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) |
     <a asp-action="Index">Back to Passenger Area</a>
 </div>
+
+}
+else
+{
+
+<div>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) |*@
+    @using (Html.BeginForm("Edit", "Passenger", new { id = @Html.ValueFor(model => model.PersonId) }))
+    {
+        <input type="button" value="Edit" class="btn btn-primary" style="margin-top:8x">
+    }
+    @using (Html.BeginForm("ChangeStatus", "Admin", new { id = @Html.ValueFor(model => model.PersonId), status = @Html.ValueFor(model => model.Status) }, FormMethod.Post))
+    {
+        <input type="submit" value="Change Status" class="btn btn-primary" style="margin-top:8x">
+    }
+    @using (Html.BeginForm("DeletePassenger", "Admin", new { id = @Html.ValueFor(model => model.PersonId) }, FormMethod.Get))
+    {
+        <input type="submit" value="Delete" class="btn btn-danger" style="margin-top:8px">
+    }
+
+
+
+
+    <form>
+        <input type="button" value="Go back" onclick="history.back()" style="margin-top:30px">
+    </form>
+</div>
+}
+

@@ -64,24 +64,32 @@ namespace MVCClient.Controllers
         // POST: PilotController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, PilotAdminM pilotM)
         {
-            PilotAdminM pilot = new();
-            pilot.PersonId = id;
-            pilot.FullName = collection["Fullname"];
-            pilot.Email = collection["Email"];
-            pilot.Birthday = Convert.ToDateTime(collection["Birthday"]);
-            pilot.PassportID = collection["PassportID"];
-
-            var statusCode = _vSFly.UpdatePilot(pilot);
-            if (statusCode)
+            pilotM.PersonId = id;
+            if (ModelState.IsValid)
             {
-                //Update of the Passenger is OK
+                PilotAdminM pilot = new();
+                pilot.PersonId = id;
+                pilot.FullName = pilotM.FullName;
+                pilot.Email = pilotM.Email;
+                pilot.Birthday = pilotM.Birthday;
+                pilot.PassportID = pilotM.PassportID;
 
-                return RedirectToAction("Details", "Pilots", new { id = pilot.PersonId });
+                var statusCode = _vSFly.UpdatePilot(pilot);
+                if (statusCode)
+                {
+                    //Update of the Passenger is OK
+
+                    return RedirectToAction("Details", "Pilots", new { id = pilot.PersonId });
+                }
+                ModelState.AddModelError(string.Empty, "Something went wrong, Please contact the administration");
+
+                return RedirectToAction("Edit", pilotM);
             }
+            ModelState.AddModelError(string.Empty, "Please control that the info you entered are in the right format");
 
-            return RedirectToAction("Edit", "Pilots", new { id = pilot.PersonId });
+            return View("Edit", pilotM);
         }
 
     }

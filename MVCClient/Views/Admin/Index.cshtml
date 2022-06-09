@@ -14,7 +14,7 @@
             <h2>Administration Area</h2>
         </div>
         <div class="leftcolumntitle">
-            @using (Html.BeginForm("CreateAdmin", "Admin", FormMethod.Get))
+            @using (Html.BeginForm("ManageAdmin", "Admin", FormMethod.Get))
             {
                 <input type="submit" value="Manage Administrator" />
             }
@@ -120,7 +120,10 @@
                                             </td>
 
                                             <td>
-                                                @Html.ActionLink("Details", "DetailsFlight", "Admin", new { id = item.FlightNo })
+                                               
+
+                                                @Html.ActionLink("Details", "DetailsFlight", "Admin", new { id = item.FlightNo }) |
+                                                @Html.ActionLink("Delete", "DeleteFlight", new { id = item.FlightNo })
                                             </td>
                                         </tr>
                                     }
@@ -213,7 +216,10 @@
                                             </td>
 
                                             <td>
-                                                <a asp-controller="Pilots" asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+                                                @*<a asp-controller="Pilots" asp-action="Details" asp-route-id="@item.PersonId">Details</a>*@
+
+                                                @Html.ActionLink("Details", "Details", "Pilots", new { id = item.PersonId }) |
+                                                @Html.ActionLink("Delete", "DeletePilot", new { id = item.PersonId })
                                             </td>
                                         </tr>
                                     }
@@ -305,7 +311,8 @@
                                             </td>
 
                                             <td>
-                                                <a asp-controller="Passenger" asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+                                                @Html.ActionLink("Details", "Details", "Passenger", new { id = item.PersonId }) |
+                                                @Html.ActionLink("Delete", "DeletePassenger", "Admin", new { id = item.PersonId })
                                             </td>
                                         </tr>
                                     }
