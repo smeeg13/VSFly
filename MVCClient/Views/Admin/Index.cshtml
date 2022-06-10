@@ -21,7 +21,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">
+    @*<div class="row">
         <div class="fullcolumn">
             <div class="card">
 
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
                 <div class="row">
                     <div class="fullcolumn">
@@ -62,13 +62,23 @@
                                     @using (Html.BeginForm("Index", "Admin", FormMethod.Post))
                                     {
                                         <b> <p class="tilteFiltre">Filter Flights : </p></b>
-                                        <div>
-
-                                            Enter Departure : <input type="text" name="searchDeparture" />
+                                        <div class="selects">
+                                            @Html.CheckBoxFor(model => model.onlyAvailableFlights)
+                                             <label>Display only Available Flights ( with free seats )</label>
 
                                         </div>
-                                        <div>
+                                        
+                                            <select class="selects" asp-for="searchFlightNo" asp-items="Model.flightsNo">
+                                                <option value="">Choose a Flight N°</option>
+                                            </select>
+                                       
+                                       
+                                        <div class="selects">
+                                            Enter Departure : <input type="text" name="searchDeparture" />
                                             Enter Destination : <input type="text" name="searchDestination" />
+                                        </div>
+                                        <div>
+
                                         </div>
                                         <input class="filterButton" type="submit" value="rechercher" />
 
@@ -153,8 +163,8 @@
                             </div>
                             <hr>
 
-                            <div class="row">
-                                <div class="fullcolumn">
+                            <!--<div class="row">
+                                <div class="fullcolumn">-->
                                     @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
                                         {
                                             <b> <p class="tilteFiltre">Filter Flights : </p></b>
@@ -169,10 +179,10 @@
                                             <input class="filterButton" type="submit" value="rechercher" />
 
                                         }*@
-                                </div>
+                                <!--</div>
                             </div>
 
-                            <br />
+                            <br />-->
 
                             <table class="table">
                                 <thead>
@@ -212,7 +222,8 @@
                                                 @Html.DisplayFor(modelItem => item.PassportID)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.FlightHours)
+                                              
+                                                    @Html.DisplayFor(modelItem => item.FlightHours)
                                             </td>
 
                                             <td>
@@ -248,8 +259,8 @@
                             </div>
                             <hr>
 
-                            <div class="row">
-                                <div class="fullcolumn">
+                            <!--<div class="row">
+                                <div class="fullcolumn">-->
                                     @*@using (Html.BeginForm("Index", "Admin", FormMethod.Post))
                                         {
                                             <b> <p class="tilteFiltre">Filter Flights : </p></b>
@@ -264,8 +275,8 @@
                                             <input class="filterButton" type="submit" value="rechercher" />
 
                                         }*@
-                                </div>
-                            </div>
+                                <!--</div>
+                            </div>-->
 
                             <br />
 
@@ -343,8 +354,8 @@
     }
 
     .selects {
-        margin-right: 10px;
         margin-left: 10px;
+        margin-bottom: 10px;
     }
 
     .fullcolumn {

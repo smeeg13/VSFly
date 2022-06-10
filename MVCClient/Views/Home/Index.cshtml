@@ -15,7 +15,7 @@
             @using (Html.BeginForm("Index", "Home", FormMethod.Post))
             {
                 <b> <p class="tilteFiltre">Filter the flights : </p></b>
-                <p>
+                <p class="selects">
                     Enter Departure : <input type="text" name="searchDeparture" />
 
                     Enter Destination : <input type="text" name="searchDestination" />
@@ -80,6 +80,10 @@
 
 
 <style>
+    .selects {
+        margin-top: 10px;
+        margin-right: 10px;
+    }
 
     /* Clear floats after the columns */
     .row:after {

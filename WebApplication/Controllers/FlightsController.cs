@@ -276,7 +276,7 @@ namespace WebAPI.Controllers
                         dest2.SumSales = 0;
                     }
                 }
-                dest2.AvgSales = GetAvgSalePrice(bookingsAll);
+                dest2.AvgSales = (int) GetAvgSalePrice(bookingsAll);
             }
             return destinations;
         }

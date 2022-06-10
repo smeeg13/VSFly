@@ -24,7 +24,7 @@ namespace MVCClient.Controllers
         // GET: AdminController
         [HttpGet]
         [HttpPost]
-        public async Task<ActionResult> Index(string searchDestination, string searchDeparture, int searchFlightNo)
+        public async Task<ActionResult> Index(string searchDestination, string searchDeparture, string searchFlightNo, Boolean onlyAvailableFlights)
         {
             if (HttpContext.Session.GetInt32("PersonId") == null)
             {
@@ -36,25 +36,46 @@ namespace MVCClient.Controllers
                 return RedirectToAction("Index", "Login");
             }
             var admin = new Admin();
-            var flights = await _vSFly.GetAllAdminFlights();
+            var flights= await _vSFly.GetAllAdminFlights();
+            if (onlyAvailableFlights)
+            {
+                flights = flights.Where(x => x.FreeSeats > 0);
+            }
 
             admin.Flights = flights;
+            // Use LINQ to get list of destination names.
+            IQueryable<int> flightsNos = from m in flights.AsQueryable()
+                                               orderby m.FlightNo
+                                               select m.FlightNo;
+            admin.flightsNo = new SelectList(flightsNos);
 
             if (!string.IsNullOrEmpty(searchDestination))
             {
-                admin.Flights = admin.Flights.AsQueryable().Where(x => x.Destination.Contains(searchDestination));
+                admin.Flights = admin.Flights.AsQueryable().Where(x => x.Destination.ToLower().Contains(searchDestination.ToLower()));
             }
-            if (!string.IsNullOrEmpty(searchDeparture))
+            else
             {
-                admin.Flights = admin.Flights.AsQueryable().Where(x => x.Departure.Contains(searchDeparture));
+                if (!string.IsNullOrEmpty(searchDeparture))
+                {
+                    admin.Flights = admin.Flights.AsQueryable().Where(x => x.Departure.ToLower().Contains(searchDeparture.ToLower()));
+                }
             }
-            if (!string.IsNullOrEmpty(searchDeparture))
+          
+            if (!string.IsNullOrEmpty(searchFlightNo))
             {
-                admin.Flights = admin.Flights.AsQueryable().Where(x => x.FlightNo == searchFlightNo);
+                admin.Flights = admin.Flights.AsQueryable().Where(x => x.FlightNo == Int32.Parse(searchFlightNo));
             }
+
 
             var pilots = await _vSFly.GetPilots();
             admin.Pilots = pilots;
+            foreach(PilotAdminM p in admin.Pilots)
+            {
+                if(p.FlightHours ==null)
+                {
+                    p.FlightHours = 0;
+                }
+            }
 
             var passengers = await _vSFly.GetPassengers();
             admin.Passengers = passengers;

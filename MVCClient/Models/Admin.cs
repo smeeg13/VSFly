@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,10 @@ namespace MVCClient.Models
         public string searchDeparture { get; set; }
 
         public string searchFlightNo { get; set; }
+        public Boolean onlyAvailableFlights { get; set; }
+
+
+        public SelectList flightsNo { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace WebAPI.Models
         public List<Ticket> TicketsSold { get; set; }
 
         public double SumSales { get; set; }
-        public double AvgSales { get; set; }
+        public int AvgSales { get; set; }
 
     }
 }

@@ -7,36 +7,31 @@
 
 <div class="row">
     <div class="fullcolumn">
-        <div class="card">
+        
 
             <div class="row">
                 <div class="rightcolumntitle">
                     <h3>Administrator Manager</h3>
                 </div>
-                @*<div class="leftcolumntitle">
-                    @using (Html.BeginForm("CreateAdmin", "Passenger"))
-                    {
-                        <input type="submit" value="New Admin" />
-                    }
-                </div>*@
             </div>
             <hr>
 
             <div class="row">
                 <div class="fullcolumn">
-                    @using (Html.BeginForm("CreateAdmin", "Admin", FormMethod.Post))
-                    {
-                        <b> <p class="tilteFiltre">Filter Passengers : </p></b>
-                        <p>
-                            <select class="selects" asp-for="PassportIdChoosed" asp-items="Model.PassportIdList">
-                                <option value="">Choose a Passport ID</option>
-                            </select>
+                    <div class="card">
+                        @using (Html.BeginForm("ManageAdmin", "Admin", FormMethod.Post))
+                        {
+                            <b> <p class="tilteFiltre">Filter Passengers : </p></b>
+                            <p>
+                                <select class="selects" asp-for="PassportIdChoosed" asp-items="Model.PassportIdList">
+                                    <option value="">Choose a Passport ID</option>
+                                </select>
 
-                            Enter Name of Passenger : <input type="text" name="fullname" />
-                        </p>
-                        <input class="filterButton" type="submit" value="rechercher" />
-
-                    }
+                                Enter Name of Passenger : <input type="text" name="fullname" />
+                            </p>
+                            <input class="filterButton" type="submit" value="rechercher" />
+                        }
+                    </div>
                 </div>
             </div>
             <br />
@@ -81,7 +76,7 @@
 
                                     <td>
 
-                                        @Html.ActionLink("Change Status", "ChangeStatus", "Admin", new { id = item.PersonId, status = item.Status})
+                                        @Html.ActionLink("Change Status", "ChangeStatus", "Admin", new { @id = item.PersonId, @status = item.Status})
                                     </td>
                                 </tr>
                             }
@@ -92,7 +87,7 @@
 
             </div>
 
-        </div>
+        
     </div>
 </div>
 
@@ -122,28 +117,6 @@
         width: 100%;
     }
 
-    /* Create two unequal columns that floats next to each other */
-    /* Left column */
-    .leftcolumn {
-        float: left;
-        width: 40%;
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-bottom: 20px;
-    }
-
-    .leftcolumntitle {
-        padding: 10px;
-        float: right;
-        width: 30%;
-    }
-
-    /* Right column */
-    .rightcolumn {
-        float: left;
-        width: 60%;
-        padding-left: 20px;
-    }
     /* Right column */
     .rightcolumntitle {
         padding: 10px;
@@ -154,7 +127,7 @@
 
     /* Add a card effect for articles */
     .card {
-        background-color: white;
+        background-color: #f5f5f5;
         padding: 20px;
         margin-top: 20px;
     }
@@ -166,9 +139,4 @@
         clear: both;
     }
 
-    body {
-        font-family: Arial;
-        background-color: #f5f5f5;
-        padding: 5px;
-    }
 </style>
