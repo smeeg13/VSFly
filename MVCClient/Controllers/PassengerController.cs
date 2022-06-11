@@ -26,7 +26,7 @@ namespace MVCClient.Controllers
        [HttpGet]
         public async Task<ActionResult> Index()
         {
-            if (HttpContext.Session.GetInt32("UserType") == null)
+            if (HttpContext.Session.GetInt32("PersonId") == null)
             {
                 return RedirectToAction("Index", "Login");
             }
@@ -63,7 +63,6 @@ namespace MVCClient.Controllers
                 passenger.Email = formCollection["Email"];
                 passenger.Birthday = Convert.ToDateTime(formCollection["Birthday"]);
 
-
                 var statusCode = _vSFly.CreatePassenger(passenger);
                 if (statusCode)
                 {
@@ -71,10 +70,7 @@ namespace MVCClient.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-
             ModelState.AddModelError(string.Empty, "Server Error. Please contact administrator.");
-
             return View(passenger);
         }
 
@@ -83,6 +79,7 @@ namespace MVCClient.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
+            ViewBag.Message = HttpContext.Session.GetString("UserType");
             var p = await _vSFly.GetPassenger(id);
 
             return View(p);
@@ -98,36 +95,32 @@ namespace MVCClient.Controllers
         // POST: PassengerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, PassengerM passengerM)
         {
-            try
+            passengerM.PersonId = id;
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                PassengerM passenger = new();
+                passenger.PersonId = id;
+                passenger.PassportID = passengerM.PassportID;
+                passenger.FullName = passengerM.FullName;
+                passenger.Email = passengerM.Email;
+                passenger.Birthday = passengerM.Birthday;
+                passenger.Status = passengerM.Status;
+                
+                var statusCode = _vSFly.UpdatePassenger(passenger);
+                if (statusCode)
+                {
+                    //Update of the Passenger is OK
+                    return RedirectToAction("Details", "Passenger", new { id = id });
+                }
+                ModelState.AddModelError(string.Empty, "Something went wrong, Please contact the administration");
+                return View("Edit", passengerM);
             }
-            catch
+            else
             {
-                return View();
-            }
-        }
-
-        // GET: PassengerController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PassengerController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                ModelState.AddModelError(string.Empty, "Please control that the info you entered are in the right format");
+                return View("Edit", passengerM);
             }
         }
     }

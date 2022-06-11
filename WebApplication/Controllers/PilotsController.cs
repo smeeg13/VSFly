@@ -22,7 +22,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Pilots
+        // GET ALL PILOTS (admin)
+        // api/Pilots
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PilotAdminM>>> GetPilots()
         {
@@ -31,29 +32,65 @@ namespace WebAPI.Controllers
             foreach (Pilot p in PilotList)
             {
                 var PM = p.ConvertToPilotAdminM();
+                if(PM.Salary<=0 || PM.Salary == null)
+                {
+                    PM.Salary = 40000;
+                }
                 pilotMList.Add(PM);
             }
             return pilotMList;
         }
 
-        // GET: api/Pilots/5
+        // GET ONE PILOT BY ID (admin)
+        // api/Pilots/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PilotM>> GetPilot(int id)
+        public async Task<ActionResult<PilotAdminM>> GetPilot(int id)
         {
             var pilot = await _context.Pilots.FindAsync(id);
 
             if (pilot == null)
             {
-                return NotFound();
+                return null;
             }
 
-            PilotM pilotM = pilot.ConvertToPilotM();
-
+            PilotAdminM pilotM = pilot.ConvertToPilotAdminM();
+            if (pilotM.Salary <= 0 || pilotM.Salary == null)
+            {
+                pilotM.Salary = 40000;
+            }
             return pilotM;
         }
+        // GET ONE PILOT BY PASSPORT ID
+        // api/Pilots/Find/2
+        [HttpGet("Find/{passportId}")]
+        public async Task<ActionResult<PilotAdminM>> GetPilotByPassportID(string passportId)
+        {
+            var pilots = await _context.Pilots.ToListAsync();
 
-       
+            if (pilots == null)
+            {
+                return null;
+            }
 
+            PilotAdminM pilotM = null;
+            foreach (Pilot p in pilots)
+            {
+                if (passportId.Equals(p.PassportID))
+                {
+                    pilotM = p.ConvertToPilotAdminM();
+                    if (pilotM.Salary <= 0 || pilotM.Salary == null)
+                    {
+                        pilotM.Salary = 40000;
+                    }
+                }
+            }
+            if (pilotM != null)
+                return pilotM;
+            else
+                return null;
+        }
+
+        //CHECK IF THE PILOT EXISTS WITH HIS ID
         private bool PilotExists(int id)
         {
             return _context.Pilots.Any(e => e.PersonId == id);
@@ -62,18 +99,25 @@ namespace WebAPI.Controllers
 
 
         //_____________________ADMIN METHODS_________________________________
-        
-        // PUT: api/Pilots/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Admin/UpdatePilot/{id:int}")]
+
+        // PUT PILOT MODIFICATION INTO BD
+        // api/Pilots/Update/5
+        [HttpPut("Admin/UpdatePilot/{id}")]
         public async Task<IActionResult> PutPilot(int id, PilotAdminM pilotM)
         {
             if (id != pilotM.PersonId)
             {
                 return BadRequest();
             }
+            var existingPassenger = _context.Pilots.Where(s => s.PersonId == pilotM.PersonId).FirstOrDefault<Pilot>();
 
-            _context.Entry(pilotM).State = EntityState.Modified;
+            if (existingPassenger != null)
+            {
+                existingPassenger.FullName = pilotM.FullName;
+                existingPassenger.PassportID = pilotM.PassportID;
+                existingPassenger.Email = pilotM.Email;
+                existingPassenger.Birthday = pilotM.Birthday;
+            }
 
             try
             {
@@ -81,7 +125,7 @@ namespace WebAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PilotExists(id))
+                if (!PilotExists(pilotM.PersonId))
                 {
                     return NotFound();
                 }
@@ -91,11 +135,10 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
-
-        // POST: api/Pilots
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST NEW PILOT INTO DB
+        // api/Pilots/Admin/CreatePilot
         [Route("Admin/CreatePilot")]
         [HttpPost]
         public async Task<ActionResult<PilotAdminM>> PostPilot(PilotAdminM pilotM)
@@ -120,10 +163,14 @@ namespace WebAPI.Controllers
                 return CreatedAtAction("GetPilot", new { id = pilotM.PersonId }, pilotM);
         }
 
-        // DELETE: api/Pilots/5
-        [HttpDelete("Admin/DeletePilot/{id}")]
+        // DELETE ON PILOT OF THE BD
+        // api/Pilots/Admin/DeletePilot/5
+        [HttpDelete("Admin/DeletePilot/{id:int}")]
         public async Task<IActionResult> DeletePilot(int id)
         {
+            if (id <= 0)
+                return NotFound();
+
             var pilot = await _context.Pilots.FindAsync(id);
             if (pilot == null)
             {
@@ -133,7 +180,7 @@ namespace WebAPI.Controllers
             _context.Pilots.Remove(pilot);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
     }
 }

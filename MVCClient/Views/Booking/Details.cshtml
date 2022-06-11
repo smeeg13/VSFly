@@ -4,18 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
 <div>
-    <h4>My Ticket</h4>
+    <h3>My Ticket for Flight N° @Html.ValueFor(model => model.FlightNo)</h3>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FlightNo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FlightNo)
-        </dd>
+        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Departure)
         </dt>
@@ -29,7 +23,7 @@
             @Html.DisplayFor(model => model.Destination)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.Date) of Flight
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
@@ -48,7 +42,25 @@
         </dd>
     </dl>
 </div>
+<br />
+<p>
+    No change or Cancellation possible for this ticket !
+</p>
+<br />
 <div>
-   
-    <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+    @if (ViewBag.Message == null)
+    {
+        <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+
+    }
+    @if (ViewBag.Message == "Passenger")
+    {
+        <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+
+    }
+
+    @if (ViewBag.Message == "Admin")
+    {
+        <a asp-action="Index" asp-controller="Admin">Back to Admin Area</a>
+    }
 </div>

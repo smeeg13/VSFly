@@ -4,25 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Flights Available</h1>
+<h2>Flights Available</h2>
 
-<p>
+<!--<p>-->
     @*<a asp-action="Create">Create New</a>*@
-</p>
+<!--</p>-->
 <div class="row">
     <div class="fullcolumn">
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
-        {
-            <b> <p class="tilteFiltre">Filter the flights : </p></b>
-            <p>
-                Enter Departure : <input type="text" name="searchDeparture" />         
+        <div class="card">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+            {
+                <b> <p class="tilteFiltre">Filter the flights : </p></b>
+                <p class="selects">
+                    Enter Departure : <input type="text" name="searchDeparture" />
 
-                Enter Destination : <input type="text" name="searchDestination" />
-            </p><p>
-</p>
-            <input class="filterButton" type="submit" value="Search" />
+                    Enter Destination : <input type="text" name="searchDestination" />
+                </p><p>
+                </p>
+                <input class="filterButton" type="submit" value="Search" />
 
-        }
+            }
+        </div>
+       
     </div>
 </div>
 <table class="table">
@@ -77,6 +80,10 @@
 
 
 <style>
+    .selects {
+        margin-top: 10px;
+        margin-right: 10px;
+    }
 
     /* Clear floats after the columns */
     .row:after {
@@ -91,10 +98,15 @@
     }
 
     .fullcolumn {
-        background-color: #f5f5f5;
         padding: 10px;
         float: left;
         width: 100%;
+    }
+    /* Add a card effect for articles */
+    .card {
+        background-color: #f5f5f5;
+        padding: 20px;
+        margin-top: 20px;
     }
 
     .filterButton {

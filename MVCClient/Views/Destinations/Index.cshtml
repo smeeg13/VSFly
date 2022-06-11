@@ -1,0 +1,116 @@
+﻿@model MVCClient.Models.Destinations
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>All Destinations Available</h2>
+
+<div class="row">
+    
+    <div class="fullcolumn">
+        <div class="card">
+            @using (Html.BeginForm("Index", "Destinations", FormMethod.Post))
+            {
+                <b> <p class="tilteFiltre">Filter Destinations : </p></b>
+                <p>
+                    <select class="selects" asp-for="NameChoosed" asp-items="Model.Names">
+                        <option value="">Choose a Destination</option>
+                    </select>
+
+
+                </p>
+                <input class="filterButton" type="submit" value="Search" />
+
+            }
+        </div>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationsAll.FirstOrDefault().DestinationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationsAll.FirstOrDefault().SumSales)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DestinationsAll.FirstOrDefault().AvgSales)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DestinationsAll)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DestinationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SumSales)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvgSales)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Details", "Details", new { destinationName = item.DestinationName })
+
+
+
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .filterButton {
+        margin: 14px;
+    }
+
+    .tilteFiltre {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .selects {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .fullcolumn {
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+  
+ 
+
+    /* Add a card effect for articles */
+    .card {
+        background-color: #f5f5f5;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+  
+</style>

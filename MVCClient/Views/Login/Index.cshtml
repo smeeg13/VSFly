@@ -27,13 +27,13 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter a valid username" />
+                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter a valid username" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="PersonID" class="control-label"></label>
-                            <input type="number" asp-for="PersonID" class="form-control" />
-                            <span asp-validation-for="PersonID" class="text-danger"></span>
+                            <label asp-for="PassportID" class="control-label">Passport ID</label>
+                            <input type="number" asp-for="PassportID"  class="form-control" placeholder="Enter your Passport ID"/>
+                            <span asp-validation-for="PassportID" class="text-danger"></span>
                         </div>
                         <div>
                             <input asp-for="IsPilot" type="checkbox" >

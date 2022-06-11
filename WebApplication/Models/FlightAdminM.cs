@@ -25,5 +25,8 @@ namespace WebAPI.Models
 
         public PilotAdminM Copilot { get; set; }
         public int CopilotId { get; set; }
+
+        public double SumSales { get; set; }
+
     }
 }

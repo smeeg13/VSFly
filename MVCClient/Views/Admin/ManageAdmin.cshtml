@@ -1,0 +1,142 @@
+﻿@model MVCClient.Models.PassengerAdmin
+
+@{
+    ViewData["Title"] = "ManageAdmin";
+}
+<br />
+
+<div class="row">
+    <div class="fullcolumn">
+        
+
+            <div class="row">
+                <div class="rightcolumntitle">
+                    <h3>Administrator Manager</h3>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="fullcolumn">
+                    <div class="card">
+                        @using (Html.BeginForm("ManageAdmin", "Admin", FormMethod.Post))
+                        {
+                            <b> <p class="tilteFiltre">Filter Passengers : </p></b>
+                            <p>
+                                <select class="selects" asp-for="PassportIdChoosed" asp-items="Model.PassportIdList">
+                                    <option value="">Choose a Passport ID</option>
+                                </select>
+
+                                Enter Name of Passenger : <input type="text" name="fullname" />
+                            </p>
+                            <input class="filterButton" type="submit" value="rechercher" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="fullcolumn">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).PersonId)
+                                </th>
+                                <th>
+                                    Full Name
+                                </th>
+                                <th>
+                                    Passport
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Passengers.ElementAtOrDefault(0).Status)
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Passengers)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PersonId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PassportID)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+
+
+                                    <td>
+
+                                        @Html.ActionLink("Change Status", "ChangeStatus", "Admin", new { @id = item.PersonId, @status = item.Status})
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        
+    </div>
+</div>
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .filterButton {
+        margin: 14px;
+    }
+
+    .tilteFiltre {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .selects {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .fullcolumn {
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    /* Right column */
+    .rightcolumntitle {
+        padding: 10px;
+        float: left;
+        width: 70%;
+        padding-left: 20px;
+    }
+
+    /* Add a card effect for articles */
+    .card {
+        background-color: #f5f5f5;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+</style>

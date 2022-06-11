@@ -9,7 +9,9 @@ namespace MVCClient.Models
 {
     public class BookingM
     {
+        [Required]
         public int FlightNo { get; set; }
+        [Required]
         public int PassengerID { get; set; }
         public double SalePrice { get; set; }
 

@@ -1,0 +1,129 @@
+﻿@model MVCClient.Models.Destination
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h2>Destination : <b>@Html.ValueFor(model => model.DestinationName)</b></h2>
+    <hr />
+    <div class="row">
+        <div class="fullcolumn">
+
+
+            <dd class="col-sm-10">
+                <b>Sum of tickets sold :</b> @Html.DisplayFor(model => model.SumSales)
+            </dd>
+            <dd class="col-sm-10">
+                <b>Average Price of a ticket :</b> @Html.DisplayFor(model => model.AvgSales)
+            </dd>
+        </div>
+
+    </div>
+</div>
+<br />
+<h5>Flights available for : <b>@Html.ValueFor(model => model.DestinationName)</b></h5>
+<p><em>@ViewBag.TotalFlight flights for this destination</em></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().FlightNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().SalePrice)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Flights)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </td>
+                <td>
+
+                    @if (ViewBag.Session == "Admin")
+                        @Html.ActionLink("Details Admin", "DetailsFlight", "Admin", new { id = item.FlightNo })
+                        else
+                            @Html.ActionLink("Book this Flight", "Details", "Flight", new { id = item.FlightNo }) | @Html.ActionLink("Details", "BaseDetails", "Flight", new { id = item.FlightNo })
+
+                        </td>
+                    </tr>
+                }
+    </tbody>
+</table>
+<br />
+@if (ViewBag.Session == "Admin")
+{
+
+    <h5>Tickets Already Sold for : <b>@Html.ValueFor(model => model.DestinationName)</b></h5>
+    <p><em>@ViewBag.TicketsSold tickets have been sold for this destination</em></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TicketsSold.FirstOrDefault().FlightNo)
+                </th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TicketsSold.FirstOrDefault().SalePrice)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TicketsSold)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FlightNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalePrice)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<br />
+<form>
+    <input type="button" value="Go back" onclick="history.back()">
+</form>
+
+<style>
+    .fullcolumn {
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>

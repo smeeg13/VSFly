@@ -4,10 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
 <div>
-    <h4>PassengerM</h4>
+    <h4>Passenger - <b>@Html.DisplayFor(model => model.FullName)</b></h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -44,11 +43,12 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) | 
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PersonId }) |
     <a asp-action="Index" asp-controller="Home">Back Home</a>
 </div>
 
-<hr />
+<br />
+<h5>Tickets Already purchased  : </h5>
 
 <table class="table">
     <thead>
@@ -70,24 +70,24 @@
     <tbody>
         @foreach (var item in Model.Tickets)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightNo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Departure)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Tickets.ElementAtOrDefault(0).Destination)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.SalePrice)
-            </th>
-            <td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FlightNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Destination)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </th>
+                <td>
 
-                @Html.ActionLink("Details of Booking", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
-            </td>
-        </tr>
+                    @Html.ActionLink("Details of Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
+                </td>
+            </tr>
         }
     </tbody>
 </table>

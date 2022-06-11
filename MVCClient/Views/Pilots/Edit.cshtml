@@ -1,0 +1,61 @@
+﻿@model MVCClient.Models.PilotAdminM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Pilot's Information</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PersonId" class="control-label"></label>
+                <input asp-for="PersonId" class="form-control" value="@Html.ValueFor(model => model.PersonId)" disabled />
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightHours" class="control-label"></label>
+                <input asp-for="FlightHours" class="form-control" value="@Html.ValueFor(model => model.FlightHours)" disabled />
+                <span asp-validation-for="FlightHours" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" value="@Html.ValueFor(model => model.FullName)" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" value="@Html.ValueFor(model => model.Email)" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PassportID" class="control-label"></label>
+                <input asp-for="PassportID" class="form-control" value="@Html.ValueFor(model => model.PassportID)" />
+                <span asp-validation-for="PassportID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Birthday" class="control-label"></label>
+                <input asp-for="Birthday" class="form-control" type="datetime" value="@Html.ValueFor(model => model.Birthday)" />
+                <span asp-validation-for="Birthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" value="@Html.ValueFor(model => model.Salary)" disabled />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<form>
+    <input type="button" value="Cancel" onclick="history.back()">
+</form>
+
