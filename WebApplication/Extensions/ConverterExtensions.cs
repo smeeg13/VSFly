@@ -89,6 +89,8 @@ namespace WebAPI.Extensions
             Models.PilotM pm = new Models.PilotM();
             pm.PersonId = p.PersonId;
             pm.FlightHours = p.FlightHours;
+            if (pm.FlightHours == null)
+                pm.FlightHours = 0;
            
             return pm;
         }
@@ -98,7 +100,9 @@ namespace WebAPI.Extensions
             VSFly.Pilot p = new VSFly.Pilot();
             p.PersonId = pm.PersonId;
             p.FlightHours = pm.FlightHours;
-            
+            if (p.FlightHours == null)
+                p.FlightHours = 0;
+
             return p;
         }
 
@@ -109,6 +113,8 @@ namespace WebAPI.Extensions
             Models.PilotAdminM pm = new Models.PilotAdminM();
             pm.PersonId = p.PersonId;
             pm.FlightHours = p.FlightHours;
+            if (pm.FlightHours == null)
+                pm.FlightHours = 0;
             pm.Birthday = p.Birthday;
             pm.Email = p.Email;
             pm.FullName = p.FullName;
@@ -118,18 +124,20 @@ namespace WebAPI.Extensions
             return pm;
         }
 
-        public static VSFly.Pilot ConvertToPilotFromAdmin(this Models.PilotAdminM p)
+        public static VSFly.Pilot ConvertToPilotFromAdmin(this Models.PilotAdminM pm)
         {
-            VSFly.Pilot pm = new VSFly.Pilot();
-            pm.PersonId = p.PersonId;
-            pm.FlightHours = p.FlightHours;
-            pm.Birthday = p.Birthday;
-            pm.Email = p.Email;
-            pm.FullName = p.FullName;
-            pm.PassportID = p.PassportID;
-            pm.Salary = p.Salary;
+            VSFly.Pilot p = new VSFly.Pilot();
+            p.PersonId = pm.PersonId;
+            p.FlightHours = pm.FlightHours;
+            if (p.FlightHours == null)
+                p.FlightHours = 0;
+            p.Birthday = pm.Birthday;
+            p.Email = pm.Email;
+            p.FullName = pm.FullName;
+            p.PassportID = pm.PassportID;
+            p.Salary = pm.Salary;
 
-            return pm;
+            return p;
         }
 
      

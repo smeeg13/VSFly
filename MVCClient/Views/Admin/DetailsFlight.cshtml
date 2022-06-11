@@ -7,7 +7,6 @@
 <h2> Flight Information</h2>
 
 <div>
-    <h4>FlightAdminM</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -105,8 +104,8 @@
     <br />
 
 
-    <h6>Tickets Already Sold this flight : </h6>
-
+    <h5>Tickets Already Sold this flight : </h5>
+    <br />
     <table class="table">
         <thead>
             <tr>
@@ -117,7 +116,7 @@
                     Full Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().SalePrice)
+                   Sales Price
                 </th>
 
                 <th></th>
@@ -136,13 +135,8 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.SalePrice)
                     </td>
-
                     <td>
-
-
                         @Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
-
-
                     </td>
                 </tr>
             }
@@ -150,10 +144,8 @@
     </table>
 }
 
-
-
 <form>
-    <input type="button" value="Go back" onclick="history.back()" style="margin-top:30px">
+    <input type="button" value="Go back" onclick="history.back()" style="margin-top:10px">
 </form>
 
 

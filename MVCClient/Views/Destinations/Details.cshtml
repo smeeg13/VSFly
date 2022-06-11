@@ -4,29 +4,26 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Destination : <b>@Html.ValueFor(model => model.DestinationName)</b></h4>
+    <h2>Destination : <b>@Html.ValueFor(model => model.DestinationName)</b></h2>
     <hr />
-    <dl class="row">
+    <div class="row">
+        <div class="fullcolumn">
 
-        <dt class="col-sm-2">
-            Sum of tickets sold for @Html.ValueFor(model => model.DestinationName) :
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SumSales)
-        </dd>
-        <dt class="col-sm-2">
-            Average Price of a ticket for @Html.ValueFor(model => model.DestinationName) :
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AvgSales)
-        </dd>
-    </dl>
+
+            <dd class="col-sm-10">
+                <b>Sum of tickets sold :</b> @Html.DisplayFor(model => model.SumSales)
+            </dd>
+            <dd class="col-sm-10">
+                <b>Average Price of a ticket :</b> @Html.DisplayFor(model => model.AvgSales)
+            </dd>
+        </div>
+
+    </div>
 </div>
 <br />
-<h6>Flights available for : <b>@Html.ValueFor(model => model.DestinationName)</b></h6>
+<h5>Flights available for : <b>@Html.ValueFor(model => model.DestinationName)</b></h5>
+<p><em>@ViewBag.TotalFlight flights for this destination</em></p>
 
 <table class="table">
     <thead>
@@ -36,6 +33,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flights.FirstOrDefault().SalePrice)
             </th>
 
             <th></th>
@@ -51,34 +51,27 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
-
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </td>
                 <td>
 
                     @if (ViewBag.Session == "Admin")
-                    {
-
                         @Html.ActionLink("Details Admin", "DetailsFlight", "Admin", new { id = item.FlightNo })
+                        else
+                            @Html.ActionLink("Book this Flight", "Details", "Flight", new { id = item.FlightNo }) | @Html.ActionLink("Details", "BaseDetails", "Flight", new { id = item.FlightNo })
 
-                    }
-                    else
-                    @Html.ActionLink("Details", "BaseDetails", "Flight", new { id = item.FlightNo })
-
-
+                        </td>
+                    </tr>
                 }
-
-
-                </td>
-            </tr>
-        }
     </tbody>
 </table>
-
-
 <br />
 @if (ViewBag.Session == "Admin")
 {
 
-    <h6>Tickets Already Sold for : <b>@Html.ValueFor(model => model.DestinationName)</b></h6>
+    <h5>Tickets Already Sold for : <b>@Html.ValueFor(model => model.DestinationName)</b></h5>
+    <p><em>@ViewBag.TicketsSold tickets have been sold for this destination</em></p>
 
     <table class="table">
         <thead>
@@ -92,7 +85,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.TicketsSold.FirstOrDefault().SalePrice)
                 </th>
-
                 <th></th>
             </tr>
         </thead>
@@ -109,22 +101,29 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.SalePrice)
                     </td>
-
                     <td>
-
-
-                        {@Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
-
-
+                        @Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-
 }
-
 <br />
 <form>
     <input type="button" value="Go back" onclick="history.back()">
 </form>
+
+<style>
+    .fullcolumn {
+        padding: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+</style>

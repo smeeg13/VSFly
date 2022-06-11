@@ -5,10 +5,10 @@
 }
 
 <h2>Pilot's Area</h2>
-
+<hr />
 <div>
     <h4>Personnal Information</h4>
-    <hr />
+    <br />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PersonId)
@@ -37,13 +37,14 @@
         </dd>
     </dl>
     <div>
-        @Html.ActionLink("Edit", "Edit", "Pilots", new { id = Model.PersonId }) 
+        @Html.ActionLink("Edit", "Edit", "Pilots", new { id = Model.PersonId })
     </div>
 </div>
+<hr />
 <br />
 
 <h4>Flights to Pilot</h4>
-<hr />
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -85,10 +86,11 @@
         }
     </tbody>
 </table>
+<hr />
 <br />
 
 <h4>Flights to CoPilot</h4>
-<hr />
+<br />
 <table class="table">
     <thead>
         <tr>

@@ -34,7 +34,6 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Date)
         </dd>
-
         <dt class="col-sm-2">
             Sale Price
         </dt>
@@ -42,17 +41,7 @@
             @Html.DisplayFor(model => model.SalePrice)
         </dd>
     </dl>
-    @*<hr />
-    @using (Html.BeginForm("Details", "Flight", FormMethod.Post))
-    {
-        <label for="NbPassengers">
-            Number of Passenger :
-            <input type="number" name="NbPassengers" id="NbPassengers"
-                   min="1" max="6" value="@Html.DisplayFor(model => model.NbPassengers)">
-        </label>
-
-        <input class="filterButton" type="submit" value="Refresh" />
-    }*@
+  
 
     <hr />
 
@@ -95,17 +84,11 @@
             <input asp-for="Destination" class="form-control" hidden value="@Html.ValueFor(model => model.Destination)"/>
             <span asp-validation-for="Destination" class="text-danger"></span>
         </div>
-        @*<div class="form-group">
-            <label asp-for="Passengers" class="control-label" hidden></label>
-            <input asp-for="Passengers" class="form-control" hidden value="@Html.DisplayFor(model => model.Passengers)" />
-            <span asp-validation-for="Passengers" class="text-danger"></span>
-        </div>*@
-
     
             <div>
-                <h6>Enter Personnal Information of Passenger </h6>
+                <h6>Enter Personnal Information of Passenger :</h6>
             </div>
-            <hr />
+
             <div class="form-group">
                 <label asp-for="FullName" class="control-label">Full Name</label>
                 <input asp-for="FullName" class="form-control"  type="text"/>
@@ -127,39 +110,6 @@
                 <span asp-validation-for="Birthday" class="text-danger"></span>
             </div>
             <br />
-
-        
-
-        @*@for (int i = 0; i < Model.Passengers.Count; i++)
-        {
-            <div>
-                <h6>Enter Personnal Information of Passenger </h6>
-            </div>
-            <hr />
-            <div class="form-group">
-                <label asp-for="Passengers.ElementAt(i).FullName" class="control-label">Full Name</label>
-                <input asp-for="Passengers.ElementAt(i).FullName" class="form-control" />
-                <span asp-validation-for="Passengers.ElementAt(i).FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Passengers.ElementAt(i).PassportID" class="control-label">Passport ID</label>
-                <input asp-for="Passengers.ElementAt(i).PassportID" class="form-control" />
-                <span asp-validation-for="Passengers.ElementAt(i).PassportID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Passengers.ElementAt(i).Email" class="control-label"></label>
-                <input asp-for="Passengers.ElementAt(i).Email" class="form-control" />
-                <span asp-validation-for="Passengers.ElementAt(i).Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Passengers.ElementAt(i).Birthday" class="control-label"> </label>
-                <input asp-for="Passengers.ElementAt(i).Birthday" class="form-control" />
-                <span asp-validation-for="Passengers.ElementAt(i).Birthday" class="text-danger"></span>
-            </div>
-            <br />
-
-        }*@
-
 
         <div class="form-group">
             <input type="submit" value="Book the Flight" class="btn btn-primary" />

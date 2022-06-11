@@ -266,7 +266,7 @@ namespace MVCClient.Controllers
             return View();
         }
 
-        // GET: Admin/CreateFlight/
+        // GET: Admin/DeletePilot/
         [HttpGet]
         public async Task<ActionResult> DeletePilot(int id)
         {

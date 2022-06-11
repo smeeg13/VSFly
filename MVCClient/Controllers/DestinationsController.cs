@@ -68,6 +68,9 @@ namespace MVCClient.Controllers
 
             destination.Flights = (List<FlightAdminM>)await _vSFly.GetFlightsForDestination(destinationName);
             ViewBag.Session = HttpContext.Session.GetString("UserType");
+
+            ViewBag.TotalFlight = destination.Flights.Count();
+            ViewBag.TicketsSold = destination.TicketsSold.Count();
             return View(destination);
         }
 

@@ -59,23 +59,23 @@
         {
             <div class="rightColumn">
                 <h6>Informations saved in our system :</h6>
-            
-                
-            <dd class="col-sm-10">
-                <b>Full Name :</b>@Html.DisplayFor(model => model.Passenger.FullName)
-            </dd>
-            <dd class="col-sm-10">
-                <b>Passport ID :</b> @Html.DisplayFor(model => model.Passenger.PassportID)
-            </dd>
-           
-            <dd class="col-sm-10">
-                <b>Email :</b> @Html.DisplayFor(model => model.Passenger.Email)
-            </dd>
-           
-            <dd class="col-sm-10">
-                <b>Birthday :</b>@Html.DisplayFor(model => model.Passenger.Birthday)
-            </dd>
-        </div>
+
+
+                <dd class="col-sm-10">
+                    <b>Full Name :</b>@Html.DisplayFor(model => model.Passenger.FullName)
+                </dd>
+                <dd class="col-sm-10">
+                    <b>Passport ID :</b> @Html.DisplayFor(model => model.Passenger.PassportID)
+                </dd>
+
+                <dd class="col-sm-10">
+                    <b>Email :</b> @Html.DisplayFor(model => model.Passenger.Email)
+                </dd>
+
+                <dd class="col-sm-10">
+                    <b>Birthday :</b>@Html.DisplayFor(model => model.Passenger.Birthday)
+                </dd>
+            </div>
             <div class="middleColumn">
                 <form asp-controller="Flight" asp-action="UpdateFromBooking" asp-route-id="@Html.ValueFor(model => model.Passenger.PersonId)">
                     <div asp-validation-summary="ModelOnly" class="text-primary"></div>
@@ -99,65 +99,62 @@
                         <input type="submit" value="Save Info Entered" class="btn btn-primary" />
                     </div>
                 </form>
-           
-            </div>
-        <div class="leftColumn">
-            <h6>Informations entered before :</h6>
 
-            <dd class="col-sm-10">
-                <b>Full Name :</b> @ViewBag.FullName
-            </dd>
-            
-            <dd class="col-sm-10">
-                <b>Passport ID :</b> @ViewBag.PassportID
-            </dd>
-          
-            <dd class="col-sm-10">
-                <b>Email :</b> @ViewBag.Email
-            </dd>
-           
-            <dd class="col-sm-10">
-                <b>Birthday :</b> @ViewBag.Birthday
-            </dd>
-        </div>
+            </div>
+            <div class="leftColumn">
+                <h6>Informations entered before :</h6>
+
+                <dd class="col-sm-10">
+                    <b>Full Name :</b> @ViewBag.FullName
+                </dd>
+
+                <dd class="col-sm-10">
+                    <b>Passport ID :</b> @ViewBag.PassportID
+                </dd>
+
+                <dd class="col-sm-10">
+                    <b>Email :</b> @ViewBag.Email
+                </dd>
+
+                <dd class="col-sm-10">
+                    <b>Birthday :</b> @ViewBag.Birthday
+                </dd>
+            </div>
         }
         else
         {
-            <h6>Informations entered before :</h6>
-            <dt class="col-sm-2">
-                Full Name :
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Passenger.FullName)
-            </dd>
-            <dt class="col-sm-2">
-                Passport ID :
-            </dt>
 
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Passenger.PassportID)
-            </dd>
-            <dt class="col-sm-2">
-                Email :
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Passenger.Email)
-            </dd>
-            <dt class="col-sm-2">
-                Birthday :
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Passenger.Birthday)
-            </dd>
+            <div class="fullColumn">
+                <h6>Informations entered before :</h6>
+
+
+                <dt class="col-sm-2">
+                    Full Name :
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Passenger.FullName)
+                </dd>
+                <dt class="col-sm-2">
+                    Passport ID :
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Passenger.PassportID)
+                </dd>
+                <dt class="col-sm-2">
+                    Email :
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Passenger.Email)
+                </dd>
+                <dt class="col-sm-2">
+                    Birthday :
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Passenger.Birthday)
+                </dd>
+            </div>   
         }
-
-
-
-
-
-
-    </dl>
-</div>
+    </div>
 
 
 
@@ -170,7 +167,6 @@
         <input asp-for="Date" type="datetime" value="@Html.ValueFor(model => model.Date)" class="form-control" hidden />
         <input asp-for="Price" type="number" value="@Html.ValueFor(model => model.Price)" class="form-control" hidden />
         <input asp-for="SalePrice" type="number" value="@Html.ValueFor(model => model.SalePrice)" class="form-control" hidden />
-
         <input asp-for="Passenger.FullName" type="text" value="@Html.ValueFor(model => model.Passenger.FullName)" class="form-control" hidden />
         <input asp-for="Passenger.Email" type="email" value="@Html.ValueFor(model => model.Passenger.Email)" class="form-control" hidden />
         <input asp-for="Passenger.PassportID" type="text" value="@Html.ValueFor(model => model.Passenger.PassportID)" class="form-control" hidden />
@@ -178,10 +174,7 @@
         <input asp-for="Passenger.Birthday" type="datetime" value="@Html.ValueFor(model => model.Passenger.Birthday)" class="form-control" hidden />
         <input asp-for="Passenger.Status" type="text" value="@Html.ValueFor(model => model.Passenger.Status)" class="form-control" hidden />
     </div>
-
-
     <br />
-
     <div class="form-group">
         <input type="submit" value="Confirm Booking" class="btn btn-primary" />
     </div>
@@ -190,7 +183,6 @@
 <hr />
 
 <div>
-    @*  @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
     <a asp-action="Index" asp-controller="Home">Back Home</a>
 </div>
 
@@ -214,7 +206,12 @@
         float: left;
         width: 40%;
     }
-    
+
+    /* Right column */
+    .fullColumn {
+        float: left;
+        width: 100%;
+    }
 
     /* Clear floats after the columns */
     .row:after {

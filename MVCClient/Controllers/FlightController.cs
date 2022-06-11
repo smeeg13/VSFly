@@ -44,12 +44,6 @@ namespace MVCClient.Controllers
                 NbPassengers = 1;
             }
             bookFlight.NbPassengers = 1;
-            //bookFlight.Passengers = new List<PassengerM>(NbPassengers);
-            //for(int i =0; i < NbPassengers; i++)
-            //{
-            //    bookFlight.Passengers.Add(new PassengerM());
-            //}
-            
             return View(bookFlight);
         }
 
@@ -58,9 +52,6 @@ namespace MVCClient.Controllers
         public async Task<ActionResult> BaseDetails(int id)
         {
             var flight = await _vSFly.GetFlight(id);
-
-           
-
             return View(flight);
         }
 
@@ -94,8 +85,6 @@ namespace MVCClient.Controllers
                         //Passenger already exist
                         bookFlight.Passenger = passengers.ElementAt(i);
                         ViewBag.AlreadyExist = true;
-
-                       
                     }
                 }
 
@@ -103,21 +92,20 @@ namespace MVCClient.Controllers
                 {
                    
                     //Check if this passenger already have a booking for this flight
-                        var bookingsAll = await _vSFly.GetBookingsByPassengerId(bookFlight.Passenger.PersonId);
+                    var bookingsAll = await _vSFly.GetBookingsByPassengerId(bookFlight.Passenger.PersonId);
 
-                       foreach(BookingM bookingM in bookingsAll)
+                    foreach (BookingM bookingM in bookingsAll)
                     {
-                        if(bookFlight.FlightNo == bookingM.FlightNo)
+                        if (bookFlight.FlightNo == bookingM.FlightNo)
                         {
                             //Passenger already have a ticket for this flight
-                            ModelState.AddModelError(string.Empty, "You already have a ticket for this flight ! ");
-
+                            ModelState.AddModelError(string.Empty, "You already have a ticket for this flight, check on the passenger area ! ");
                             return View("Details", bookFlight);
                         }
                     }
                        
-                       //Go to confirmation of ticket
-                        return View(bookFlight);
+                    //Go to confirmation of ticket
+                    return View(bookFlight);
                 }
                 else
                 {
@@ -136,62 +124,14 @@ namespace MVCClient.Controllers
                     }
                 }
                 ModelState.AddModelError(string.Empty, "there was a problem, contact administrators ! ");
-
                 return View();
 
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Please control that the info you entered are in the right format");
-
                 return View("Details", bookFlight);
             }
-           
-            
-
-              
-
-            ////Create passenger into db IF Dont exists
-            //for (int i = 0; i < passengers.Count(); i++)
-            //{
-            //    for (int j = 0; j < bookFlight.NbPassengers; j++)
-            //    {
-            //        if (passengers.ElementAt(i).Email.Equals(bookFlight.Passengers.ElementAt(j).Email))
-            //        {
-            //            //Passenger already exist
-            //            bookFlight.Passengers.ElementAt(j).PersonId = passengers.ElementAt(i).PersonId;
-            //        }
-            //        else
-            //        {
-            //            //Must create the passenger
-            //            var statusCode = _vSFly.CreatePassenger(bookFlight.Passengers.ElementAt(j));
-            //            if (statusCode)
-            //            {
-            //                //Creation of the Passenger is OK
-            //                //assign the new passenger id into bookflight.passengers
-            //                PassengerM passengerM = await _vSFly.GetPassengerByPassportID(bookFlight.Passengers.ElementAt(j).PassportID);
-            //                bookFlight.Passengers.ElementAt(j).PersonId = passengerM.PersonId;
-            //            }
-
-            //        }
-            //    }
-
-            //}
-
-            //foreach (PassengerM p in bookFlight.Passengers)
-            //{
-
-            //    //Create new booking for each passenger
-            //    BookingM bookingM = new BookingM();
-            //    bookingM.FlightNo = bookFlight.FlightNo;
-            //    bookingM.SalePrice = bookFlight.SalePrice;
-            //    bookingM.PassengerID = p.PersonId;
-            //    bookingMs.Add(bookingM);
-            //}
-
-            //Display la réservation
-
-           
         }
 
 
@@ -215,8 +155,6 @@ namespace MVCClient.Controllers
                 return View("BookFlight", bookFlight);
             }
             ModelState.AddModelError(string.Empty, "Something went wrong, please contact the administrator");
-
-
             return View();
         }
 
@@ -247,8 +185,6 @@ namespace MVCClient.Controllers
 
             }
             ModelState.AddModelError(string.Empty, "Something went wrong, please contact the administrator");
-
-
             return View();
         }
     }
