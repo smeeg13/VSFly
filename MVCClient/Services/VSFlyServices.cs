@@ -21,6 +21,8 @@ namespace MVCClient.Services
             _baseuri = "https://localhost:44373/api/";
         }
 
+//------------------------FLIGHTS METHOD----------------------------------
+
         //Get All Flight Available ( with free seats)
         public async Task<IEnumerable<FlightM>> GetFlights()
         {
@@ -34,7 +36,7 @@ namespace MVCClient.Services
         }
 
 
-        //Get All Flight
+        //Get All Flights
         public async Task<IEnumerable<FlightM>> GetAllFlights()
         {
             var uri = _baseuri + "Flights/All";
@@ -46,16 +48,7 @@ namespace MVCClient.Services
 
             return flightList;
         }
-        public async Task<IEnumerable<PassengerM>> GetPassengers()
-        {
-            var uri = _baseuri + "Passengers";
 
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var passengerList = JsonConvert.DeserializeObject<IEnumerable<PassengerM>>(responseString); //Deserialized what received in a list
-
-            return passengerList;
-        }
 
 
         //Get One Flight by ID
@@ -70,45 +63,110 @@ namespace MVCClient.Services
             return flight;
         }
 
-        //Get All Flights for One Pilot
-        public async Task<IEnumerable<FlightAdminM>> GetFlightsByPilotId(int id)
+        //Get All Flight ADMIN
+        public async Task<IEnumerable<FlightAdminM>> GetAllAdminFlights()
         {
-            var uri = _baseuri + "Flights/PilotId/" + id;
+            var uri = _baseuri + "Flights/Admin/All";
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+            var flightList = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
 
-            IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
-            return query;
+
+            return flightList;
         }
-        //Get All Flights for One CoPilot
-        public async Task<IEnumerable<FlightAdminM>> GetFlightsByCoPilotId(int id)
+        //Get One Flight ADMIN by ID
+        public async Task<FlightAdminM> GetAdminFlight(int id)
         {
-            var uri = _baseuri + "Flights/CoPilotId/" + id;
+            var uri = _baseuri + "Flights/Admin/FlightNo/" + id;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+            var flight = JsonConvert.DeserializeObject<FlightAdminM>(responseString); //Deserialized what received in a list
 
-            IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
-            return query;
+            return flight;
         }
+
+        //Create New Flight
+        [HttpPost]
+        public Boolean CreateFlight(FlightAdminM f)
+        {
+
+            var uri = _baseuri + "Flights/Admin/CreateFlight";
+
+            //HTTP POST
+            var postTask = _client.PostAsJsonAsync<FlightAdminM>(uri, f);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Update Flight
+        [HttpPut]
+        public Boolean UpdateFlight(FlightAdminM f)
+        {
+
+            var uri = _baseuri + "Flights/Admin/UpdateFlight/" + f.FlightNo;
+
+            //HTTP POST
+            var postTask = _client.PutAsJsonAsync<FlightAdminM>(uri, f);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Delete Flight
+        public Boolean DeleteFlight(int id)
+        {
+
+            var uri = _baseuri + "Flights/Admin/DeleteFlight/" + id;
+
+            //HTTP DELETE
+            var deleteTask = _client.DeleteAsync(uri);
+            deleteTask.Wait();
+
+            var result = deleteTask.Result;
+            if (result.IsSuccessStatusCode)
+                return true;
+
+            return false;
+        }
+
+
+        //------------------------BOOKING & TICKETS METHOD----------------------------------
+
+
 
         //Get All Booking for One Flight
-        public async Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id)
+        public async Task<IEnumerable<Ticket>> GetTicketsByFlightNo(int id)
         {
-            var uri = _baseuri + "FlightNo/" + id;
+            var uri = _baseuri + "Bookings/TicketsForFlight/" + id;
 
             var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            var bookingsForFlight = JsonConvert.DeserializeObject<IEnumerable<BookingM>>(responseString); //Deserialized what received in a list
+            var bookingsForFlight = JsonConvert.DeserializeObject<IEnumerable<Ticket>>(responseString); //Deserialized what received in a list
 
             return bookingsForFlight;
         }
 
          //Get All Booking for One Passenger
-        public async Task<IEnumerable<BookingM>> GetBookingByPassengerId(int id)
+        public async Task<IEnumerable<BookingM>> GetBookingsByPassengerId(int id)
         {
             var uri = _baseuri + "Bookings/PassengerId/" + id;
 
@@ -130,17 +188,7 @@ namespace MVCClient.Services
             return bookingsFoPassenger;
         }
 
-        //Get All Tickets for One Destination
-        public async Task<IEnumerable<Ticket>> GetTicketsByDestination(string dest)
-        {
-            var uri = _baseuri + "Bookings/Tickets/Destination/" + dest;
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var ticketsFoDestination = JsonConvert.DeserializeObject<IEnumerable<Ticket>>(responseString); //Deserialized what received in a list
-
-            return ticketsFoDestination;
-        }
+        
 
         //Get All Booking for One Passenger
         public async Task<BookingM> GetSpecificBooking(int FlightNo, int PersonId)
@@ -154,19 +202,30 @@ namespace MVCClient.Services
             return bookingsFoPassenger;
         }
 
-        //GET SPECIFIC TICKET
-        //Get tickets by Destination
-        public async Task<IEnumerable<Ticket>> GetTicketsByDestinations(string destination)
+        //Create New Booking
+        [HttpPost]
+        public Boolean CreateBooking(BookingM booking)
         {
-            var uri = _baseuri + "Bookings/Tickets/" + destination;
 
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+            var uri = _baseuri + "Bookings";
 
-            var bookingsFoPassenger = JsonConvert.DeserializeObject<IEnumerable<Ticket>>(responseString); //Deserialized what received in a list
+            //HTTP POST
+            var postTask = _client.PostAsJsonAsync<BookingM>(uri, booking);
+            postTask.Wait();
 
-            return bookingsFoPassenger;
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        //Get ticket
+
+
+        //Get one specific ticket
         public async Task<Ticket> GetTicket(int flightNo, int personId)
         {
             var uri = _baseuri + "Bookings/Tickets/" + flightNo+"/"+personId;
@@ -179,6 +238,61 @@ namespace MVCClient.Services
             return bookingsFoPassenger.FirstOrDefault(); ;
         }
 
+
+
+        //-------------------DESTINATIONS METHODS------------------------------
+
+        //Get All Destinations and their Flights
+        public async Task<IEnumerable<Destination>> GetAllDestinations()
+        {
+            var uri = _baseuri + "Flights/Destinations";
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var Destinations = JsonConvert.DeserializeObject<IEnumerable<Destination>>(responseString); //Deserialized what received in a list
+
+            return Destinations;
+        }
+
+        //Get all available flights for one destination
+        public async Task<IEnumerable<FlightAdminM>> GetFlightsForDestination(string destinationName)
+        {
+            var uri = _baseuri + "Flights/Destinations/Flights/" + destinationName;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var FlightsForDestinations = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+
+            return FlightsForDestinations;
+        }
+
+
+        //Get All Tickets for One Destination
+        public async Task<IEnumerable<Ticket>> GetTicketsByDestination(string dest)
+        {
+            var uri = _baseuri + "Bookings/Tickets/Destination/" + dest;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var ticketsFoDestination = JsonConvert.DeserializeObject<IEnumerable<Ticket>>(responseString); //Deserialized what received in a list
+
+            return ticketsFoDestination;
+        }
+
+
+        //------------------------PASSENGERS METHOD----------------------------------
+
+        //Get all Passengers
+        public async Task<IEnumerable<PassengerM>> GetPassengers()
+        {
+            var uri = _baseuri + "Passengers";
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var passengerList = JsonConvert.DeserializeObject<IEnumerable<PassengerM>>(responseString); //Deserialized what received in a list
+
+            return passengerList;
+        }
 
         //Get One Passenger by PassportID
         public async Task<PassengerM> GetPassengerByPassportID(string passportId)
@@ -203,6 +317,84 @@ namespace MVCClient.Services
 
             return passenger;
         }
+
+
+        //Create New Passenger
+        [HttpPost]
+        public Boolean CreatePassenger(PassengerM student)
+        {
+
+            var uri = _baseuri + "Passengers/CreatePassenger";
+
+            //HTTP POST
+            var postTask = _client.PostAsJsonAsync<PassengerM>(uri, student);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Update Passenger
+        [HttpPut]
+        public Boolean UpdatePassenger(PassengerM p)
+        {
+
+            var uri = _baseuri + "Passengers/UpdatePassenger/" + p.PersonId;
+
+            //HTTP POST
+            var postTask = _client.PutAsJsonAsync<PassengerM>(uri, p);
+            postTask.Wait();
+
+            var result = postTask.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Delete Passenger
+        public Boolean DeletePassenger(int id)
+        {
+
+            var uri = _baseuri + "Passengers/Admin/DeletePassenger/" + id;
+
+            //HTTP DELETE
+            var deleteTask = _client.DeleteAsync(uri);
+            deleteTask.Wait();
+
+            var result = deleteTask.Result;
+            if (result.IsSuccessStatusCode)
+                return true;
+
+            return false;
+        }
+
+
+        //------------------------PILOTS METHOD----------------------------------
+
+        //Get All Pilots
+        public async Task<IEnumerable<PilotAdminM>> GetPilots()
+        {
+            var uri = _baseuri + "Pilots";
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var pilotList = JsonConvert.DeserializeObject<IEnumerable<PilotAdminM>>(responseString); //Deserialized what received in a list
+
+            return pilotList;
+        }
+
         //Get One Pilot by PassportID
         public async Task<PilotAdminM> GetPilotByPassportID(string passportId)
         {
@@ -227,226 +419,15 @@ namespace MVCClient.Services
             return pilotAdmin;
         }
 
-        ////Get Sum Sale Price of one Flight
-        //public async Task<double> GetSumSalePrice(int id)
-        //{
-        //    var uri = _baseuri + "Sum/" + id;
-
-        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-        //    var sumSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
-
-        //    return sumSalePrice;
-        //}
-
-        ////Get Average Sale Price of one/many Flight for one Destination
-        //public async Task<double> GetAvgSalePrice(string destination)
-        //{
-        //    var uri = _baseuri + "Avg/" + destination;
-
-        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-        //    var avgSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
-
-        //    return avgSalePrice;
-        //}
-
-        //Get All Destinations and their Flights
-        public async Task<IEnumerable<Destination>> GetAllDestinations()
-        {
-            var uri = _baseuri + "Flights/Destinations";
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var Destinations = JsonConvert.DeserializeObject<IEnumerable<Destination>>(responseString); //Deserialized what received in a list
-
-            return Destinations;
-        }
-
-        //Get All Destinations and their Flights
-        public async Task<IEnumerable<FlightAdminM>> GetFlightsForDestination(string destinationName)
-        {
-            var uri = _baseuri + "Flights/Destinations/Flights/"+ destinationName;
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var FlightsForDestinations = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
-
-            return FlightsForDestinations;
-        }
-
-
-
-        //-----------------------------------POST METHODS-------------------------------------
-
-        //Create New Booking
-        [HttpPost]
-        public Boolean CreateBooking(BookingM booking)
-        {
-
-            var uri = _baseuri + "Bookings";
-
-            //HTTP POST
-            var postTask = _client.PostAsJsonAsync<BookingM>(uri, booking);
-            postTask.Wait();
-
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        //Create New Passenger
-        [HttpPost]
-        public Boolean CreatePassenger(PassengerM student)
-        {
-
-            var uri = _baseuri + "Passengers";
-
-            //HTTP POST
-            var postTask = _client.PostAsJsonAsync<PassengerM>(uri, student);
-            postTask.Wait();
-
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        //Update Passenger
-        [HttpPut]
-        public Boolean UpdatePassenger(PassengerM p)
-        {
-
-            var uri = _baseuri + "Passengers/Update/"+p.PersonId;
-
-            //HTTP POST
-            var postTask = _client.PutAsJsonAsync<PassengerM>(uri, p);
-            postTask.Wait();
-
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         //Update Pilot
         [HttpPut]
         public Boolean UpdatePilot(PilotAdminM p)
         {
 
-            var uri = _baseuri + "Pilots/Update/" + p.PersonId;
+            var uri = _baseuri + "Pilots/Admin/UpdatePilot/" + p.PersonId;
 
             //HTTP POST
             var postTask = _client.PutAsJsonAsync<PilotAdminM>(uri, p);
-            postTask.Wait();
-
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        //Update Flight
-        [HttpPut]
-        public Boolean UpdateFlight(FlightAdminM f)
-        {
-
-            var uri = _baseuri + "Flights/Update/" + f.FlightNo;
-
-            //HTTP POST
-            var postTask = _client.PutAsJsonAsync<FlightAdminM>(uri, f);
-            postTask.Wait();
-
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-
-        public async Task<IEnumerable<PilotAdminM>> GetPilots()
-        {
-            var uri = _baseuri + "Pilots";
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var pilotList = JsonConvert.DeserializeObject<IEnumerable<PilotAdminM>>(responseString); //Deserialized what received in a list
-
-            return pilotList;
-        }
-
-
-        public async Task<IEnumerable<BookingM>> GetBookings()
-        {
-            var uri = _baseuri + "Bookings";
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var bookingList = JsonConvert.DeserializeObject<IEnumerable<BookingM>>(responseString); //Deserialized what received in a list
-
-            return bookingList;
-        }
-
-        //_____________________ADMIN METHODS_________________________________
-        //Get All Flight
-        public async Task<IEnumerable<FlightAdminM>> GetAllAdminFlights()
-        {
-            var uri = _baseuri + "Flights/Admin/All";
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var flightList = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
-
-
-            return flightList;
-        }
-        //Get One Flight by ID
-        public async Task<FlightAdminM> GetAdminFlight(int id)
-        {
-            var uri = _baseuri + "Flights/Admin/FlightNo/" + id;
-
-            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
-
-            var flight = JsonConvert.DeserializeObject<FlightAdminM>(responseString); //Deserialized what received in a list
-
-            return flight;
-        }
-
-        //Create New Flight
-        [HttpPost]
-        public Boolean CreateFlight(FlightAdminM f)
-        {
-
-            var uri = _baseuri + "Flights/Admin/CreateFlight";
-
-            //HTTP POST
-            var postTask = _client.PostAsJsonAsync<FlightAdminM>(uri, f);
             postTask.Wait();
 
             var result = postTask.Result;
@@ -481,24 +462,7 @@ namespace MVCClient.Services
                 return false;
             }
         }
-
-
-        public Boolean DeleteFlight(int id)
-        {
-
-            var uri = _baseuri + "Flights/Admin/DeleteFlight/" + id;
-
-            //HTTP DELETE
-            var deleteTask = _client.DeleteAsync(uri);
-            deleteTask.Wait();
-
-            var result = deleteTask.Result;
-            if (result.IsSuccessStatusCode)
-                return true;
-           
-            return false;
-        }
-
+        //Delete a given Pilot
         public Boolean DeletePilot(int id)
         {
 
@@ -514,20 +478,60 @@ namespace MVCClient.Services
 
             return false;
         }
-        public Boolean DeletePassenger(int id)
+
+
+        //Get All Flights for One Pilot
+        public async Task<IEnumerable<FlightAdminM>> GetFlightsByPilotId(int id)
         {
+            var uri = _baseuri + "Flights/PilotId/" + id;
 
-            var uri = _baseuri + "Passengers/Admin/DeletePassenger/" + id;
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
 
-            //HTTP DELETE
-            var deleteTask = _client.DeleteAsync(uri);
-            deleteTask.Wait();
+            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
 
-            var result = deleteTask.Result;
-            if (result.IsSuccessStatusCode)
-                return true;
-
-            return false;
+            IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
+            return query;
         }
+
+        //Get All Flights assigned to One CoPilot
+        public async Task<IEnumerable<FlightAdminM>> GetFlightsByCoPilotId(int id)
+        {
+            var uri = _baseuri + "Flights/CoPilotId/" + id;
+
+            var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+            var flightsForPilot = JsonConvert.DeserializeObject<IEnumerable<FlightAdminM>>(responseString); //Deserialized what received in a list
+
+            IEnumerable<FlightAdminM> query = flightsForPilot.OrderBy(f => f.Date);
+            return query;
+        }
+
+        ////Get Sum Sale Price of one Flight
+        //public async Task<double> GetSumSalePrice(int id)
+        //{
+        //    var uri = _baseuri + "Sum/" + id;
+
+        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+        //    var sumSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
+
+        //    return sumSalePrice;
+        //}
+
+        ////Get Average Sale Price of one/many Flight for one Destination
+        //public async Task<double> GetAvgSalePrice(string destination)
+        //{
+        //    var uri = _baseuri + "Avg/" + destination;
+
+        //    var responseString = await _client.GetStringAsync(uri); //Ask for the JSON
+
+        //    var avgSalePrice = JsonConvert.DeserializeObject<double>(responseString); //Deserialized what received in a list
+
+        //    return avgSalePrice;
+        //}
+
+
+
+
     }
 }

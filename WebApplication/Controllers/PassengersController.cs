@@ -23,7 +23,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Passengers
+        // GET ALL PASSENGERS IN DB
+        // api/Passengers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PassengerM>>> GetPassengers()
         {
@@ -39,7 +40,8 @@ namespace WebAPI.Controllers
             return passengerMList;
         }
 
-        // GET: api/Passengers/5
+        // GET ONE PASSENGER BY ID
+        // api/Passengers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PassengerM>> GetPassenger(int id)
         {
@@ -56,7 +58,8 @@ namespace WebAPI.Controllers
             return passengerM;
         }
 
-        // GET: api/Passengers/Find/2
+        // GET ONE PASSENGER BY PASSPORT ID
+        // api/Passengers/Find/2
         [HttpGet("Find/{passportId}")]
         public async Task<ActionResult<PassengerM>> GetPassengerByPassportID(string passportId)
         {
@@ -79,9 +82,9 @@ namespace WebAPI.Controllers
             return passengerM;
         }
 
-        // PUT: api/Passengers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Update/{id}")]
+        // PUT MODIFICATION OF A PASSENGER INTO DB
+        // api/Passengers/UpdatePassenger/5
+        [HttpPut("UpdatePassenger/{id}")]
         public async Task<IActionResult> PutPassenger(int id, PassengerM passengerM)
         {
             if (id != passengerM.PersonId)
@@ -118,8 +121,9 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        // POST: api/Passengers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST A NEW PASSENGER INTO DB
+        // api/Passengers/CreatePassenger
+        [Route("CreatePassenger")]
         [HttpPost]
         public async Task<ActionResult<PassengerM>> PostPassenger(PassengerM passengerM)
         {
@@ -146,7 +150,8 @@ namespace WebAPI.Controllers
             return CreatedAtAction("GetPassenger", new { id = passengerM.PersonId }, passengerM);
         }
 
-        // DELETE: api/Passengers/Admin/DeletePassenger/5
+        // DELETE A GIVEN PASSENGER
+        // api/Passengers/Admin/DeletePassenger/5
         [HttpDelete("Admin/DeletePassenger/{id:int}")]
         public async Task<IActionResult> DeletePassenger(int id)
         {

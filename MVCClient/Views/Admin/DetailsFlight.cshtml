@@ -87,31 +87,72 @@
 
 
 
-@if (ViewBag.Message != "Admin") { 
+@if (ViewBag.Message == "Admin")
+{
+
+    <div>
+
+        @using (Html.BeginForm("EditFlight", "Admin", new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
+        {
+            <input type="submit" value="Edit" class="btn btn-primary" style="margin-right:30px">
+        }
+        @using (Html.BeginForm("DeleteFlight", "Admin", new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
+        {
+            <input type="submit" value="Delete" class="btn btn-danger" style="margin-right:30px">
+        }
+
+    </div>
+
+
+    <h6>Tickets Already Sold this flight : </h6>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().FlightNo)
+                </th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().SalePrice)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tickets)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FlightNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SalePrice)
+                    </td>
+
+                    <td>
+
+
+                        {@Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
 
 <form>
-    <input type="button" value="Go back" onclick="history.back()">
+    <input type="button" value="Go back" onclick="history.back()" style="margin-top:30px">
 </form>
 
-} else {
-
-<div>
-
-    @using (Html.BeginForm("EditFlight", "Admin", new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
-    {
-        <input type="submit" value="Edit" class="btn btn-primary" style = "margin-right:30px">
-    }
-    @using (Html.BeginForm("DeleteFlight", "Admin", new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
-    {
-        <input type="submit" value="Delete" class="btn btn-danger" style = "margin-right:30px">
-    }
-
-
-
-
-    <form>
-        <input type="button" value="Go back" onclick="history.back()" style = "margin-top:30px">
-    </form>
-</div>
-}
 

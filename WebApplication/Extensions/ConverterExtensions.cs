@@ -8,7 +8,7 @@ namespace WebAPI.Extensions
     public static class ConverterExtensions
     {
 
-        //Converting models to DB
+       
         public static Models.Ticket GenerateTicket(this VSFly.Booking b )
         {
 
@@ -23,6 +23,10 @@ namespace WebAPI.Extensions
 
             return t;
         }
+        
+        
+        //Converting models to DB
+        
         public static Models.FlightM ConvertToFlightM(this VSFly.Flight f)
         {
             Models.FlightM fm = new Models.FlightM();
@@ -89,7 +93,17 @@ namespace WebAPI.Extensions
             return pm;
         }
 
-        //AdminConverter Flight
+        public static VSFly.Pilot ConvertToPilot(this Models.PilotM pm)
+        {
+            VSFly.Pilot p = new VSFly.Pilot();
+            p.PersonId = pm.PersonId;
+            p.FlightHours = pm.FlightHours;
+            
+            return p;
+        }
+
+
+        //AdminConverter Pilot
         public static Models.PilotAdminM ConvertToPilotAdminM(this VSFly.Pilot p)
         {
             Models.PilotAdminM pm = new Models.PilotAdminM();
@@ -118,14 +132,7 @@ namespace WebAPI.Extensions
             return pm;
         }
 
-        public static VSFly.Pilot ConvertToPilot(this Models.PilotM pm)
-        {
-            VSFly.Pilot p = new VSFly.Pilot();
-            p.PersonId = pm.PersonId;
-            p.FlightHours = pm.FlightHours;
-            
-            return p;
-        }
+     
 
         public static Models.BookingM ConvertToBookingM(this VSFly.Booking b)
         {

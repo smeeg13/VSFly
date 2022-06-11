@@ -22,7 +22,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Pilots
+        // GET ALL PILOTS (admin)
+        // api/Pilots
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PilotAdminM>>> GetPilots()
         {
@@ -40,7 +41,8 @@ namespace WebAPI.Controllers
             return pilotMList;
         }
 
-        // GET: api/Pilots/5
+        // GET ONE PILOT BY ID (admin)
+        // api/Pilots/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PilotAdminM>> GetPilot(int id)
         {
@@ -58,7 +60,8 @@ namespace WebAPI.Controllers
             }
             return pilotM;
         }
-        // GET: api/Pilots/Find/2
+        // GET ONE PILOT BY PASSPORT ID
+        // api/Pilots/Find/2
         [HttpGet("Find/{passportId}")]
         public async Task<ActionResult<PilotAdminM>> GetPilotByPassportID(string passportId)
         {
@@ -87,7 +90,7 @@ namespace WebAPI.Controllers
                 return null;
         }
 
-
+        //CHECK IF THE PILOT EXISTS WITH HIS ID
         private bool PilotExists(int id)
         {
             return _context.Pilots.Any(e => e.PersonId == id);
@@ -97,9 +100,9 @@ namespace WebAPI.Controllers
 
         //_____________________ADMIN METHODS_________________________________
 
-        // PUT: api/Pilots/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Update/{id}")]
+        // PUT PILOT MODIFICATION INTO BD
+        // api/Pilots/Update/5
+        [HttpPut("Admin/UpdatePilot/{id}")]
         public async Task<IActionResult> PutPilot(int id, PilotAdminM pilotM)
         {
             if (id != pilotM.PersonId)
@@ -134,8 +137,8 @@ namespace WebAPI.Controllers
 
             return Ok();
         }
-        // POST: api/Pilots
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST NEW PILOT INTO DB
+        // api/Pilots/Admin/CreatePilot
         [Route("Admin/CreatePilot")]
         [HttpPost]
         public async Task<ActionResult<PilotAdminM>> PostPilot(PilotAdminM pilotM)
@@ -160,7 +163,8 @@ namespace WebAPI.Controllers
                 return CreatedAtAction("GetPilot", new { id = pilotM.PersonId }, pilotM);
         }
 
-        // DELETE: api/Pilots/5
+        // DELETE ON PILOT OF THE BD
+        // api/Pilots/Admin/DeletePilot/5
         [HttpDelete("Admin/DeletePilot/{id:int}")]
         public async Task<IActionResult> DeletePilot(int id)
         {

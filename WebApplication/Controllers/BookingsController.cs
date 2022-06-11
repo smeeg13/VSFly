@@ -22,25 +22,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Bookings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookings()
-        {
-            var BookingList = await _context.Bookings.ToListAsync();
-            List<BookingM> bookingMList = new List<BookingM>();
-            foreach(Booking b in BookingList)
-            {
-                var BM = b.ConvertToBookingM();
-                bookingMList.Add(BM);
-            }
 
-            return bookingMList;
-        }
-
-        
-
-
-        //Get Tickets by destination
+        //Get ALL Tickets FOR ONE destination
         [Route("Tickets/Destination/{destination}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByDestination(string destination)
@@ -84,7 +67,7 @@ namespace WebAPI.Controllers
             }
             return tickets;
         }
-        //GET Ticket for One Specific passenger
+        //GET All Tickets for One Specific passenger
         [Route("Tickets/PassengerId/{passengerId:int}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketByPassengerId(int passengerId)
@@ -122,9 +105,9 @@ namespace WebAPI.Controllers
 
 
         //GET by flightNo
-        [Route("FlightNo/{flightNo:int}")]
+        [Route("TicketsForFlight/{flightNo:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByFlightNo(int flightNo)
+        public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByFlightNo(int flightNo)
         {
             var booking = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
 
@@ -132,23 +115,23 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-            List<BookingM> bookingMs = new List<BookingM>();
+            List<Ticket> tickets = new List<Ticket>();
 
             foreach (Booking b in booking)
             {
 
-                BookingM bookingM = b.ConvertToBookingM();
-                bookingMs.Add(bookingM);
+                Ticket bookingM = b.GenerateTicket();
+                tickets.Add(bookingM);
 
             }
 
-            return bookingMs;
+            return tickets;
         }
 
-        //GET by passengerId
+        //GET bookings by passengerId
         [Route("PassengerId/{passengerId:int}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingByPassengerId(int passengerId)
+        public async Task<ActionResult<IEnumerable<BookingM>>> GetBookingsByPassengerId(int passengerId)
         {
             var booking = await _context.Bookings.Where(b => b.PassengerID == passengerId).ToListAsync();
 
@@ -171,24 +154,8 @@ namespace WebAPI.Controllers
 
         
 
-
-        // GET: api/Bookings/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<BookingM>> GetBooking(int id)
-        {
-            var booking = await _context.Bookings.FindAsync(id);
-
-            if (booking == null)
-            {
-                return NotFound();
-            }
-
-            BookingM bookingM = booking.ConvertToBookingM();
-
-            return bookingM;
-        }
-
-        // GET: api/Bookings/5
+        // GET Booking by FlightNo & PassengerID
+        // api/Bookings/5
         [HttpGet("Find/{FlightNo}/{PersonId}")]
         public async Task<ActionResult<BookingM>> GetSpecificBooking(int FlightNo, int PersonId)
         {
@@ -213,39 +180,10 @@ namespace WebAPI.Controllers
             return bookingM;
         }
 
-        // PUT: api/Bookings/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, BookingM bookingM)
-        {
-            if (id != bookingM.FlightNo)
-            {
-                return BadRequest();
-            }
+      
 
-            _context.Entry(bookingM).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Bookings
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST A NEW BOOKING
+        // api/Bookings
         [HttpPost]
         public async Task<ActionResult<BookingM>> PostBooking(BookingM bookingM)
         {
@@ -276,21 +214,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction("GetBooking", new { id = bookingM.FlightNo }, bookingM);
         }
 
-        // DELETE: api/Bookings/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking(int id)
-        {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-            {
-                return NotFound();
-            }
-
-            _context.Bookings.Remove(booking);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
+      
 
         private bool BookingExists(int id)
         {

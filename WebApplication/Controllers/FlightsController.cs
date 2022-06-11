@@ -22,10 +22,8 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-
-
-        //Display all flights still available
-        // GET: api/Flights
+        // GET ALL AVAILABLE FLIGHTS
+        // api/Flights
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightM>>> GetFlights()
         {
@@ -45,8 +43,9 @@ namespace WebAPI.Controllers
             }
             return flightMList;
         }
-        //Display all flights 
-        // GET: api/Flights/All
+
+        // GET ALL FLIGHTS
+        // api/Flights/All
         [Route("All")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightM>>> GetAllFlights()
@@ -67,7 +66,8 @@ namespace WebAPI.Controllers
             flightList.OrderBy(f => f.FreeSeats);
             return flightMList;
         }
-        //to get the sale price
+
+        // get the sale price for a flight
         private double getSalePrice(int seat, int freeSeat, DateTime date, double price)
         {
             var priceSale = 0.0;
@@ -97,16 +97,11 @@ namespace WebAPI.Controllers
             return priceSale;
         }
 
-        //GET sum all salePrice of a flight
+        //get sum all salePrice of a flight
         private double GetSumSalePrice(List<Booking> bookings)
         {
-            //var bookingss = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
             var sum = 0.0;
-            //if (bookings == null)
-            //{
-            //    return NotFound();
-            //}
-
+            
             foreach (Booking b in bookings)
             {
                 sum += b.SalePrice;
@@ -116,10 +111,9 @@ namespace WebAPI.Controllers
         }
 
 
-        //GET avg all salePrice of a or many flights
+        //get avg all salePrice of a or many flights
         private double GetAvgSalePrice(List<Booking> bookings)
         {
-
             var nb = 0;
             var sum = 0.0;
             var avg = 0.0;
@@ -139,7 +133,8 @@ namespace WebAPI.Controllers
         }
 
 
-        //// GET: api/Flights/5
+        // GET ONE FLIGHT BY ID
+        // api/Flights/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FlightM>> GetFlight(int id)
         {
@@ -156,7 +151,8 @@ namespace WebAPI.Controllers
             return flightM;
         }
 
-        // GET: api/Flights/PilotId/5
+        // GET ALL FLIGHT ASSIGNED TO A PILOT
+        // api/Flights/PilotId/5
         [HttpGet("PilotId/{pilotId:int}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsByPilotId(int pilotId)
         {
@@ -179,7 +175,8 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
-        // GET: api/Flights/PilotId/5
+        // GET ALL FLIGHT ASSIGNED TO A CO-PILOT
+        // api/Flights/CoPilotId/5
         [HttpGet("CoPilotId/{copilotId:int}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsByCoPilotId(int copilotId)
         {
@@ -202,6 +199,8 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
+       //GET ALL AVAILABLE FLIGHTS FOR A DESTINATION
+       // api/flights/destinations/flights/{destinationName}
         [HttpGet("Destinations/Flights/{destinationName}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsForDestination(string destinationName)
         {
@@ -221,8 +220,8 @@ namespace WebAPI.Controllers
 
         }
 
-        //Get all destination Available
-        // GET: api/Flights/Destinations
+        //GET all destination Available in DB
+        // api/Flights/Destinations
         [Route("Destinations")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Destination>>> GetAllDestinations()
@@ -288,8 +287,9 @@ namespace WebAPI.Controllers
 
         //_____________________ADMIN METHODS_________________________________
         
-        //Display all flights 
-        // GET: api/Flights/Admin/All
+
+        // GET ALL ADMIN FLIGHTS
+        // api/Flights/Admin/All
         [Route("Admin/All")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetAdminFlights()
@@ -319,7 +319,8 @@ namespace WebAPI.Controllers
             flightList.OrderBy(f => f.FreeSeats);
             return flightMList;
         }
-        //// GET: api/Flights/Admin/5
+        // GET ONE ADMIN FLIGHT BY ID
+        // api/Flights/Admin/5
         [HttpGet("Admin/FlightNo/{id}")]
         public async Task<ActionResult<FlightAdminM>> GetAdminFlight(int id)
         {
@@ -346,7 +347,8 @@ namespace WebAPI.Controllers
             return flightM;
         }
 
-        // GET: api/Flights/Admin/PilotId/5
+        // GET ADMIN FLIGHT FOR ONE PILOT
+        // api/Flights/Admin/PilotId/5
         [HttpGet("Admin/PilotId/{pilotId:int}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetAdminFlightsByPilotId(int pilotId)
         {
@@ -369,8 +371,8 @@ namespace WebAPI.Controllers
             return flightsMs;
         }
 
-        // POST: api/Flights/Admin/CreateFlight
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST A NEW FLIGHT
+        // api/Flights/Admin/CreateFlight
         [Route("Admin/CreateFlight")]
         [HttpPost]
         public async Task<ActionResult<FlightAdminM>> PostFlight(FlightAdminM flightM)
@@ -382,9 +384,11 @@ namespace WebAPI.Controllers
 
             return CreatedAtAction("GetFlight", new { id = flightM.FlightNo }, flightM);
         }
-        // PUT: api/Flights/Admin/UpdateFlight/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("Update/{id:int}")]
+
+
+        // PUT MODIFICATION OF A FLIGHT INTO DB
+        // api/Flights/Admin/UpdateFlight/5
+        [HttpPut("Admin/UpdateFlight/{id:int}")]
         public async Task<IActionResult> PutFlight(int id, FlightAdminM flightM)
         {
             if (id != flightM.FlightNo)
@@ -424,7 +428,8 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        // DELETE: api/Flights/5
+        // DELETE A GIVEN FLIGHT
+        // api/Flights/5
         [HttpDelete("Admin/DeleteFlight/{id:int}")]
         public async Task<IActionResult> DeleteFlight(int id)
         {

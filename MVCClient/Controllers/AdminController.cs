@@ -90,6 +90,7 @@ namespace MVCClient.Controllers
             ViewBag.Message = HttpContext.Session.GetString("UserType");
 
             var f = await _vSFly.GetAdminFlight(id);
+            f.Tickets = (List<Ticket>)await _vSFly.GetTicketsByFlightNo(f.FlightNo);
 
             return View(f);
         }

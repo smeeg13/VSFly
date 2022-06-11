@@ -103,7 +103,7 @@ namespace MVCClient.Controllers
                 {
                    
                     //Check if this passenger already have a booking for this flight
-                        var bookingsAll = await _vSFly.GetBookingByPassengerId(bookFlight.Passenger.PersonId);
+                        var bookingsAll = await _vSFly.GetBookingsByPassengerId(bookFlight.Passenger.PersonId);
 
                        foreach(BookingM bookingM in bookingsAll)
                     {

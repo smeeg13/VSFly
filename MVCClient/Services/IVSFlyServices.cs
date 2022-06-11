@@ -13,7 +13,7 @@ namespace MVCClient.Services
 
         public Task<IEnumerable<PilotAdminM>> GetPilots();
         
-        public Task<IEnumerable<BookingM>> GetBookings();
+       // public Task<IEnumerable<BookingM>> GetBookings();
 
         public Task<FlightM> GetFlight(int id);
         public Task<IEnumerable<FlightAdminM>> GetFlightsByPilotId(int id);
@@ -29,12 +29,12 @@ namespace MVCClient.Services
         public Task<BookingM> GetSpecificBooking(int FlightNo, int PersonId);
         public Task<Ticket> GetTicket(int flightNo, int personId);
 
-        public Task<IEnumerable<BookingM>> GetBookingByPassengerId(int id);
+        public Task<IEnumerable<BookingM>> GetBookingsByPassengerId(int id);
         public Task<IEnumerable<Ticket>> GetTicketsByPassengerId(int id);
         public Task<IEnumerable<Ticket>> GetTicketsByDestination(string dest);
 
 
-        public Task<IEnumerable<BookingM>> GetBookingByFlightNo(int id);
+        public Task<IEnumerable<Ticket>> GetTicketsByFlightNo(int id);
         public Task<IEnumerable<Destination>> GetAllDestinations();
         public Task<IEnumerable<FlightAdminM>> GetFlightsForDestination(string destinationName);
 
@@ -42,9 +42,7 @@ namespace MVCClient.Services
 
         public Boolean CreatePassenger(PassengerM student);
         public Boolean UpdatePassenger(PassengerM p);
-        public Boolean UpdatePilot(PilotAdminM p);
-
-        public Boolean UpdateFlight(FlightAdminM f);
+       
 
 public Boolean CreateBooking(BookingM booking);
 
@@ -55,7 +53,9 @@ public Boolean CreateBooking(BookingM booking);
         public Boolean DeleteFlight(int id);
         public Boolean DeletePilot(int id);
         public Boolean DeletePassenger(int id);
+ public Boolean UpdatePilot(PilotAdminM p);
 
+        public Boolean UpdateFlight(FlightAdminM f);
 
 
         public Boolean CreatePilot(PilotAdminM f);

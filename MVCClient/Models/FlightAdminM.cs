@@ -34,5 +34,7 @@ namespace MVCClient.Models
 
         public double SumSales{get; set;}
 
+        public List<Ticket> Tickets { get; set; }
+
     }
 }
