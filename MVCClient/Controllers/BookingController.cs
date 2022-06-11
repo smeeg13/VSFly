@@ -28,7 +28,10 @@ namespace MVCClient.Controllers
         public async Task<ActionResult> Details(int flightNo, int personId)
         {
             var book = await _vSFly.GetTicket(flightNo, personId);
-            
+
+          
+                ViewBag.Message = HttpContext.Session.GetString("UserType");
+
             return View(book);
         }
 

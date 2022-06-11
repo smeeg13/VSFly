@@ -48,6 +48,19 @@
 </p>
 <br />
 <div>
-   
-    <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+    @if (ViewBag.Message == null)
+    {
+        <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+
+    }
+    @if (ViewBag.Message == "Passenger")
+    {
+        <a asp-action="Index" asp-controller="Passenger">Back to Passenger Area</a>
+
+    }
+
+    @if (ViewBag.Message == "Admin")
+    {
+        <a asp-action="Index" asp-controller="Admin">Back to Admin Area</a>
+    }
 </div>

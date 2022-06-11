@@ -207,7 +207,7 @@ namespace MVCClient.Services
         public Boolean CreateBooking(BookingM booking)
         {
 
-            var uri = _baseuri + "Bookings";
+            var uri = _baseuri + "Bookings/Create";
 
             //HTTP POST
             var postTask = _client.PostAsJsonAsync<BookingM>(uri, booking);

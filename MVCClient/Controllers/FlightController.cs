@@ -240,9 +240,15 @@ namespace MVCClient.Controllers
                 BookingM bookCreated = await _vSFly.GetSpecificBooking(bookFlight.FlightNo, bookFlight.Passenger.PersonId);
                 //Display Booking View
                 bookFlight.Booking = bookCreated;
+
+                //HttpContext.Session.SetString("UserType", "Passenger");
+                //HttpContext.Session.SetInt32("PersonId", bookFlight.Booking.PassengerID);
                 return View(bookFlight);
 
             }
+            ModelState.AddModelError(string.Empty, "Something went wrong, please contact the administrator");
+
+
             return View();
         }
     }

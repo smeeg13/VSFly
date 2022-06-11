@@ -98,10 +98,11 @@
         }
         @using (Html.BeginForm("DeleteFlight", "Admin", new { id = @Html.ValueFor(model => model.FlightNo) }, FormMethod.Get))
         {
-            <input type="submit" value="Delete" class="btn btn-danger" style="margin-right:30px">
+            <input type="submit" value="Delete" class="btn btn-danger" style="margin-top:10px">
         }
 
     </div>
+    <br />
 
 
     <h6>Tickets Already Sold this flight : </h6>
@@ -139,7 +140,7 @@
                     <td>
 
 
-                        {@Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
+                        @Html.ActionLink("Details Ticket", "Details", "Booking", new { flightNo = item.FlightNo, personId = item.PassengerId })
 
 
                     </td>

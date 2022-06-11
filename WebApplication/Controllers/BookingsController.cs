@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTicketsByFlightNo(int flightNo)
         {
-            var booking = await _context.Bookings.Where(b => b.FlightNo == flightNo).ToListAsync();
+            var booking = await _context.Bookings.Where(b => b.FlightNo == flightNo).Include(p=>p.Passenger).Include(f=>f.Flight).ToListAsync();
 
             if (booking == null)
             {
@@ -184,6 +184,7 @@ namespace WebAPI.Controllers
 
         // POST A NEW BOOKING
         // api/Bookings
+        [Route("Create")]
         [HttpPost]
         public async Task<ActionResult<BookingM>> PostBooking(BookingM bookingM)
         {
@@ -211,7 +212,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetBooking", new { id = bookingM.FlightNo }, bookingM);
+            return Ok();
         }
 
       
