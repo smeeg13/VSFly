@@ -68,7 +68,7 @@ namespace MVCClient.Controllers
                     }
                 }
 
-                ModelState.AddModelError(string.Empty, "Invalid Id or Email");
+                ModelState.AddModelError(string.Empty, "Invalid Email or Passport ID");
             }
             
             return View();
