@@ -35,10 +35,15 @@ namespace WebAPI.Controllers
                 //Check if flight have free seats
                 if (f.FreeSeats != 0)
                 {
-                    var FM = f.ConvertToFlightM();
-                    FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
+                    //Check if flight is not already gone
+                    if (f.Date>DateTime.Now)
+                    {
+                        var FM = f.ConvertToFlightM();
+                        FM.SalePrice = getSalePrice(f.Seat, f.FreeSeats, f.Date, f.Price);
 
-                    flightMList.Add(FM);
+                        flightMList.Add(FM);
+                    }
+                    
                 }
             }
             return flightMList;
@@ -204,7 +209,7 @@ namespace WebAPI.Controllers
         [HttpGet("Destinations/Flights/{destinationName}")]
         public async Task<ActionResult<IEnumerable<FlightAdminM>>> GetFlightsForDestination(string destinationName)
         {
-            var flightsAvailable = await _context.Flights.Where(x => x.FreeSeats > 0).ToListAsync();
+            var flightsAvailable = await _context.Flights.Where(x => x.FreeSeats > 0).Where(y=>y.Date>DateTime.Now).ToListAsync();
             var flightForDest = flightsAvailable.Where(x => x.Destination == destinationName).ToList();
             List<FlightAdminM> flightAdminForDest = new();
             foreach (Flight f in flightForDest)
@@ -227,7 +232,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Destination>>> GetAllDestinations()
         {
 
-            var flightsAvailable = await _context.Flights.Where(x=>x.FreeSeats > 0).ToListAsync();
+            var flightsAvailable = await _context.Flights.Where(x=>x.FreeSeats > 0).Where(y => y.Date > DateTime.Now).ToListAsync();
             var destNames = flightsAvailable.Select(x => x.Destination).Distinct().ToList();
             
             List<Destination> destinations = new List<Destination>();
